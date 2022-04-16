@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const authUser = require('../middleware/authUser')
 const {
     loginPage,
     loginUser,
@@ -9,7 +10,7 @@ const {
 
 
 router.get('/login', loginPage)
-router.post('/login', loginUser)
+router.post('/login', authUser, loginUser)
 
 router.get('/register', registerPage)
 router.post('/register', registerUser)

@@ -1,7 +1,6 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
-const jtw = require('jsonwebtoken')
-const res = require('express/lib/response')
+const jwt = require('jsonwebtoken')
 
 
 const loginPage = (req, res) => {
@@ -75,9 +74,7 @@ const loginUser = async (req, res, next) => {
 
 //get JWT token
 const generateToken = (id) => {
-    return jtw.sign({id}, 'secret', {
-        expiresIn: '30d'
-    })
+    return jwt.sign({id}, process.env.JWT_SECRET)
 }
 
 module.exports = {
