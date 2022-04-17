@@ -1,24 +1,14 @@
-const jtw = require('jsonwebtoken')
+const jwt = require('jsonwebtoken')
+const User = require('../models/userModel')
 
-const authUser = (req, res, next) => {
+const authUser = async (req, res, next) => {
     try {
-        const authHeader = req.headers['authorization']
-        const token = authHeader && authHeader.split(' ')[1]
-        if (token == null){
-            res.status(401)
-            throw new Error('Not authorized')
-        }
-        jtw.verify(token, process.env.JWT_SECRET, (error, user) => {
-            if (error) {
-                res.status(403)
-                throw new Error('User does not have access')
-            } else {
-                req.user = user
-            }
-        })
+        const decoded = jwt.verify(req.signedCookies.token, process.env.JWT_SECRET)
+        req.user = await User.findById(decoded._id).select('-password')
         next()
     } catch (error) {
-        next(error)
+        console.log(error.message)
+        res.redirect('/user/login')
     }
     
 }

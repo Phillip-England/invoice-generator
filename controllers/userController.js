@@ -2,15 +2,27 @@ const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
-
+//getting the login page
 const loginPage = (req, res) => {
     res.render('login.ejs')
 }
 
+//getting the registration page
 const registerPage = (req, res) => {
     res.render('register.ejs')
 }
 
+//getting the homepage if user is logged in
+//if not, sending them back to login page
+const homePage = (req, res) => {
+    if (req.user) {
+        res.render('home.ejs', {user: req.user})
+    } else {
+        res.render('login.ejs')
+    }
+}
+
+//creating a new user for our site
 const registerUser = async (req, res, next) => {
     try {
         //grabbing content from the request body
@@ -49,6 +61,7 @@ const registerUser = async (req, res, next) => {
     }
 }
 
+//logging a user in and creating a jwt cookie
 const loginUser = async (req, res, next) => {
     try {
         const {username, password} = req.body
@@ -56,13 +69,14 @@ const loginUser = async (req, res, next) => {
         const user = await User.findOne({username:username}) 
         //check if username and password come from the same user
         if (user && (await bcrypt.compare(password, user.password))){
-            console.log(user)
-            res.status(200).json({
-                _id: user._id,
-                name: user.username,
-                email: user.email,
-                token: generateToken(user._id)
+            const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET)
+            //creating a cookie with our token in it
+            res.cookie('token', token, {
+                maxAge: 1000*60*15,
+                httpOnly: true,
+                signed: true
             })
+            res.redirect('/user/home')
         } else {
             res.status(400)
             throw new Error('Invalid credentials')
@@ -72,14 +86,18 @@ const loginUser = async (req, res, next) => {
     }
 }
 
-//get JWT token
-const generateToken = (id) => {
-    return jwt.sign({id}, process.env.JWT_SECRET)
+//logging a user out by deleting our jwt cookie
+const logoutUser = (req, res) => {
+    res.clearCookie('token')
+    res.redirect('/user/login')
 }
+
 
 module.exports = {
     loginPage,
     registerPage,
     registerUser,
-    loginUser
+    loginUser,
+    logoutUser,
+    homePage
 }

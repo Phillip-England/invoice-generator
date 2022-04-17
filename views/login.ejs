@@ -1,25 +1,8 @@
 <h1>Login</h1>
-<form id="login_form">
+<form action="/user/login" method="POST">
     <label for="username">Username</label>
     <input type="text" name="username">
     <label for="password">Password</label>
     <input type="password" for="password" name="password">
-    <button type="button" onclick="loginSubmit()">Submit</button>
+    <button>Submit</button>
 </form>
-
-<script>
-    const loginSubmit = async () => {
-        const loginForm = document.getElementById('login_form') //grabbing the login_form
-        const data = new URLSearchParams() // this can take in form data
-        //this for loop runs for each input field for the form passed into FormData()
-        for (const pair of new FormData(loginForm)){
-            data.append(pair[0], pair[1]) //pair[0] is the name of the input, pair[1] is the value
-        }
-        const response = await fetch('/user/login', {
-            method: 'POST',
-            body: data //passing the form data into our req.body
-        })
-        const {token} = await response.json()
-        console.log(token)
-    }
-</script>
