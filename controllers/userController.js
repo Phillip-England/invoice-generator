@@ -16,7 +16,10 @@ const registerPage = (req, res) => {
 //if not, sending them back to login page
 const homePage = (req, res) => {
     if (req.user) {
-        res.render('home.ejs', {user: req.user})
+        res.render('home.ejs', {
+            user: req.user,
+            csrfToken: req.csrfToken() //including csrf token in our homepage request
+        })
     } else {
         res.render('login.ejs')
     }

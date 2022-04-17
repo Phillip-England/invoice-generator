@@ -7,8 +7,8 @@ const errorHandler = (err, req, res, next) => {
         errorStack: err.stack,
         NODE_ENV: process.env.NODE_ENV
     })
-    console.log(`Running Error Handler with a statuscode ${res.statusCode}`)
-    console.log(err.message)
+    // console.log(`Running Error Handler with a statuscode ${res.statusCode}`)
+    // console.log(err.message)
 }
 
 module.exports = errorHandler

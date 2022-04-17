@@ -1,0 +1,12 @@
+<%- include('../partials/navbar.ejs') %>
+
+<!-- form to add an expense category -->
+<h2>Add an Expense Category</h2>
+<form action="/invoice/addCategory" method="POST">
+    <label for="category_name">Category Name</label>
+    <input type="text" name="category_name">
+    <label for="category_description">Category Description</label>
+    <textarea type="text" name="category_description"></textarea>
+    <input type="hidden" name="_csrf" value=<%=csrfToken%>>
+    <button>Submit</button>
+</form>

@@ -1,6 +1,8 @@
 const express = require('express')
 const router = express.Router()
 const authUser = require('../middleware/authUser')
+const csurf = require('csurf')
+const csrfProtection = csurf({cookie: {httpOnly: true}})
 const {
     loginPage,
     loginUser,
@@ -11,14 +13,12 @@ const {
 } = require('../controllers/userController')
 
 
-router.get('/login', loginPage)
-router.post('/login', loginUser)
+router.get('/login', loginPage).post('/login', loginUser) //getting login page and login functionality
 
-router.get('/logout', logoutUser)
+router.get('/logout', logoutUser) //logout functionality
 
-router.get('/register', registerPage)
-router.post('/register', registerUser)
+router.get('/register', registerPage).post('/register', registerUser) //getting register page and creating a user
 
-router.get('/home', authUser, homePage)
+router.get('/home', csrfProtection, authUser, homePage) //going to home page if user is validated via JWT cookie
 
 module.exports = router

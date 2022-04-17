@@ -12,14 +12,18 @@ connectDB()
 
 const app = express()
 app.set('view engine', 'ejs')
-app.use(cookieParser('secret'))
-app.use('/public', express.static(path.join(__dirname, 'public')))
+app.set('views', path.join(__dirname, '/views/pages'))
+app.use(cookieParser('secret')) //setting up and giving our cookie parser a secret
+app.use('/public', express.static(path.join(__dirname, 'public'))) //setting location for our static files
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
-app.use('/user', require('./routes/userRoutes'))
 
-app.use(errorHandler)
+app.use('/user', require('./routes/userRoutes')) //all our user routes found here
+app.use('/invoice', require('./routes/invoiceRoutes')) //all our user routes found here
+
+
+app.use(errorHandler) //bringing in our default error handler
 
 app.listen(PORT, () => {
     console.log(`Running on port ${PORT}`)
