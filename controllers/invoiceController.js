@@ -32,14 +32,24 @@ const addCategory = async (req, res, next) => {
 }
 
 //get category page
-const categoryPage = (req, res) => {
+const categoryPage = async (req, res) => {
+    //getting all our users categories
+    const categories = await Category.find({user:req.user._id})
     res.render('categories.ejs', {
         user: req.user,
-        csrfToken: req.csrfToken()
+        categories: categories,
+        csrfToken: req.csrfToken(),
+        NODE_ENV: process.env.NODE_ENV
     })
+}
+
+const deleteCategory = async (req, res) => {
+    const deletedCategory = await Category.findByIdAndDelete(req.params.id)
+    res.status(200).json(deletedCategory)
 }
 
 module.exports = {
     addCategory,
     categoryPage,
+    deleteCategory,
 }

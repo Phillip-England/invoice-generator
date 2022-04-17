@@ -6,9 +6,11 @@ const csrfProtection = csurf({cookie: {httpOnly: true}})
 const {
     addCategory,
     categoryPage,
+    deleteCategory
 } = require('../controllers/invoiceController')
 
 router.get('/categories', csrfProtection, authUser, categoryPage)
-router.post('/addCategory', csrfProtection, authUser, addCategory)
+router.post('/categories/addCategory', csrfProtection, authUser, addCategory)
+router.delete('/categories/deleteCategory/:id', authUser, deleteCategory)
 
 module.exports = router

@@ -1,8 +1,7 @@
 <%- include('../partials/navbar.ejs') %>
 
-<!-- form to add an expense category -->
 <h2>Add an Expense Category</h2>
-<form action="/invoice/addCategory" method="POST">
+<form action="/invoice/categories/addCategory" method="POST">
     <label for="category_name">Category Name</label>
     <input type="text" name="category_name">
     <label for="category_description">Category Description</label>
@@ -10,3 +9,54 @@
     <input type="hidden" name="_csrf" value=<%=csrfToken%>>
     <button>Submit</button>
 </form>
+
+    <% if (categories.length > 0) { %>
+        <table>
+            <tr>
+                <th>Category</th>
+                <th>Description</th>
+                <th>Function</th>
+            </tr>
+            <% categories.forEach(category => { %>
+                <tr>
+                    <td><%=category.name%></td>
+                    <td><%=category.description%></td>
+                    <td>
+                        <button env=<%=NODE_ENV%> _id=<%=category._id%> onclick='deleteCategory(this)'>Delete</button>
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    <% } %>
+    
+
+<script>
+const deleteCategory = async (e) => {
+    let url
+    //checking how many rows are in our table
+    const categoryTable = e.parentElement.parentElement.parentElement
+    const categoryTableRows = categoryTable.children.length
+    console.log(categoryTableRows)
+    //checking if we are in production or development
+    if (e.getAttribute('env') == 'development'){
+        url = 'http://localhost:5000/invoice/categories/deleteCategory/' + e.getAttribute('_id')
+    } else {
+        //production url here
+    }
+    //making our fetch request
+    try {
+        const response = await fetch(url, {
+        method: 'DELETE'
+        })
+        const data = await response.json() //response data lives here
+    } catch (error) {
+        console.log(error)
+    }
+    if (categoryTableRows <= 2){
+        categoryTable.remove()
+    } else {
+        e.parentElement.parentElement.remove() //removing the table row
+    }
+    
+}
+</script>
