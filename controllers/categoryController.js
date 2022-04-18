@@ -10,6 +10,7 @@ const addCategory = async (req, res, next) => {
         }
         //checking if category already exists
         const categoryExists =  await Category.find({user:req.user._id, name:category_name})
+        //if no items are found, categoryExists will be an empty array
         if (categoryExists.length > 0) {
             throw new Error('Category already exists')
         }

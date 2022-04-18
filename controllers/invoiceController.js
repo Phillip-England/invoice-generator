@@ -1,4 +1,5 @@
 const Category = require('../models/categoryModel')
+const Invoice = require('../models/invoiceModel')
 
 const invoicePage = async (req, res) => {
     //if user is not logged in, then take home, else, go to invoice page
@@ -6,15 +7,50 @@ const invoicePage = async (req, res) => {
         res.render('login.ejs')
     } else {
         const categories = await Category.find({user:req.user}) //getting our users categories
+        const invoices = await Invoice.find({user:req.user._id})
         res.render('invoice.ejs', {
             user: req.user,
             categories: categories,
+            invoices: invoices,
             csrfToken: req.csrfToken(),
             NODE_ENV: process.env.NODE_ENV
         })
     }
 }
 
+const addInvoice = async (req, res) => {  
+    try {
+        const {invoice_name, invoice_description, invoice_date} = req.body //grabbing data from the request body
+        //checking if all form fields were filled out
+        if(!invoice_name || !invoice_description || !invoice_date){
+            throw new Error('Please fill out all the form fields')
+        }
+        //checking if this invoice name is already used
+        const invoiceExists =  await Invoice.find({user:req.user._id, name:invoice_name})
+        //if no items are found, invoiceExists will be an empty array
+        if (invoiceExists.length > 0) {
+            throw new Error('Invoice already exists')
+        }
+        //creating the new invoice
+        const invoice = await Invoice.create({
+            user: req.user._id,
+            date: invoice_date,
+            name: invoice_name,
+            description: invoice_description,
+        })
+        //checking if the new invoice was created
+        if(!invoice){
+            throw new Error('Failed to create invoice')
+        }
+        //ending the request and reloading the invoice page
+        res.status(200)
+        res.redirect('/invoice')
+    } catch (error) {
+        next(error)
+    }
+}
+
 module.exports = {
     invoicePage,
+    addInvoice,
 }

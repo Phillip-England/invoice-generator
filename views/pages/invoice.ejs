@@ -1,3 +1,41 @@
 <%- include('../partials/navbar.ejs') %>
 
 <h1>Invoice Page</h1>
+<h2>Add a New Invoice</h2>
+<form action="/invoice/addInvoice" method="POST">
+    <label for="invoice_name">Invoice Name</label>
+    <input type="text" name="invoice_name">
+    <label for="invoice_description">Invoice Description</label>
+    <input type="text" name="invoice_description">
+    <input type="hidden" name="invoice_date" id="invoice_date">
+    <input type="hidden" name="_csrf" value=<%=csrfToken%>>
+    <button onclick="loadDate(this)">Submit</button>
+</form>
+
+<% if (invoices.length > 0) { %>
+    <table>
+        <tr>
+            <th>Date Created</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Load</th>
+        </tr>
+        <% invoices.forEach(invoice => { %>
+            <tr>
+                <td><%=invoice.date%></td>
+                <td><%=invoice.name%></td>
+                <td><%=invoice.description%></td>
+                <td><a href="">View</a></td>
+            </tr>
+        <% }) %>
+    </table>
+<% } %>
+
+<script>
+    const loadDate = (e) => {
+        const dateInput = document.getElementById('invoice_date')
+        const date = new Date()
+        const todaysDate = String( Number(date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear())
+        dateInput.value = todaysDate
+    }
+</script>
