@@ -1,7 +1,7 @@
 <%- include('../partials/navbar.ejs') %>
 
 <h2>Add an Expense Category</h2>
-<form action="/invoice/categories/addCategory" method="POST">
+<form action="/category/addCategory" method="POST">
     <label for="category_name">Category Name</label>
     <input type="text" name="category_name">
     <label for="category_description">Category Description</label>
@@ -39,7 +39,7 @@ const deleteCategory = async (e) => {
     console.log(categoryTableRows)
     //checking if we are in production or development
     if (e.getAttribute('env') == 'development'){
-        url = 'http://localhost:5000/invoice/categories/deleteCategory/' + e.getAttribute('_id')
+        url = 'http://localhost:5000/category/deleteCategory/' + e.getAttribute('_id')
     } else {
         //production url here
     }

@@ -7,7 +7,7 @@ const invoiceSchema = mongoose.Schema({
         ref: 'User'
     },
     date: {
-        type: Date,
+        type: String,
     },
     name: {
         type: String
