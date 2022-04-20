@@ -9,8 +9,21 @@ const expenseSchema = mongoose.Schema({
     category: {
         type: String,
     },
+    date: {
+        type: String,
+    },
+    place: {
+        type: String
+    },
     description: {
         type: String,
+    },
+    price: {
+        type: Number,
+    },
+    completed: {
+        type: Boolean,
+        default: false,
     }
 },{
     timestamps: true,

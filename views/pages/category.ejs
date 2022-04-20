@@ -32,17 +32,23 @@
 
 <script>
 const deleteCategory = async (e) => {
+
+    //setting up our variables
     let url
+    let categoryTable
+    let categoryTableRows
+
     //checking how many rows are in our table
-    const categoryTable = e.parentElement.parentElement.parentElement
-    const categoryTableRows = categoryTable.children.length
-    console.log(categoryTableRows)
+    categoryTable = e.parentElement.parentElement.parentElement
+    categoryTableRows = categoryTable.children.length
+
     //checking if we are in production or development
     if (e.getAttribute('env') == 'development'){
         url = 'http://localhost:5000/category/deleteCategory/' + e.getAttribute('_id')
     } else {
         //production url here
     }
+
     //making our fetch request
     try {
         const response = await fetch(url, {
@@ -52,6 +58,8 @@ const deleteCategory = async (e) => {
     } catch (error) {
         console.log(error)
     }
+
+    //removing the category, if it is the last category removing the whole table
     if (categoryTableRows <= 2){
         categoryTable.remove()
     } else {
