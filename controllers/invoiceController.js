@@ -1,6 +1,7 @@
 const Category = require('../models/categoryModel')
 const Invoice = require('../models/invoiceModel')
 const Expenses = require('../models/expenseModel')
+const {calculateTotalCost} = require('../utility/invoice/invoiceUtils')
 
 const invoicePage = async (req, res) => {
     //if user is not logged in, then take home, else, go to invoice page
@@ -57,19 +58,12 @@ const getInvoice = async (req, res) => {
         const categories = await Category.find({user:req.user._id}) //getting all categories associated with our user
         const invoice = await Invoice.findById(req.params.invoice) //getting the invoice associated with the id in the url (passed from <a> tag)
         const expenses = await Expenses.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice
-        let cost = 0 // used to track the total cost of our expenses
-        //using a forEach loop to sum up the cost of the expenses
-        expenses.forEach(expense => {
-            if (expense.completed === true){
-                cost = cost + expense.price
-            }
-        })
         res.render('single_invoice.ejs', {
             user: req.user,
             categories: categories,
             invoice: invoice,
             expenses: expenses,
-            cost: cost,
+            cost: calculateTotalCost(expenses),
             csrfToken: req.csrfToken(),
             NODE_ENV: process.env.NODE_ENV
         })
@@ -78,22 +72,16 @@ const getInvoice = async (req, res) => {
 
 const getInvoiceTotal = async (req, res, next) => {
     try {
-        let cost = 0 //tracking our total cost
         console.log(req.params.invoice)
         const expenses = await Expenses.find({invoice:req.params.invoice}) //getting all the expenses for our invoice
         //if we fail to get the expenses, throw an error
         if (!expenses){
             throw new Error('Failed to retrieve expenses')
         }
-        //using a for loop to sum up the cost of the expenses
-        expenses.forEach(expense => {
-            if (expense.completed === true){
-                cost = cost + expense.price
-            }
-        })
-        res.status(200).json(cost) //sending json response with the cost
+        res.status(200).json(
+            calculateTotalCost(expenses)
+        )
     } catch (error) {
-        console.log(error.message)
         next(error)
     }  
 }

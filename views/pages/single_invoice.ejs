@@ -233,11 +233,10 @@
                 method: 'get'
             })
             let cost = await response.json()
-            console.log(cost)
             //grabbing our element which contains our total cost
             const invoiceTotal = document.getElementById('cost')
             //updating the cost
-            invoiceTotal.innerText = cost
+            invoiceTotal.innerText = cost //rounding the cost to the 100ths place
         } catch (error) {
             console.log(error.message)
         }
