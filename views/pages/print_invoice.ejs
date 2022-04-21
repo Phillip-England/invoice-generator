@@ -1,0 +1,92 @@
+<body id="invoice" onload="printInvoice(this, '<%=NODE_ENV%>', '<%=invoice._id%>')">
+    <h1><%=invoice.name%></h1>
+    <h2><%=invoice.date%></h2>
+    <h3>$<%=cost%></h3>
+
+    <table>
+
+        <!-- setting our total to 0 (initializing) -->
+        <% let total = 0 %>
+
+        <% categories.forEach(category => { %>
+
+            <!-- resetting the total at the start of each category -->
+            <% total = 0 %> 
+            <% includeCategory = false %>
+
+            <!-- running through each expense to see if it even has completed categories -->
+            <% expenses.forEach(expense => { %>
+                <!-- if the expense matches the current category and is completed then include the category -->
+                <% if (expense.category == category.name && expense.completed == true) { %>
+                    <% includeCategory = true %> 
+                <% } %>
+            <% }) %>
+            
+            <% if (includeCategory == true) { %>
+
+                <tr>
+                    <th><%=category.name%></th>
+                </tr>
+
+                <tr>
+                    <th>Date</th>
+                    <th>Place</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                </tr>
+
+
+                <% expenses.forEach(expense => { %>
+
+                    <!-- if the expense name matches the category name and the expense is completed, then add it to the invoice -->
+                    <% if (expense.category == category.name && expense.completed == true) { %>
+                        <!-- keep a running total by adding the price to the total -->
+                        <% total = total + expense.price %>
+                        <tr>
+                            <td><%= expense.date %></td>
+                            <td><%= expense.place %> </td>
+                            <td><%= expense.description %> </td>
+                            <td><%= expense.price %> </td>
+                        </tr>
+                    <% } %>
+
+                <% }) %>
+
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <!-- make sure to round the total to the hunderedths place -->
+                    <td><strong><%=Math.round(100*total)/100%></strong></td>
+                </tr>
+            
+            <% } %>
+
+        <% }) %>
+
+    </table>
+
+</body>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script>
+    const printInvoice = (e, env, invoice) => {
+        //setting up our url
+        let url
+
+        //basing url off of node env
+        if (env == 'development'){
+            url = "http://localhost:5000/invoice/" + invoice
+        } else {
+            //production url here
+        }
+
+        //converting page into pdf
+        html2pdf(document.getElementById('invoice'))
+        
+        //redirecting
+        window.location.replace(url)
+
+    }
+</script>

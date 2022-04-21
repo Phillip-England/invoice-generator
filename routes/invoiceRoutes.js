@@ -17,7 +17,7 @@ router.get('/getTotal/:invoice', getInvoiceTotal)
 
 router.post('/addInvoice', csrfProtection, authUser, addInvoice) //add a new invoice
 
-router.get('/generateInvoicePdf/:invoice', generateInvoicePdf)
+router.get('/generateInvoicePdf/:invoice', authUser, generateInvoicePdf)
 
 
 module.exports = router

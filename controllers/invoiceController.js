@@ -1,7 +1,9 @@
 const Category = require('../models/categoryModel')
 const Invoice = require('../models/invoiceModel')
 const Expenses = require('../models/expenseModel')
-const {calculateTotalCost} = require('../utility/invoice/invoiceUtils')
+const {
+    calculateTotalCost,
+} = require('../utility/invoice/invoiceUtils')
 
 const invoicePage = async (req, res) => {
     //if user is not logged in, then take home, else, go to invoice page
@@ -86,7 +88,22 @@ const getInvoiceTotal = async (req, res, next) => {
 }
 
 const generateInvoicePdf = async (req, res, next) => {
-    console.log('hit')
+    try {
+        const categories = await Category.find({user:req.user._id}) //getting all categories associated with our user
+        const invoice = await Invoice.findById(req.params.invoice) //getting the invoice associated with the id in the url (passed from <a> tag)
+        const expenses = await Expenses.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice    
+        res.render('print_invoice.ejs', {
+            user: req.user,
+            categories: categories,
+            invoice: invoice,
+            expenses: expenses,
+            cost: calculateTotalCost(expenses),
+            NODE_ENV: process.env.NODE_ENV
+        })
+    } catch (error) {
+        next(error)
+    }
+        
 }
 
 module.exports = {
