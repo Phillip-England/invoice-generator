@@ -72,7 +72,6 @@ const getInvoice = async (req, res) => {
 
 const getInvoiceTotal = async (req, res, next) => {
     try {
-        console.log(req.params.invoice)
         const expenses = await Expenses.find({invoice:req.params.invoice}) //getting all the expenses for our invoice
         //if we fail to get the expenses, throw an error
         if (!expenses){
@@ -86,9 +85,14 @@ const getInvoiceTotal = async (req, res, next) => {
     }  
 }
 
+const generateInvoicePdf = async (req, res, next) => {
+    console.log('hit')
+}
+
 module.exports = {
     invoicePage,
     addInvoice,
     getInvoice,
     getInvoiceTotal,
+    generateInvoicePdf,
 }

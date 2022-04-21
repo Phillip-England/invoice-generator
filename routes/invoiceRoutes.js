@@ -8,6 +8,7 @@ const {
     addInvoice,
     getInvoice,
     getInvoiceTotal,
+    generateInvoicePdf,
 } = require('../controllers/invoiceController')
 
 router.get('/', csrfProtection, authUser, invoicePage) //get invoice main page
@@ -15,6 +16,8 @@ router.get('/:invoice', csrfProtection, authUser, getInvoice) //load a single in
 router.get('/getTotal/:invoice', getInvoiceTotal)
 
 router.post('/addInvoice', csrfProtection, authUser, addInvoice) //add a new invoice
+
+router.get('/generateInvoicePdf/:invoice', generateInvoicePdf)
 
 
 module.exports = router
