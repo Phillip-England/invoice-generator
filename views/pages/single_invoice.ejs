@@ -7,7 +7,7 @@
 
 
 <h2>Add an Expense</h2>
-<form action=<%="/expense/addExpense/" + invoice._id%> method="POST">
+<form action=<%="/expense/addExpense/"+ user._id + '/' + invoice._id%> method="POST">
     <label for="expense_category">Expense Category</label>
         <select name="expense_category" id="expense_category">
             <option value=""></option>

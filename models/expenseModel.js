@@ -1,6 +1,11 @@
 const mongoose = require('mongoose')
 
 const expenseSchema = mongoose.Schema({
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        required: true,
+        ref: 'User'
+    },
     invoice: {
         type: mongoose.Schema.Types.ObjectId,
         required: true,

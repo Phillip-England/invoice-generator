@@ -20,6 +20,7 @@ const addExpense = async (req, res, next) => {
         const invoice = await Invoice.findById(req.params.invoice)
         //creating the new expense
         const expense = await Expense.create({
+            user: req.params.user,
             invoice: invoice,
             category: expense_category,
             date: expense_date,

@@ -22,7 +22,7 @@
                     <td><%=category.name%></td>
                     <td><%=category.description%></td>
                     <td>
-                        <button env=<%=NODE_ENV%> _id=<%=category._id%> onclick='deleteCategory(this)'>Delete</button>
+                        <button env=<%=NODE_ENV%> onclick="deleteCategory(this, '<%=category._id%>', '<%=user._id%>' )">Delete</button>
                     </td>
                 </tr>
             <% }) %>
@@ -31,7 +31,7 @@
     
 
 <script>
-const deleteCategory = async (e) => {
+const deleteCategory = async (e, category, user) => {
 
     //setting up our variables
     let url
@@ -44,7 +44,7 @@ const deleteCategory = async (e) => {
 
     //checking if we are in production or development
     if (e.getAttribute('env') == 'development'){
-        url = 'http://localhost:5000/category/deleteCategory/' + e.getAttribute('_id')
+        url = 'http://localhost:5000/category/deleteCategory/' + user + '/' + category 
     } else {
         //production url here
     }
@@ -55,6 +55,7 @@ const deleteCategory = async (e) => {
         method: 'DELETE'
         })
         const data = await response.json() //response data lives here
+        console.log(data)
     } catch (error) {
         console.log(error)
     }

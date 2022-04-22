@@ -3,7 +3,7 @@ const Invoice = require('../models/invoiceModel')
 const Expenses = require('../models/expenseModel')
 const {
     calculateTotalCost,
-} = require('../utility/invoice/invoiceUtils')
+} = require('../service/invoice/invoiceUtils')
 
 const invoicePage = async (req, res) => {
     //if user is not logged in, then take home, else, go to invoice page

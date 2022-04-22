@@ -10,7 +10,7 @@ const {
     completeExpense,
 } = require('../controllers/expenseController')
 
-router.post('/addExpense/:invoice', addExpense) //adds a new expense to an invoice
+router.post('/addExpense/:user/:invoice', addExpense) //adds a new expense to an invoice
 
 router.post('/updateExpense/:invoice/:expense', updateExpense) //updates an expense
 

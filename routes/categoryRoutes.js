@@ -11,6 +11,6 @@ const {
 
 router.get('/', csrfProtection, authUser, categoryPage)
 router.post('/addCategory', csrfProtection, authUser, addCategory)
-router.delete('/deleteCategory/:id', authUser, deleteCategory)
+router.delete('/deleteCategory/:user/:category', authUser, deleteCategory)
 
 module.exports = router

@@ -1,4 +1,5 @@
 const Category = require('../models/categoryModel')
+const Expense = require('../models/expenseModel')
 
 //create a new expense category
 const addCategory = async (req, res, next) => {
@@ -48,9 +49,17 @@ const categoryPage = async (req, res) => {
     }
 }
 
-const deleteCategory = async (req, res) => {
-    const deletedCategory = await Category.findByIdAndDelete(req.params.id)
-    res.status(200).json(deletedCategory)
+const deleteCategory = async (req, res, next) => {
+    try {
+        const deletedCategory = await Category.findByIdAndDelete(req.params.category) //getting the category
+        const deletedCategoryExpenses = await Expense.deleteMany({user: req.params.user, category: deletedCategory.name}) //getting all the expenses associated with the category
+        res.status(200).json({
+            deletedCategory,
+            deletedCategoryExpenses
+        })
+    } catch (error) {
+        next(error)
+    }
 }
 
 module.exports = {

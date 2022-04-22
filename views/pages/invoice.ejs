@@ -19,9 +19,10 @@
             <th>Name</th>
             <th>Description</th>
             <th>Load</th>
+            <th>Delete</th>
         </tr>
         <% invoices.forEach(invoice => { %>
-            <tr>
+            <tr class="invoice_info_row">
                 <td><%=invoice.date%></td>
                 <td><%=invoice.name%></td>
                 <td><%=invoice.description%></td>
@@ -30,16 +31,69 @@
                 <% } else { %>
                     <!-- enter production a tag here with production url -->
                 <% } %>
+                <td>
+                    <input class='invoice_delete_checkbox' onclick="toggledDeleteButton() "type="checkbox">
+                </td>
             </tr>
         <% }) %>
     </table>
 <% } %>
 
+<button style=display:none; id="delete_invoice_button" onclick="deleteInvoices(this)">Delete</button>
+
 <script>
-    const loadDate = (e) => {
+    
+    //automatically places todays date into the date created section for us
+    //formats it the way we like
+    const loadDate = () => {
         const dateInput = document.getElementById('invoice_date')
         const date = new Date()
         const todaysDate = String( Number(date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear())
         dateInput.value = todaysDate
     }
+
+    //toggles a delete button to remove specific invoices
+    const toggledDeleteButton = () => {
+        let isChecked //will use this to determine if delete button needs to be toggled
+        const deleteButton = document.getElementById('delete_invoice_button')
+        const deleteCheckboxes = document.getElementsByClassName('invoice_delete_checkbox') //grabbing all our checkboxes as an array
+        //looping through the checkboxes to see if any are checked
+        for (x = 0; x < deleteCheckboxes.length; x++){
+            if (deleteCheckboxes[x].checked == true){
+                isChecked = true
+                deleteButton.style.display = 'flex'
+                break //breaking the loop because if one is check, there is no need to move forward and check the rest
+            } else {
+                isChecked = false
+            }
+        }
+        if (isChecked == false){
+            //remove delete button
+            deleteButton.style.display = 'none'
+        }
+    }
+
+    //deletes the checked invoice
+    const deleteInvoices = (e) => {
+
+        let rowsWithChecked = []
+
+        const invoiceInfoRows = document.getElementsByClassName('invoice_info_row') //this row contains all invoice data
+        //looping through the rows (the <tr> elements) to get the children elements
+        for (x = 0; x < invoiceInfoRows.length; x++){
+            //now looping through the children of that row (the <td> elements)
+            for (y = 0; y < invoiceInfoRows[x].children.length; y++){
+                //if the child (the <td>) has children, check to see if it is a checkbox
+                if (invoiceInfoRows[x].children[y].children.length > 0) {
+                    //checking if the child is checked
+                    if (invoiceInfoRows[x].children[y].children[0].checked){
+                        rowsWithChecked.push(invoiceInfoRows[x]) //pushing the row into our array to collect them
+                    }
+                }
+            }
+        }
+
+        console.log(rowsWithChecked)
+    }
+
 </script>
