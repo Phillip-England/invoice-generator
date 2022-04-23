@@ -14,6 +14,9 @@ const invoiceSchema = mongoose.Schema({
     },
     description:{
         type: String
+    },
+    cost:{
+        type: Number
     }
 },
 {

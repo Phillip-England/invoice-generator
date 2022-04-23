@@ -5,23 +5,23 @@
 //additions must be an object
 const getURL = (NODE_ENV, midURL, additions) => {
     let baseURL //will contain the start of our url, which is different for production and development
-    let URLWithoutAdditions //will hold our url without the additions added on
-    let URLWithAdditions
+    let URLWithAdditions //will hold our URL if additions are needed (like _id values attached at the end)
     if (NODE_ENV == 'development'){
         baseURL = 'http://localhost:5000'
     } else {
         //production baseURL goes here
     }
-    URLWithoutAdditions = baseURL + midURL //combining our baseURL and our midURL
+    URLWithAdditions = baseURL + midURL //combining our baseURL and our midURL
     //checking to see if additions have been provided
     //if they have not, simply return the url without additions
     if (additions == undefined) {
-        return URLWithoutAdditions
+        return baseURL + midURL
     }
     //looping through our additions and adding them to our url
     Object.values(additions).forEach(value => {
-        URLWithAdditions = URLWithoutAdditions + '/' + value
+        URLWithAdditions = URLWithAdditions + '/' + value
     })
+
     //finally, return our URL with its additions
     return URLWithAdditions
 }

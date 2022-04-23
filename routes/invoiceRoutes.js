@@ -6,15 +6,14 @@ const csrfProtection = csurf({cookie: {httpOnly: true}})
 const {
     invoicePage,
     addInvoice,
+    getInvoiceSinglePage,
     getInvoice,
-    getInvoiceTotal,
     generateInvoicePdf,
     deleteInvoice,
 } = require('../controllers/invoiceController')
 
 router.get('/', csrfProtection, authUser, invoicePage) //get invoice main page
-router.get('/:invoice', csrfProtection, authUser, getInvoice) //load a single invoice
-router.get('/getTotal/:invoice', getInvoiceTotal) //calculates the total of an invoice
+router.get('/:invoice', csrfProtection, authUser, getInvoiceSinglePage) //load a single invoice
 
 router.post('/addInvoice', csrfProtection, authUser, addInvoice) //add a new invoice
 

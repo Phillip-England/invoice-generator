@@ -67,7 +67,6 @@ const removeRowsAndTable = (rows, table) => {
     //so we are checking the rows by getting the length of the <tbody> element
     //if the tbody length is equal to 1, we remove the table
     //this is becuase the last row is headers, and they are not needed if there is no information in the table
-    console.log(table.children[0].children[1])
     //if only one row remains, remove the table
     if (table.children[0].children.length <= 1) {
         removeTable = true
@@ -77,11 +76,25 @@ const removeRowsAndTable = (rows, table) => {
     for (x = 1; x < table.children[0].children.length; x++){
         if (table.children[0].children[x].style.display != 'none'){
             removeTable = false
+            break //we break the loop because if we find one row which is not display:none; we keep the table
         } else {
             removeTable = true
         }
     }
+    //checking to see if we need to remove the table
     if (removeTable == true){
         table.remove()
+    }
+}
+
+//this function will take in a class of table cells and will toggle their display
+//first parameter is the class, second parameter is the display to toggle back to
+const toggleTableCells = (elements) => {
+    for (x = 0; x < elements.length; x++){
+        if (elements[x].style.display == '') {
+            elements[x].style.display = 'none'
+        } else {
+            elements[x].style.display = ''
+        }
     }
 }

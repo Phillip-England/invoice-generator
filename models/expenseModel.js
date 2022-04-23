@@ -17,13 +17,13 @@ const expenseSchema = mongoose.Schema({
     date: {
         type: String,
     },
-    place: {
+    vendor: {
         type: String
     },
     description: {
         type: String,
     },
-    price: {
+    cost: {
         type: Number,
     },
     completed: {

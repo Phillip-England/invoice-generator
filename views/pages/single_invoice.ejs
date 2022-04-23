@@ -17,17 +17,17 @@
         </select>
     <label for="expense_date">Expense Date</label>
     <input type="text" name="expense_date" placeholder="01/01/2022">
-    <label for="expense_name">Place of Purchase</label>
-    <input type="text" name="expense_place">
+    <label for="expense_name">Vendor</label>
+    <input type="text" name="expense_vendor">
     <label for="expense_description">Expense Description</label>
     <input type="text" name="expense_description">
-    <label for="expense_price">Cost</label>
-    <input type="text" name="expense_price">
+    <label for="expense_cost">Cost</label>
+    <input type="text" name="expense_cost">
     <button>Add</button>
 </form>
 
 <h2>Expenses</h2>
-<h3 id="cost"><%=cost%></h3>
+<h3 id="invoice_cost"><%=invoice.cost%></h3>
 <a href=<%= 'http://localhost:5000/invoice/generateInvoicePdf/' + invoice._id %>>Print</a>
 <button id="expense_delete_button" style="display:none;" onclick="deleteExpenses(this, '<%=NODE_ENV%>')">Delete</button>
 
@@ -36,9 +36,9 @@
         <tr>
             <th>Date</th>
             <th>Category</th>
-            <th>Place</th>
+            <th>Vendor</th>
             <th>Description</th>
-            <th>Price</th>
+            <th>Cost</th>
             <th id="complete_column">Complete</th>
             <th id="delete_column">Delete</th>
             <th>Modify</th>
@@ -47,21 +47,21 @@
             <tr class="expense_info_row" expense="<%=expense._id%>">
                 <td><%=expense.date%></td>
                 <td><%=expense.category%></td>
-                <td><%=expense.place%></td>
+                <td><%=expense.vendor%></td>
                 <td><%=expense.description%></td>
-                <td class="expense_price"><%=expense.price%></td>
+                <td class="expense_cost"><%=expense.cost%></td>
                 <td>
                     <% if (expense.completed == true) { %>
-                        <input type="checkbox" name="expense_completed" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
+                        <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
                     <% } else { %>
-                        <input type="checkbox" name="expense_completed" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
+                        <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
                     <% } %>
                 </td>
                 <td>
                     <input type="checkbox" class="expense_delete_checkbox" onclick="toggleExpenseDeleteButton(this)">
                 </td>
                 <td>
-                    <button toggled='false' name="edit_button" onclick="toggleEditForm(this)">Edit</button>
+                    <button toggled='false' name="edit_button" class="expense_edit_button" onclick="toggleEditForm(this)">Edit</button>
                 </td>
             </tr>
             <!-- need to move this over to css later (this inline styling) -->
@@ -82,17 +82,16 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" name="expense_place" value="<%=expense.place%>">
+                        <input type="text" name="expense_vendor" value="<%=expense.vendor%>">
                     </td>
                     <td>
                         <input type="text" name="expense_description" value="<%=expense.description%>">
                     </td>
                     <td>
-                        <input type="text" name="expense_price" value="<%=expense.price%>">
+                        <input type="text" name="expense_cost" value="<%=expense.cost%>">
                     </td>
                     <td>
                         <button type="submit" onclick="toggleEditForm(this)" id=<%=expense._id%>>Save</button>
-                        <button type="button" env=<%=NODE_ENV%> onclick="deleteExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">Delete</button>
                         <button type="button" onclick="toggleEditForm(this)">Cancel</button>
                     </td>
                 </form>
@@ -121,6 +120,19 @@
         //these columns will be removed upon editing the expenses
         const completeColumn = document.getElementById('complete_column')
         const deleteColumn = document.getElementById('delete_column')
+
+        //every checkbox in these classes will be removed
+        const expenseCompleteCheckbox = document.getElementsByClassName('expense_complete_checkbox')
+        const expenseDeleteCheckbox = document.getElementsByClassName('expense_delete_checkbox')
+        const expenseEditButton = document.getElementsByClassName('expense_edit_button')
+        const elementsToHide = [].concat(expenseCompleteCheckbox, expenseDeleteCheckbox, expenseEditButton)
+
+        toggleTableCells(expenseCompleteCheckbox)
+        toggleTableCells(expenseDeleteCheckbox)
+        toggleTableCells(expenseEditButton)
+
+
+
 
         //using a switch statement to identify the editFormRow and expenseInfoRow based off of the e.getAttribute('name')
         switch(e.getAttribute('name')){
@@ -196,27 +208,7 @@
             console.log(error)
         }
 
-        //defining our url based off of the NODE_ENV
-        if (env == 'development'){
-            url = 'http://localhost:5000/invoice/getTotal/' + invoice
-        } else {
-            //enter production url here
-        }
-
-        //calling our fetch request to pull in the updated cost
-        try {
-            const response = await fetch(url, {
-                method: 'get'
-            })
-            let cost = await response.json()
-            console.log(cost)
-            //grabbing our element which contains our total cost
-            const invoiceTotal = document.getElementById('cost')
-            //updating the cost
-            invoiceTotal.innerText = cost
-        } catch (error) {
-            console.log(error.message)
-        }
+        
     }
 
     const completeExpense = async (e, env, expense, invoice) => {
@@ -224,43 +216,26 @@
         //setting up our variables
         let url
 
+
         //defining our url based off of the NODE_ENV
         if (env == 'development'){
-            url = 'http://localhost:5000/expense/completeExpense/' + expense
+            url = 'http://localhost:5000/expense/completeExpense/' + invoice + '/' + expense
         } else {
             //enter production url here
         }
 
-        //calling our fetch statement
+        //calling our fetch statement to complete the expense
         try {
             const response = await fetch(url, {
             method: 'put'
             })
+            const data = await response.json()
+            document.getElementById('invoice_cost').innerText = data.cost
+            
         } catch (error) {
-           console.log(error.message) 
-        }
+           console.log(error) 
+        }  
 
-        //defining our url based off of the NODE_ENV
-        if (env == 'development'){
-            url = 'http://localhost:5000/invoice/getTotal/' + invoice
-        } else {
-            //enter production url here
-        }
-
-        //calling our fetch request to pull in the updated cost
-        try {
-            const response = await fetch(url, {
-                method: 'get'
-            })
-            let cost = await response.json()
-            //grabbing our element which contains our total cost
-            const invoiceTotal = document.getElementById('cost')
-            //updating the cost
-            invoiceTotal.innerText = cost //rounding the cost to the 100ths place
-        } catch (error) {
-            console.log(error.message)
-        }
-        
     }
 
     const printInvoice = async (e, env, invoice) => {
@@ -296,6 +271,7 @@
         //the array will contain any rows which contain a checkbox matching the given classname
         const checkedRows = getCheckedRows(expenseInfoRows, 'expense_delete_checkbox')
 
+
         //this function takes in an array of speicific rows and removes them
         //if the last row is removed, the given table is also removed
         removeRowsAndTable(checkedRows, expenseTable)
@@ -303,7 +279,7 @@
         //removing our delete button
         e.style.display = 'none'
 
-        //looping through our rows (each representing an invoice) to call fetch requests for deletion
+        // looping through our rows (each representing an invoice) to call fetch requests for deletion
         for (x = 0; x < checkedRows.length; x++) {
             
             //getting our url based off our NODE_ENV
@@ -315,9 +291,16 @@
             const response = await fetch(url, {
                 method:'DELETE'
             })
+
+            //getting the data back (the new cost of the invoice)
             const data = await response.json()
 
-            console.log(data)
+            //if it is the last loop, get the cost and render it to the screen
+            if (x == checkedRows.length-1) {
+                console.log('hit')
+                document.getElementById('invoice_cost').innerText = data.cost
+            }
+
         }
 
     }

@@ -1,7 +1,7 @@
 <body id="invoice" onload="printInvoice(this, '<%=NODE_ENV%>', '<%=invoice._id%>')">
     <h1><%=invoice.name%></h1>
     <h2><%=invoice.date%></h2>
-    <h3>$<%=cost%></h3>
+    <h3>$<%=invoice.cost%></h3>
 
     <table>
 
@@ -30,9 +30,9 @@
 
                 <tr>
                     <th>Date</th>
-                    <th>Place</th>
+                    <th>Vendor</th>
                     <th>Description</th>
-                    <th>Price</th>
+                    <th>Cost</th>
                 </tr>
 
 
@@ -40,13 +40,13 @@
 
                     <!-- if the expense name matches the category name and the expense is completed, then add it to the invoice -->
                     <% if (expense.category == category.name && expense.completed == true) { %>
-                        <!-- keep a running total by adding the price to the total -->
-                        <% total = total + expense.price %>
+                        <!-- keep a running total by adding the cost to the total -->
+                        <% total = total + expense.cost %>
                         <tr>
                             <td><%= expense.date %></td>
-                            <td><%= expense.place %> </td>
+                            <td><%= expense.vendor %> </td>
                             <td><%= expense.description %> </td>
-                            <td><%= expense.price %> </td>
+                            <td><%= expense.cost %> </td>
                         </tr>
                     <% } %>
 

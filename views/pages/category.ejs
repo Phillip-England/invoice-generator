@@ -10,62 +10,80 @@
     <button>Submit</button>
 </form>
 
+<button id='delete_category_button' style='display:none;' onclick="deleteCategory(this, '<%=NODE_ENV%>')">Delete</button>
+
     <% if (categories.length > 0) { %>
-        <table>
+        <table id="category_table">
             <tr>
                 <th>Category</th>
                 <th>Description</th>
-                <th>Function</th>
+                <th>Delete</th>
             </tr>
             <% categories.forEach(category => { %>
-                <tr>
+                <tr class="category_info_row" user=<%= user._id %> category=<%= category._id %>  >
                     <td><%=category.name%></td>
                     <td><%=category.description%></td>
                     <td>
-                        <button env=<%=NODE_ENV%> onclick="deleteCategory(this, '<%=category._id%>', '<%=user._id%>' )">Delete</button>
+                        <input class='category_delete_checkbox' type="checkbox" onclick="toggleDeleteButton(this)">
                     </td>
                 </tr>
             <% }) %>
         </table>
     <% } %>
+
+<!-- contains functions to work with tables -->
+<script src="../../public/service/tableFunctions.js"></script>
+<!-- contains functions to work with URLS -->
+<script src="../../public/service/URLFunctions.js"></script>
     
 
 <script>
-const deleteCategory = async (e, category, user) => {
+
+//toggles a delete button to remove specific invoices
+const toggleDeleteButton = () => {
+        const deleteButton = document.getElementById('delete_category_button')
+        const deleteCheckboxes = document.getElementsByClassName('category_delete_checkbox') //grabbing all our checkboxes as an array
+        //looping through the checkboxes to see if any are checked
+        toggleCheckboxButton(deleteCheckboxes, deleteButton, 'flex')
+    }
+
+const deleteCategory = async (e, env) => {
 
     //setting up our variables
     let url
-    let categoryTable
-    let categoryTableRows
+    const categoryTable = document.getElementById('category_table')
+    const categoryInfoRows = document.getElementsByClassName('category_info_row') //this row contains all category data
 
-    //checking how many rows are in our table
-    categoryTable = e.parentElement.parentElement.parentElement
-    categoryTableRows = categoryTable.children.length
+     //this function loops through the table and returns an array
+    //the array will contain any rows which contain a checkbox matching the given classname
+    const checkedRows = getCheckedRows(categoryInfoRows, 'category_delete_checkbox')
 
-    //checking if we are in production or development
-    if (e.getAttribute('env') == 'development'){
-        url = 'http://localhost:5000/category/deleteCategory/' + user + '/' + category 
-    } else {
-        //production url here
-    }
+    //this function takes in an array of speicific rows and removes them
+    //if the last row is removed, the given table is also removed
+    removeRowsAndTable(checkedRows, categoryTable)
 
-    //making our fetch request
-    try {
-        const response = await fetch(url, {
-        method: 'DELETE'
-        })
-        const data = await response.json() //response data lives here
-        console.log(data)
-    } catch (error) {
-        console.log(error)
-    }
+    //removing our delete button
+    e.style.display = 'none'
 
-    //removing the category, if it is the last category removing the whole table
-    if (categoryTableRows <= 2){
-        categoryTable.remove()
-    } else {
-        e.parentElement.parentElement.remove() //removing the table row
-    }
+    //looping through our rows (each representing an invoice) to call fetch requests for deletion
+    for (x = 0; x < checkedRows.length; x++) {
+            
+            //getting our url based off our NODE_ENV
+            url = getURL(env, '/category/deleteCategory', {
+                user: checkedRows[x].getAttribute('user'),
+                category: checkedRows[x].getAttribute('category')
+            })
+
+            //calling our fetch request to delete the invoice/invoices
+            const response = await fetch(url, {
+                method:'DELETE'
+            })
+            const data = await response.json()
+
+            console.log(data)
+        }
+
+
     
 }
 </script>

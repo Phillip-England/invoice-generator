@@ -1,9 +1,6 @@
 const Category = require('../models/categoryModel')
 const Invoice = require('../models/invoiceModel')
-const Expenses = require('../models/expenseModel')
-const {
-    calculateTotalCost,
-} = require('../service/invoice/invoiceUtils')
+const Expense = require('../models/expenseModel')
 
 const invoicePage = async (req, res) => {
     //if user is not logged in, then take home, else, go to invoice page
@@ -39,6 +36,7 @@ const addInvoice = async (req, res, next) => {
             date: invoice_date,
             name: invoice_name,
             description: invoice_description,
+            cost: 0
         })
         //checking if the new invoice was created
         if(!invoice){
@@ -52,52 +50,35 @@ const addInvoice = async (req, res, next) => {
     }
 }
 
-const getInvoice = async (req, res) => {
+const getInvoiceSinglePage = async (req, res) => {
     //if user is not logged in, then go to login page, else, load the single invoice
     if (req.user == undefined){
         res.render('login.ejs')
     } else {
         const categories = await Category.find({user:req.user._id}) //getting all categories associated with our user
         const invoice = await Invoice.findById(req.params.invoice) //getting the invoice associated with the id in the url (passed from <a> tag)
-        const expenses = await Expenses.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice
+        const expenses = await Expense.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice
         res.render('single_invoice.ejs', {
             user: req.user,
             categories: categories,
             invoice: invoice,
             expenses: expenses,
-            cost: calculateTotalCost(expenses),
             csrfToken: req.csrfToken(),
             NODE_ENV: process.env.NODE_ENV
         })
     }
 }
 
-const getInvoiceTotal = async (req, res, next) => {
-    try {
-        const expenses = await Expenses.find({invoice:req.params.invoice}) //getting all the expenses for our invoice
-        //if we fail to get the expenses, throw an error
-        if (!expenses){
-            throw new Error('Failed to retrieve expenses')
-        }
-        res.status(200).json(
-            calculateTotalCost(expenses)
-        )
-    } catch (error) {
-        next(error)
-    }  
-}
-
 const generateInvoicePdf = async (req, res, next) => {
     try {
         const categories = await Category.find({user:req.user._id}) //getting all categories associated with our user
         const invoice = await Invoice.findById(req.params.invoice) //getting the invoice associated with the id in the url (passed from <a> tag)
-        const expenses = await Expenses.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice    
+        const expenses = await Expense.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice    
         res.render('print_invoice.ejs', {
             user: req.user,
             categories: categories,
             invoice: invoice,
             expenses: expenses,
-            cost: calculateTotalCost(expenses),
             NODE_ENV: process.env.NODE_ENV
         })
     } catch (error) {
@@ -110,7 +91,7 @@ const deleteInvoice = async (req, res, next) => {
         //getting the current invoice
         const deletedInvoice = await Invoice.deleteOne({id:req.params.invoice})
         //getting all the expenses associated with the invoice
-        const deletedExpenses = await Expenses.deleteMany({invoice:req.params.invoice})
+        const deletedExpenses = await Expense.deleteMany({invoice:req.params.invoice})
         //throwing an error if the above did not work
         if (!deletedExpenses || !deletedInvoice){
             throw new Error('Failed to delete invoice and expenses')
@@ -127,8 +108,7 @@ const deleteInvoice = async (req, res, next) => {
 module.exports = {
     invoicePage,
     addInvoice,
-    getInvoice,
-    getInvoiceTotal,
+    getInvoiceSinglePage,
     generateInvoicePdf,
     deleteInvoice,
 }
