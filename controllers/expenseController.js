@@ -86,8 +86,9 @@ const deleteExpense = async (req, res, next) => {
         if(!deletedExpense){
             throw new Error('Failed to deleted expense')
         }
-        res.status(200)
-        res.end()
+        res.status(200).json({
+            deletedExpense
+        })
     } catch (error) {
         next(error)
     }

@@ -20,7 +20,7 @@ const invoicePage = async (req, res) => {
     }
 }
 
-const addInvoice = async (req, res) => {  
+const addInvoice = async (req, res, next) => {  
     try {
         const {invoice_name, invoice_description, invoice_date} = req.body //grabbing data from the request body
         //checking if all form fields were filled out
@@ -102,8 +102,26 @@ const generateInvoicePdf = async (req, res, next) => {
         })
     } catch (error) {
         next(error)
+    }       
+}
+
+const deleteInvoice = async (req, res, next) => {
+    try {
+        //getting the current invoice
+        const deletedInvoice = await Invoice.deleteOne({id:req.params.invoice})
+        //getting all the expenses associated with the invoice
+        const deletedExpenses = await Expenses.deleteMany({invoice:req.params.invoice})
+        //throwing an error if the above did not work
+        if (!deletedExpenses || !deletedInvoice){
+            throw new Error('Failed to delete invoice and expenses')
+        }
+        res.status(200).json({
+            deletedInvoice,
+            deletedExpenses
+        })
+    } catch (error) {
+        next(error)
     }
-        
 }
 
 module.exports = {
@@ -112,4 +130,5 @@ module.exports = {
     getInvoice,
     getInvoiceTotal,
     generateInvoicePdf,
+    deleteInvoice,
 }

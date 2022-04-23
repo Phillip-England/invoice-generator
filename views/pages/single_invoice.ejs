@@ -29,6 +29,7 @@
 <h2>Expenses</h2>
 <h3 id="cost"><%=cost%></h3>
 <a href=<%= 'http://localhost:5000/invoice/generateInvoicePdf/' + invoice._id %>>Print</a>
+<button id="expense_delete_button" style="display:none;" onclick="deleteExpenses(this, '<%=NODE_ENV%>')">Delete</button>
 
 <% if (expenses.length > 0) { %>
     <table id="expense_table">
@@ -38,11 +39,12 @@
             <th>Place</th>
             <th>Description</th>
             <th>Price</th>
-            <th>Completed?</th>
+            <th id="complete_column">Complete</th>
+            <th id="delete_column">Delete</th>
             <th>Modify</th>
         </tr>
         <% expenses.forEach(expense => { %>
-            <tr>
+            <tr class="expense_info_row" expense="<%=expense._id%>">
                 <td><%=expense.date%></td>
                 <td><%=expense.category%></td>
                 <td><%=expense.place%></td>
@@ -54,6 +56,9 @@
                     <% } else { %>
                         <input type="checkbox" name="expense_completed" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
                     <% } %>
+                </td>
+                <td>
+                    <input type="checkbox" class="expense_delete_checkbox" onclick="toggleExpenseDeleteButton(this)">
                 </td>
                 <td>
                     <button toggled='false' name="edit_button" onclick="toggleEditForm(this)">Edit</button>
@@ -86,13 +91,6 @@
                         <input type="text" name="expense_price" value="<%=expense.price%>">
                     </td>
                     <td>
-                        <% if (expense.completed == true) { %>
-                            <input type="checkbox" name="expense_completed" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
-                        <% } else { %>
-                            <input type="checkbox" name="expense_completed" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
-                        <% } %>
-                    </td>
-                    <td>
                         <button type="submit" onclick="toggleEditForm(this)" id=<%=expense._id%>>Save</button>
                         <button type="button" env=<%=NODE_ENV%> onclick="deleteExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">Delete</button>
                         <button type="button" onclick="toggleEditForm(this)">Cancel</button>
@@ -104,30 +102,35 @@
 <% } %>
 
 
+
+<!-- provides us with the ability to convert an html page into a pdf -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="../../public/scripts/test.js"></script>
+<!-- contains functions to work with tables -->
+<script src="../../public/service/tableFunctions.js"></script>
+<!-- contains functions to work with URLS -->
+<script src="../../public/service/URLFunctions.js"></script>
 
 <script>
-
-    test()
-
-
 
     const toggleEditForm = async (e) => {
 
         //initializing our variables
-        let editFormRow
-        let expenseInfoRow
+        let editFormRow //this is the hidden row which contains a form to update the expenses
+        let expenseInfoRow //this is the row that is shown by default and contains info about the expenses
+
+        //these columns will be removed upon editing the expenses
+        const completeColumn = document.getElementById('complete_column')
+        const deleteColumn = document.getElementById('delete_column')
 
         //using a switch statement to identify the editFormRow and expenseInfoRow based off of the e.getAttribute('name')
         switch(e.getAttribute('name')){
             case 'edit_button':
-                //relative routes for our edit button
+                //relative routes from our edit button
                 editFormRow = e.parentElement.parentElement.nextElementSibling
                 expenseInfoRow = e.parentElement.parentElement
                 break
             default:
-                //relative routes for our save and cancel button (may need to modify if we move location of buttons)
+                //relative routes from our save and cancel button (may need to modify if we move location of buttons)
                 editFormRow = e.parentElement.parentElement
                 expenseInfoRow = e.parentElement.parentElement.previousElementSibling
                 break
@@ -139,16 +142,22 @@
                 editFormRow.toggled = true
                 editFormRow.style.display = 'table-row'
                 expenseInfoRow.style.display = 'none'
+                deleteColumn.style.display = 'none'
+                completeColumn.style.display = 'none'
                 break
             case true:
                 editFormRow.toggled = false
                 editFormRow.style.display = 'none'
                 expenseInfoRow.style.display = 'table-row'
+                deleteColumn.style.display = 'table-cell'
+                completeColumn.style.display = 'table-cell'
                 break
             case false:
                 editFormRow.toggled = true
                 editFormRow.style.display = 'table-row'
                 expenseInfoRow.style.display = 'none'
+                deleteColumn.style.display = 'none'
+                completeColumn.style.display = 'none'
                 break
         }
     }
@@ -269,6 +278,48 @@
             method: 'get'
         })
   
+    }
+
+    const toggleExpenseDeleteButton = async (e) => {
+        const expenseDeleteButton = document.getElementById('expense_delete_button') //grabbing our delete button
+        const deleteExpenseCheckboxes = document.getElementsByClassName('expense_delete_checkbox') //grabbing all the checkboxes
+        toggleCheckboxButton(deleteExpenseCheckboxes, expenseDeleteButton, 'flex')
+    }
+
+    const deleteExpenses = async (e, env) => {
+
+        let url //hold our url for our fetch request
+        const expenseTable = document.getElementById('expense_table')
+        const expenseInfoRows = document.getElementsByClassName('expense_info_row')
+
+        //this function loops through the table and returns an array
+        //the array will contain any rows which contain a checkbox matching the given classname
+        const checkedRows = getCheckedRows(expenseInfoRows, 'expense_delete_checkbox')
+
+        //this function takes in an array of speicific rows and removes them
+        //if the last row is removed, the given table is also removed
+        removeRowsAndTable(checkedRows, expenseTable)
+
+        //removing our delete button
+        e.style.display = 'none'
+
+        //looping through our rows (each representing an invoice) to call fetch requests for deletion
+        for (x = 0; x < checkedRows.length; x++) {
+            
+            //getting our url based off our NODE_ENV
+            url = getURL(env, '/expense/deleteExpense', {
+                invoice: checkedRows[x].getAttribute('expense')
+            })
+
+            //calling our fetch request to delete the invoice/invoices
+            const response = await fetch(url, {
+                method:'DELETE'
+            })
+            const data = await response.json()
+
+            console.log(data)
+        }
+
     }
 
 
