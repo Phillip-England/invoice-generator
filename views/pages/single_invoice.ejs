@@ -8,17 +8,22 @@
 
 <h2>Add an Expense</h2>
 <form action=<%="/expense/addExpense/"+ user._id + '/' + invoice._id%> method="POST">
-    <label for="expense_category">Expense Category</label>
-        <select name="expense_category" id="expense_category">
-            <option value=""></option>
-            <% categories.forEach(category => { %>
-                <option value="<%=category.name%>"><%=category.name%></option>
-            <% }) %>
-        </select>
     <label for="expense_date">Expense Date</label>
     <input type="text" name="expense_date" placeholder="01/01/2022">
+    <label for="expense_category">Expense Category</label>
+    <select name="expense_category" id="expense_category">
+        <option value=""></option>
+        <% categories.forEach(category => { %>
+            <option value="<%=category.name%>"><%=category.name%></option>
+        <% }) %>
+    </select>
     <label for="expense_name">Vendor</label>
-    <input type="text" name="expense_vendor">
+    <select name="expense_vendor" id="expense_vendor">
+        <option value=""></option>
+        <% vendors.forEach(vendor => { %>
+            <option value="<%=vendor.name%>"><%=vendor.name%></option>
+        <% }) %>
+    </select>
     <label for="expense_description">Expense Description</label>
     <input type="text" name="expense_description">
     <label for="expense_cost">Cost</label>
@@ -82,7 +87,15 @@
                         </select>
                     </td>
                     <td>
-                        <input type="text" name="expense_vendor" value="<%=expense.vendor%>">
+                        <select name="expense_vendor">
+                            <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
+                            <% vendors.forEach(vendor => { %>
+                                <!-- omit the current category from the lisitng -->
+                                <%if (expense.vendor != vendor.name) { %>
+                                    <option value="<%=vendor.name%>"><%=vendor.name%></option>
+                                <% } %>
+                            <% }) %>
+                        </select>
                     </td>
                     <td>
                         <input type="text" name="expense_description" value="<%=expense.description%>">

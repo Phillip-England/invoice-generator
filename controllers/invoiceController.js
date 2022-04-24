@@ -1,6 +1,7 @@
 const Category = require('../models/categoryModel')
 const Invoice = require('../models/invoiceModel')
 const Expense = require('../models/expenseModel')
+const Vendor = require('../models/vendorModel')
 
 const invoicePage = async (req, res) => {
     //if user is not logged in, then take home, else, go to invoice page
@@ -58,11 +59,13 @@ const getInvoiceSinglePage = async (req, res) => {
         const categories = await Category.find({user:req.user._id}) //getting all categories associated with our user
         const invoice = await Invoice.findById(req.params.invoice) //getting the invoice associated with the id in the url (passed from <a> tag)
         const expenses = await Expense.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice
+        const vendors = await Vendor.find({user:req.user._id})
         res.render('single_invoice.ejs', {
             user: req.user,
             categories: categories,
             invoice: invoice,
             expenses: expenses,
+            vendors: vendors,
             csrfToken: req.csrfToken(),
             NODE_ENV: process.env.NODE_ENV
         })
