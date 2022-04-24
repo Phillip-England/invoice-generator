@@ -98,3 +98,39 @@ const toggleTableCells = (elements) => {
         }
     }
 }
+
+//this function will take in an object of elements and toggle their display
+//the first parameter is the element you would like to toggle
+//the second parameter is any element you want to avoid toggling (if they meet the search criteria)
+const toggleElements = (elements, avoid) => {
+    Object.values(elements).forEach(value => {
+        //checking if we need to avoid this iteration for singular elements
+        if (value == avoid){
+            console.log('VALUE MATCHED AVOID')
+            return
+        }
+        //we need to test if the incoming element is a single element of a class of elements
+        //if it is a single element, value.length will return undefined
+        //we can use that to determine if the element is singular or a class of elements
+        if (value.length == undefined){
+            if (value.style.display == ''){
+                value.style.display = 'none'
+            } else {
+                value.style.display = ''
+            }
+        } else {
+            for (x = 0; x < value.length; x++){
+                //checking if we need to avoid any array embedded elements
+                if (value[x] == avoid){
+                    console.log('VALUE MATCHED AVOID')
+                    continue
+                }
+                if (value[x].style.display == ''){
+                    value[x].style.display = 'none'
+                } else {
+                    value[x].style.display = ''
+                }
+            }
+        }
+    }) 
+}

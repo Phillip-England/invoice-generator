@@ -46,10 +46,11 @@
             <th>Cost</th>
             <th id="complete_column">Complete</th>
             <th id="delete_column">Delete</th>
+            <th id="invoice_column" style="display:none;">Invoice</th>
             <th>Modify</th>
         </tr>
         <% expenses.forEach(expense => { %>
-            <tr class="expense_info_row" expense="<%=expense._id%>">
+            <tr class="expense_info_row <%= expense._id %>" expense="<%=expense._id%>">
                 <td><%=expense.date%></td>
                 <td><%=expense.category%></td>
                 <td><%=expense.vendor%></td>
@@ -66,11 +67,11 @@
                     <input type="checkbox" class="expense_delete_checkbox" onclick="toggleExpenseDeleteButton(this)">
                 </td>
                 <td>
-                    <button toggled='false' name="edit_button" class="expense_edit_button" onclick="toggleEditForm(this)">Edit</button>
+                    <button toggled='false' name="edit_button" class="expense_edit_button" onclick="toggleEditForm(this, '<%=expense._id%>')">Edit</button>
                 </td>
             </tr>
             <!-- need to move this over to css later (this inline styling) -->
-            <tr style="display:none;">
+            <tr style="display:none;" class="<%= expense._id %>">
                 <form action=<%="/expense/updateExpense/" + invoice._id + '/' + expense._id%> method='POST'>
                     <td>
                         <input type="text" name="expense_date" value="<%=expense.date%>">
@@ -104,8 +105,19 @@
                         <input type="text" name="expense_cost" value="<%=expense.cost%>">
                     </td>
                     <td>
-                        <button type="submit" onclick="toggleEditForm(this)" id=<%=expense._id%>>Save</button>
-                        <button type="button" onclick="toggleEditForm(this)">Cancel</button>
+                        <select name="expense_invoice">
+                            <option value="<%=invoice.name%>"><%=invoice.name%></option>
+                            <% invoices.forEach(newInvoice => { %>
+                                <!-- omit the current category from the lisitng -->
+                                <%if (newInvoice.name != invoice.name) { %>
+                                    <option value="<%=newInvoice.name%>"><%=newInvoice.name%></option>
+                                <% } %>
+                            <% }) %>
+                        </select>
+                    </td>
+                    <td>
+                        <button type="submit" onclick="toggleEditForm(this, '<%=expense._id%>')">Save</button>
+                        <button type="button" onclick="toggleEditForm(this, '<%=expense._id%>')">Cancel</button>
                     </td>
                 </form>
             </tr>
@@ -124,67 +136,23 @@
 
 <script>
 
-    const toggleEditForm = async (e) => {
+    const toggleEditForm = async (e, expenseID) => {
 
-        //initializing our variables
-        let editFormRow //this is the hidden row which contains a form to update the expenses
-        let expenseInfoRow //this is the row that is shown by default and contains info about the expenses
+        toggleElements({
+            invoiceColumn: document.getElementById('invoice_column'),
+            completeColumn: document.getElementById('complete_column'),
+            deleteColumn: document.getElementById('delete_column'),
+            expenseCompleteCheckbox: document.getElementsByClassName('expense_complete_checkbox'),
+            expenseDeleteCheckbox: document.getElementsByClassName('expense_delete_checkbox'),
+            expenseEditButton: document.getElementsByClassName('expense_edit_button'),
+            //each informative row and each edit form row has a class name
+            //the classname is the ID of the current expense
+            //each edit button and cancel button has the same ID as well
+            //this allows us to target all elements associated with the ID
+            //and prevents us from using relative routes
+            infoAndFormRow: document.getElementsByClassName(expenseID),
+        })
 
-        //these columns will be removed upon editing the expenses
-        const completeColumn = document.getElementById('complete_column')
-        const deleteColumn = document.getElementById('delete_column')
-
-        //every checkbox in these classes will be removed
-        const expenseCompleteCheckbox = document.getElementsByClassName('expense_complete_checkbox')
-        const expenseDeleteCheckbox = document.getElementsByClassName('expense_delete_checkbox')
-        const expenseEditButton = document.getElementsByClassName('expense_edit_button')
-        const elementsToHide = [].concat(expenseCompleteCheckbox, expenseDeleteCheckbox, expenseEditButton)
-
-        toggleTableCells(expenseCompleteCheckbox)
-        toggleTableCells(expenseDeleteCheckbox)
-        toggleTableCells(expenseEditButton)
-
-
-
-
-        //using a switch statement to identify the editFormRow and expenseInfoRow based off of the e.getAttribute('name')
-        switch(e.getAttribute('name')){
-            case 'edit_button':
-                //relative routes from our edit button
-                editFormRow = e.parentElement.parentElement.nextElementSibling
-                expenseInfoRow = e.parentElement.parentElement
-                break
-            default:
-                //relative routes from our save and cancel button (may need to modify if we move location of buttons)
-                editFormRow = e.parentElement.parentElement
-                expenseInfoRow = e.parentElement.parentElement.previousElementSibling
-                break
-        }
-
-        //using a switch statement to change the display of the rows identified above (toggled functionality)
-        switch (editFormRow.toggled){
-            case undefined:
-                editFormRow.toggled = true
-                editFormRow.style.display = 'table-row'
-                expenseInfoRow.style.display = 'none'
-                deleteColumn.style.display = 'none'
-                completeColumn.style.display = 'none'
-                break
-            case true:
-                editFormRow.toggled = false
-                editFormRow.style.display = 'none'
-                expenseInfoRow.style.display = 'table-row'
-                deleteColumn.style.display = 'table-cell'
-                completeColumn.style.display = 'table-cell'
-                break
-            case false:
-                editFormRow.toggled = true
-                editFormRow.style.display = 'table-row'
-                expenseInfoRow.style.display = 'none'
-                deleteColumn.style.display = 'none'
-                completeColumn.style.display = 'none'
-                break
-        }
     }
 
     const deleteExpense = async (e, env, expense, invoice) => {
