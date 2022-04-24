@@ -4,8 +4,6 @@
 <form action="/category/addCategory" method="POST">
     <label for="category_name">Category Name</label>
     <input type="text" name="category_name">
-    <label for="category_description">Category Description</label>
-    <textarea type="text" name="category_description"></textarea>
     <input type="hidden" name="_csrf" value=<%=csrfToken%>>
     <button>Submit</button>
 </form>
@@ -16,13 +14,11 @@
         <table id="category_table">
             <tr>
                 <th>Category</th>
-                <th>Description</th>
                 <th>Delete</th>
             </tr>
             <% categories.forEach(category => { %>
                 <tr class="category_info_row" user=<%= user._id %> category=<%= category._id %>  >
                     <td><%=category.name%></td>
-                    <td><%=category.description%></td>
                     <td>
                         <input class='category_delete_checkbox' type="checkbox" onclick="toggleDeleteButton(this)">
                     </td>
@@ -54,7 +50,7 @@ const deleteCategory = async (e, env) => {
     const categoryTable = document.getElementById('category_table')
     const categoryInfoRows = document.getElementsByClassName('category_info_row') //this row contains all category data
 
-     //this function loops through the table and returns an array
+    //this function loops through the table and returns an array
     //the array will contain any rows which contain a checkbox matching the given classname
     const checkedRows = getCheckedRows(categoryInfoRows, 'category_delete_checkbox')
 
@@ -65,7 +61,7 @@ const deleteCategory = async (e, env) => {
     //removing our delete button
     e.style.display = 'none'
 
-    //looping through our rows (each representing an invoice) to call fetch requests for deletion
+    //looping through our rows (each representing a category) to call fetch requests for deletion
     for (x = 0; x < checkedRows.length; x++) {
             
             //getting our url based off our NODE_ENV

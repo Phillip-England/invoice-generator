@@ -17,25 +17,25 @@
 <% if (invoices.length > 0) { %>
     <table id="invoice_table">
         <tr>
-            <th>Date Created</th>
             <th>Name</th>
+            <th>Date Created</th>
             <th>Description</th>
+            <th>Cost</th>
             <th>Delete</th>
-            <th>Load</th>
         </tr>
         <% invoices.forEach(invoice => { %>
             <tr class="invoice_info_row" invoice=<%= invoice._id %> >
-                <td><%=invoice.date%></td>
-                <td><%=invoice.name%></td>
-                <td><%=invoice.description%></td>
-                <td>
-                    <input class='invoice_delete_checkbox' onclick="toggledDeleteButton()" type="checkbox">
-                </td>
                 <% if (NODE_ENV == 'development') { %>
-                    <td><a href=<%= 'http://localhost:5000/invoice/' + String(invoice._id) %>>View</a></td>
+                    <td><a href=<%= 'http://localhost:5000/invoice/' + String(invoice._id) %>><%= invoice.name %> </a></td>
                 <% } else { %>
                     <!-- enter production a tag here with production url -->
                 <% } %>
+                <td><%=invoice.date%></td>
+                <td><%=invoice.description%></td>
+                <td>$<%=invoice.cost %> </td>
+                <td>
+                    <input class='invoice_delete_checkbox' onclick="toggledDeleteButton()" type="checkbox">
+                </td>
             </tr>
         <% }) %>
     </table>

@@ -9,11 +9,10 @@ const addExpense = async (req, res, next) => {
             expense_category,
             expense_date,
             expense_vendor,
-            expense_description,
             expense_cost,
         } = req.body
         //checking if all the form fields were filled out
-        if (!expense_category || !expense_date || !expense_vendor || !expense_description || !expense_cost){
+        if (!expense_category || !expense_date || !expense_vendor || !expense_cost){
             throw new Error('Please fill out all of the form fields')
         }
         //getting the invoice the expense is associated with
@@ -26,7 +25,6 @@ const addExpense = async (req, res, next) => {
             category: expense_category,
             date: expense_date,
             vendor: expense_vendor,
-            description: expense_description,
             cost: expense_cost,
         })
         //checking if the expense was created
@@ -48,12 +46,11 @@ const updateExpense = async (req, res, next) => {
             expense_category,
             expense_date,
             expense_vendor,
-            expense_description,
             expense_cost
         } = req.body
 
         //checking if all the form fields were filled out
-        if (!expense_category || !expense_date || !expense_vendor || !expense_description || !expense_cost){
+        if (!expense_category || !expense_date || !expense_vendor || !expense_cost){
             throw new Error('Please fill out all of the form fields')
         }
 
@@ -67,7 +64,6 @@ const updateExpense = async (req, res, next) => {
             category: expense_category,
             date: expense_date,
             vendor: expense_vendor,
-            description: expense_description,
             cost: expense_cost,
         })
 
