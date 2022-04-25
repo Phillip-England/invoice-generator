@@ -1,0 +1,6 @@
+#login_grid{
+    grid-template-areas: 
+        "navbar"
+        "login_form"
+    ;
+}

@@ -1,0 +1,10 @@
+nav{
+    grid-area: navbar;
+}
+
+nav ul{
+    list-style: none;
+    flex-direction: row;
+    justify-content: space-evenly;
+    font-family: var(--secondary-font);
+}

@@ -1,0 +1,55 @@
+#login_grid form{
+    border: solid var(--first-color) 1px;
+    border-radius: 10px;
+    background-color: var(--second_color);
+    margin: 0.5em;
+    padding: 0.5em;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 2fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-area: login_form;
+    grid-template-areas: 
+        "login_header login_header login_header"
+        "username_label . ."
+        "username_input username_input username_input"
+        "password_label . ."
+        "password_input password_input password_input"
+        ". . ."
+        ". . login_submit"
+    ;
+}
+
+#login_grid form * {
+    margin:0em;
+}
+
+#login_grid h2 {
+    font-family: var(--secondary-font);
+}
+
+#login_grid label{
+    font-family: var(--main-font);
+}
+
+.login_header{
+    grid-area: login_header;
+}
+
+.username_label{
+    grid-area: username_label;
+}
+
+.username_input{
+    grid-area: username_input;
+}
+
+.password_label{
+    grid-area: password_label;
+}
+
+.password_input{
+    grid-area: password_input;
+}
+
+.login_submit{
+    grid-area: login_submit;
+}

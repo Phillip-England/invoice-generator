@@ -1,0 +1,62 @@
+/* global */
+
+body{
+    box-sizing: 0;
+}
+
+body, p, h1, h2, h3 form{
+    margin:0;
+}
+
+/* variables */
+
+:root {
+    --first-color: #08a3a1;
+    --second-color: white;
+    --third-color:#005B61;
+    --main-font: 'EB Garamond', serif;
+    --secondary-font: 'Roboto', sans-serif;
+}
+
+/* colors */
+
+.first_color{
+    background-color:var(--first-color);
+}
+
+.second_color{
+    background-color:var(--second-color);
+}
+
+.third_color{
+    background-color: var(--third-color);
+}
+
+/* fonts */
+
+.main_font{
+    font-family:var(--main-font);
+}
+
+.secondary_font{
+    font-family:var(--secondary-font);
+}
+
+/* flex */
+
+.flex_utility{
+    display: flex;
+}
+
+/* grid */
+.grid_utility{
+    display: grid;
+}
+
+/* unique */
+
+/* testing */
+
+.test_border{
+    border:solid black 1px;
+}
