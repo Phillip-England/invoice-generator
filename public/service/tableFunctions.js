@@ -88,7 +88,6 @@ const removeRowsAndTable = (rows, table) => {
 }
 
 //this function will take in a class of table cells and will toggle their display
-//first parameter is the class, second parameter is the display to toggle back to
 const toggleTableCells = (elements) => {
     for (x = 0; x < elements.length; x++){
         if (elements[x].style.display == '') {

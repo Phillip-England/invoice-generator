@@ -1,19 +1,18 @@
 /* global */
 
-body{
-    box-sizing: 0;
-}
-
-body, p, h1, h2, h3 form{
+*{
     margin:0;
+    padding:0;
+    box-sizing: 0;
+    border:none;
 }
 
 /* variables */
 
 :root {
-    --first-color: #08a3a1;
+    --first-color: #FF8A43;
     --second-color: white;
-    --third-color:#005B61;
+    --third-color:black;
     --main-font: 'EB Garamond', serif;
     --secondary-font: 'Roboto', sans-serif;
 }
@@ -42,15 +41,27 @@ body, p, h1, h2, h3 form{
     font-family:var(--secondary-font);
 }
 
-/* flex */
+/* icons */
 
-.flex_utility{
-    display: flex;
-}
 
 /* grid */
+
 .grid_utility{
     display: grid;
+}
+
+/* flex  */
+
+.flex_center{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+/* mouse */
+.mouse_pointer{
+    cursor: pointer;
 }
 
 /* unique */

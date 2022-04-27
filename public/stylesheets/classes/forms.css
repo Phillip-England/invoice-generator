@@ -1,0 +1,57 @@
+.form_styles_general{
+    display: grid;
+    gap: 0.5em;
+    width:100%;
+    max-width: 400px;
+    border-radius: 10px;
+    background-color: var(--second-color);
+    color:var(--third-color);
+    border:solid var(--third-color) 1px;
+    margin: 0.5em;
+    padding: 0.5em;
+}
+
+
+.form_header {
+    display:grid;
+    align-items: center;
+    font-family: var(--secondary-font);
+    font-size: 2rem;
+}
+
+.form_label{
+    font-family: var(--main-font);
+    font-size: 1.5rem;
+}
+
+.form_input {
+    height:2em;
+    border-radius: 5px;
+    border:solid var(--third-color) 1px;
+}
+
+.form_button{
+    color: var(--third-color);
+    background-color:var(--first-color);
+    border:solid var(--third-color) 1px;
+    font-weight: bold;
+    border-radius: 5px;
+    font-size: 1.25rem;
+    box-shadow: none;
+    margin: 0.5em 0.5em 0.5em 0.5em;
+    font-family: var(--secondary-font);
+    min-width: 125px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form_button_text {
+    margin-right: 0.5em;
+}
+
+.form_button:hover{
+    color: var(--first-color);
+    background-color: var(--third-color);
+    border:solid var(--first-color) 1px;
+}

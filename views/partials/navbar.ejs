@@ -1,16 +1,23 @@
 <nav>
 
     <!-- contains our hamburger icon -->
-    <section>
-
-    </section>
+    <div id="menu_icon" class="flex_center icon"
+    onclick="toggleNav()">
+        <i class="fa-solid fa-bars fa-lg"></i>
+    </div>
 
     <!-- contains the 'X' icon -->
-    <section>
-        
-    </section>
+    <div id='close_icon' style="display:none;" class="flex_center icon" onclick="toggleNav()">
+        <i class="fa-solid fa-xmark fa-lg"></i>
+    </div>
 
-    <ul class="flex_utility">
+    <!-- nav title -->
+    <header class="nav_title">
+        <h1>Invoice Generator</h1>
+    </header>
+
+    <!-- contains our navigation -->
+    <ul id="nav_list" style="display:none;" class="flex_center">
         <li>
             <a href="/user/home">home</a>
         </li>
@@ -27,6 +34,29 @@
             <a href="/user/logout">logout</a>         
         </li>
     </ul>
+
+
 </nav>
+
+<!-- contains functions to toggle elements -->
+<script src="../../public/service/toggle.js"></script>
+
+<script>
+
+const toggleNav = () => {
+    
+    const menuIcon = document.getElementById('menu_icon')
+    const closeIcon = document.getElementById('close_icon')
+    const navList = document.getElementById('nav_list')
+
+    toggle.simple({
+        menuIcon,
+        closeIcon,
+        navList
+    })
+
+}
+
+</script>
 
 

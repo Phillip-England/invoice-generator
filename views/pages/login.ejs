@@ -10,23 +10,54 @@
 </head>
 <body class="second_color">
 
-    <div id='login_grid' class="grid_utility">
+    <div id='login_grid'>
 
         <%- include('../partials/navbar.ejs') %>
 
-        <form action="/user/login" method="POST" class="grid_utility">
-            <h2 class="login_header">Login</h2>
-            <label class="username_label" for="username">Username</label>
-            <input class="username_input" type="text" name="username">
-            <label class="password_label" for="password">Password</label>
-            <input class="password_input" type="password" for="password" name="password">
-            <button class="login_submit">Submit</button>
-        </form>
+        <div id="login_form_container">
+            <form action="/user/login" method="POST" id="login_form" class="form_styles_general">
+                <h2 id="login_header" class="form_header">Login</h2>
+                <label id="username_label" class="form_label" for="username">Username</label>
+                <input id="username_input" class="form_input" type="text" name="username">
+                <label id="password_label" class="form_label" for="password">Password</label>
+                <input id="password_input" class="form_input" type="password" for="password" name="password">
+                <div id="remember_me">
+                    <p class="form_button_text">Remember Me?</p>
+                    <input type="checkbox">
+                </div>
+                <button id="login_submit" class="form_button">
+                    <p class="form_button_text">Login</p>
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                </button>
+            </form>
+        </div>
+
+        <div id=register_grid>
+
+            <div id="register_form_container">
+                <form action="/user/register" method="POST" id="register_form" class="form_styles_general">
+                    <h2 class="form_header">Sign Up</h2>
+                    <label class="form_label" for="username">Username</label>
+                    <input class="form_input" type="text" name="username">
+                    <label class="form_label" for="email">Email</label>
+                    <input class="form_input" type="email" name="email">
+                    <label class="form_label" for="password">Password</label>
+                    <input class="form_input" type="password" for="password" name="password">
+                    <button class="form_button">
+                        <p class="form_button_text">Sign-Up</p>
+                        <i class="fa-solid fa-users"></i>
+                    </button>
+                </form>
+            </div>
+    
+        </div>
         
     </div>
 
-    <!-- these function automatically fire upon loading the page -->
-    <script src="../../public/service/init.js"></script>
+    
+
+    <!-- font awesome icons -->
+    <script src="https://kit.fontawesome.com/ef0709a418.js" crossorigin="anonymous"></script>
 
 </body>
 </html>

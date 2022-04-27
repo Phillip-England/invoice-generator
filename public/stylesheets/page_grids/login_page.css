@@ -1,6 +1,8 @@
 #login_grid{
+    display: grid;
     grid-template-areas: 
         "navbar"
         "login_form"
     ;
+    grid-template-columns: 1fr;
 }

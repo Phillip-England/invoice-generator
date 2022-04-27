@@ -1,10 +1,48 @@
 nav{
     grid-area: navbar;
+    margin:0.5em 0 0 0;
+    color: var(--third-color);
+    background-color:var(--second-color);
+    display:grid;
+    /* gap: 0.5em; */
+    grid-template-columns: auto 1fr;
+    grid-template-areas: 
+        "icon title title title"
+        "list list list list"
+    ;
 }
 
-nav ul{
+.icon{
+    margin:1em;
+    grid-area: icon;
+    cursor: pointer;
+}
+
+
+.nav_title{
+    grid-area: title;
+    font-size: 1em;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--secondary-font);
+}
+
+#nav_list{
+    grid-area: list;
     list-style: none;
     flex-direction: row;
     justify-content: space-evenly;
     font-family: var(--secondary-font);
+    flex-direction: column;
+    font-size: 1.25em;
+    font-family: var(--main-font);
+}
+
+#nav_list a {
+    color:var(--third-color);
+}
+
+#nav_list a:hover{
+    color:var(--first-color);
 }

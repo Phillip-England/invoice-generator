@@ -1,0 +1,18 @@
+#register_form_container{
+    display:flex;
+    justify-content: center;
+}
+
+#register_form{
+    grid-template-columns: 1fr 2fr 1fr;
+    grid-template-areas: 
+        "login_header login_header login_header"
+        "username_label username_label username_label"
+        "username_input username_input username_input"
+        "password_label password_label password_label"
+        "password_input password_input password_input"
+        "remember_me remember_me ."
+        ". login_submit ."
+    ;
+}
+
