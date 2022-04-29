@@ -1,0 +1,10 @@
+#single_invoice_page_container{
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "navbar"
+        "invoice_header"
+        "expense_form"
+        "expense_table"
+    ;
+}

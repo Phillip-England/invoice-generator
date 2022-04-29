@@ -1,0 +1,6 @@
+#category_form_container{
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    grid-area: add_category_form;
+}

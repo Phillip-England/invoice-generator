@@ -1,0 +1,5 @@
+#expense_table{
+    display:grid;
+    justify-content: center;
+    grid-area: expense_table;
+}

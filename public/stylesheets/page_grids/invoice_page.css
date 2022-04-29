@@ -1,0 +1,9 @@
+#invoice_page_grid{
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        'navbar'
+        'add_invoice_form'
+        'invoice_table'
+    ;
+}

@@ -1,63 +1,63 @@
-<%- include('../partials/styles.ejs') %>
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/styles.ejs') %>
     <title>Login</title>
 </head>
-<body class="second_color">
+<body>
 
-    <div id='login_grid'>
+    <div id='login_page_grid'>
 
         <%- include('../partials/navbar.ejs') %>
 
         <div id="login_form_container">
             <form action="/user/login" method="POST" id="login_form" class="form_styles_general">
-                <h2 id="login_header" class="form_header">Login</h2>
-                <label id="username_label" class="form_label" for="username">Username</label>
-                <input id="username_input" class="form_input" type="text" name="username">
-                <label id="password_label" class="form_label" for="password">Password</label>
-                <input id="password_input" class="form_input" type="password" for="password" name="password">
-                <div id="remember_me">
+                <h2 class="form_header">Login</h2>
+                <label class="form_label" for="username">Username</label>
+                <input class="form_input" type="text" name="username">
+                <label class="form_label" for="password">Password</label>
+                <input class="form_input" type="password" for="password" name="password">
+                <div class="remember_me">
                     <p class="form_button_text">Remember Me?</p>
                     <input type="checkbox">
                 </div>
-                <button id="login_submit" class="form_button">
-                    <p class="form_button_text">Login</p>
-                    <i class="fa-solid fa-right-to-bracket"></i>
-                </button>
+                <div class="form_button_container">
+                    <button class="form_button">
+                        <p class="form_button_text">Login</p>
+                        <i class="fa-solid fa-right-to-bracket"></i>
+                    </button>
+                </div>
             </form>
         </div>
 
-        <div id=register_grid>
 
-            <div id="register_form_container">
-                <form action="/user/register" method="POST" id="register_form" class="form_styles_general">
-                    <h2 class="form_header">Sign Up</h2>
-                    <label class="form_label" for="username">Username</label>
-                    <input class="form_input" type="text" name="username">
-                    <label class="form_label" for="email">Email</label>
-                    <input class="form_input" type="email" name="email">
-                    <label class="form_label" for="password">Password</label>
-                    <input class="form_input" type="password" for="password" name="password">
+        <div id="register_form_container">
+            <form action="/user/register" method="POST" id="register_form" class="form_styles_general">
+                <h2 class="form_header">Sign Up</h2>
+                <label class="form_label" for="username">Username</label>
+                <input class="form_input" type="text" name="username">
+                <label class="form_label" for="email">Email</label>
+                <input class="form_input" type="email" name="email">
+                <label class="form_label" for="password">Password</label>
+                <input class="form_input" type="password" for="password" name="password">
+                <div class="form_button_container">
                     <button class="form_button">
                         <p class="form_button_text">Sign-Up</p>
                         <i class="fa-solid fa-users"></i>
                     </button>
-                </form>
-            </div>
-    
+                </div>
+            </form>
         </div>
+    
         
     </div>
 
     
 
     <!-- font awesome icons -->
-    <script src="https://kit.fontawesome.com/ef0709a418.js" crossorigin="anonymous"></script>
 
 </body>
 </html>

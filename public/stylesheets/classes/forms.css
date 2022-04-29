@@ -2,7 +2,7 @@
     display: grid;
     gap: 0.5em;
     width:100%;
-    max-width: 400px;
+    max-width: 425px;
     border-radius: 10px;
     background-color: var(--second-color);
     color:var(--third-color);
@@ -16,18 +16,24 @@
     display:grid;
     align-items: center;
     font-family: var(--secondary-font);
-    font-size: 2rem;
+    font-size: 1.5rem;
 }
 
 .form_label{
     font-family: var(--main-font);
-    font-size: 1.5rem;
+    font-size: 1.25rem;
 }
 
 .form_input {
     height:2em;
     border-radius: 5px;
     border:solid var(--third-color) 1px;
+    padding-left: 0.5em;
+}
+
+.form_input:focus{
+    outline:black;
+    border:solid var(--first-color) 2px;
 }
 
 .form_button{
@@ -37,10 +43,18 @@
     font-weight: bold;
     border-radius: 5px;
     font-size: 1.25rem;
+    font-weight: var(--light-font-weight);
     box-shadow: none;
     margin: 0.5em 0.5em 0.5em 0.5em;
     font-family: var(--secondary-font);
+    width:fit-content;
     min-width: 125px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.form_button_container{
     display:flex;
     align-items: center;
     justify-content: center;
@@ -54,4 +68,11 @@
     color: var(--first-color);
     background-color: var(--third-color);
     border:solid var(--first-color) 1px;
+}
+
+.remember_me{
+    font-size: 1.25em;
+    display:flex;
+    align-items: center;
+    font-family:var(--main-font);
 }

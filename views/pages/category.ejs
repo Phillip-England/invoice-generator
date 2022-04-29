@@ -1,31 +1,63 @@
-<%- include('../partials/navbar.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categories</title>
+    <%- include('../partials/styles.ejs') %>
+</head>
+<body>
 
-<h2>Add an Expense Category</h2>
-<form action="/category/addCategory" method="POST">
-    <label for="category_name">Category Name</label>
-    <input type="text" name="category_name">
-    <input type="hidden" name="_csrf" value=<%=csrfToken%>>
-    <button>Submit</button>
-</form>
 
-<button id='delete_category_button' style='display:none;' onclick="deleteCategory(this, '<%=NODE_ENV%>')">Delete</button>
+    <div id="category_page_container">
 
-    <% if (categories.length > 0) { %>
-        <table id="category_table">
-            <tr>
-                <th>Category</th>
-                <th>Delete</th>
-            </tr>
-            <% categories.forEach(category => { %>
-                <tr class="category_info_row" user=<%= user._id %> category=<%= category._id %>  >
-                    <td><%=category.name%></td>
-                    <td>
-                        <input class='category_delete_checkbox' type="checkbox" onclick="toggleDeleteButton(this)">
-                    </td>
-                </tr>
-            <% }) %>
-        </table>
-    <% } %>
+        <%- include('../partials/navbar.ejs') %>
+
+        <div id="category_form_container">
+            <form id="category_form" class="form_styles_general" action="/category/addCategory" method="POST">
+                <h2 class="form_header">Add an Expense Category</h2>
+                <label class="form_label" for="category_name">Category Name</label>
+                <input class="form_input" type="text" name="category_name">
+                <input type="hidden" name="_csrf" value=<%=csrfToken%>>
+                <div class="form_button_container">
+                    <button class="form_button">
+                        <p class="form_button_text">Add</p>
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <button id='delete_category_button' style='display:none;' onclick="deleteCategory(this, '<%=NODE_ENV%>')">Delete</button>
+
+        <div id="category_table_container">
+            <% if (categories.length > 0) { %>
+                <table id="category_table">
+                    <tr>
+                        <th>Category</th>
+                        <th>Delete</th>
+                    </tr>
+                    <% categories.forEach(category => { %>
+                        <tr class="category_info_row" user=<%= user._id %> category=<%= category._id %>  >
+                            <td><%=category.name%></td>
+                            <td>
+                                <input class='category_delete_checkbox' type="checkbox" onclick="toggleDeleteButton(this)">
+                            </td>
+                        </tr>
+                    <% }) %>
+                </table>
+            <% } %>
+        </div>
+                
+    </div>
+    
+    
+</body>
+</html>
+
+
+
 
 <!-- contains functions to work with tables -->
 <script src="../../public/service/tableFunctions.js"></script>

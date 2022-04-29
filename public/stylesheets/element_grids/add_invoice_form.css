@@ -1,0 +1,6 @@
+#invoice_form_container{
+    display:flex;
+    justify-content:center;
+    grid-area:add_invoice_form;
+}
+

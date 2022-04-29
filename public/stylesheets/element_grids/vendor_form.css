@@ -1,0 +1,5 @@
+#vendor_form_container{
+    display:flex;
+    justify-content: center;
+    grid-area: add_vendor_form;
+}

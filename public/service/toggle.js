@@ -9,6 +9,15 @@ const toggle = {
                 val.style.display = 'none'
             }
         })    
+    },
+
+    //toggles a single element from the given display and back
+    pickStyle: (element, display) => {
+        if (element.style.display != display){
+            element.style.display = display
+        } else {
+            element.style.display = 'none'
+        }
     }
 
 

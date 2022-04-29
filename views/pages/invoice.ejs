@@ -1,45 +1,76 @@
-<%- include('../partials/navbar.ejs') %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <%- include('../partials/styles.ejs') %>
+    <title>Invoices</title>
+</head>
+<body>
 
-<h1>Invoice Page</h1>
-<h2>Add a New Invoice</h2>
-<form action="/invoice/addInvoice" method="POST">
-    <label for="invoice_name">Invoice Name</label>
-    <input type="text" name="invoice_name">
-    <label for="invoice_description">Invoice Description</label>
-    <textarea type="text" name="invoice_description"></textarea>
-    <input type="hidden" name="invoice_date" id="invoice_date">
-    <input type="hidden" name="_csrf" value=<%=csrfToken%>>
-    <button onclick="loadDate(this)">Submit</button>
-</form>
+    <div id="invoice_page_grid">
 
-<button style=display:none; id="delete_invoice_button" onclick="deleteInvoices(this, '<%= NODE_ENV %>')">Delete</button>
+        <%- include('../partials/navbar.ejs') %>
 
-<% if (invoices.length > 0) { %>
-    <table id="invoice_table">
-        <tr>
-            <th>Name</th>
-            <th>Date Created</th>
-            <th>Description</th>
-            <th>Cost</th>
-            <th>Delete</th>
-        </tr>
-        <% invoices.forEach(invoice => { %>
-            <tr class="invoice_info_row" invoice=<%= invoice._id %> >
-                <% if (NODE_ENV == 'development') { %>
-                    <td><a href=<%= 'http://localhost:5000/invoice/' + String(invoice._id) %>><%= invoice.name %> </a></td>
-                <% } else { %>
-                    <!-- enter production a tag here with production url -->
-                <% } %>
-                <td><%=invoice.date%></td>
-                <td><%=invoice.description%></td>
-                <td>$<%=invoice.cost %> </td>
-                <td>
-                    <input class='invoice_delete_checkbox' onclick="toggledDeleteButton()" type="checkbox">
-                </td>
-            </tr>
-        <% }) %>
-    </table>
-<% } %>
+        <div id="invoice_form_container">
+            <form id='add_invoice_form' class="form_styles_general" action="/invoice/addInvoice" method="POST">
+                <h2 class="form_header">Add a New Invoice</h2>
+                <label class="form_label" for="invoice_name">Invoice Name</label>
+                <input class="form_input" type="text" name="invoice_name">
+                <label class="form_label" for="invoice_description">Invoice Description</label>
+                <input class="form_input" type="text" name="invoice_description">
+                <input type="hidden" name="invoice_date" id="invoice_date">
+                <input type="hidden" name="_csrf" value=<%=csrfToken%>>
+                <div class="form_button_container">
+                    <button class="form_button" onclick="loadDate(this)">
+                        <p class="form_button_text">Add</p>
+                        <i class="fa-solid fa-file-invoice-dollar"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+        
+
+        <button style=display:none; id="delete_invoice_button" onclick="deleteInvoices(this, '<%= NODE_ENV %>')">Delete</button>
+
+        <div id="invoice_table_container">
+            <% if (invoices.length > 0) { %>
+                <table id="invoice_table">
+                    <tr>
+                        <th>Date</th>
+                        <th>Name</th>
+                        <th style="display:none;">Description</th>
+                        <th>Cost</th>
+                        <th>Delete</th>
+                    </tr>
+                    <% invoices.forEach(invoice => { %>
+                        <tr class="invoice_info_row" invoice=<%= invoice._id %> >
+                            <td><%=invoice.date%></td>
+                            <% if (NODE_ENV == 'development') { %>
+                                <td><a href=<%= 'http://localhost:5000/invoice/' + String(invoice._id) %>><%= invoice.name %> </a></td>
+                            <% } else { %>
+                                <!-- enter production a tag here with production url -->
+                            <% } %>
+                            <td style="display:none;"><%=invoice.description%></td>
+                            <td>$<%=invoice.cost %> </td>
+                            <td class="table_checkbox">
+                                <input class='invoice_delete_checkbox' onclick="toggledDeleteButton()" type="checkbox">
+                            </td>
+                        </tr>
+                    <% }) %>
+                </table>
+            <% } %>
+        </div>
+
+        
+
+    </div>
+    
+</body>
+</html>
+
+
 
 <!-- contains functions to work with tables -->
 <script src="../../public/service/tableFunctions.js"></script>

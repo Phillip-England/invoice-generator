@@ -18,7 +18,6 @@ nav{
     cursor: pointer;
 }
 
-
 .nav_title{
     grid-area: title;
     font-size: 1em;
@@ -31,10 +30,12 @@ nav{
 #nav_list{
     grid-area: list;
     list-style: none;
-    flex-direction: row;
-    justify-content: space-evenly;
-    font-family: var(--secondary-font);
+    display:none;
+    text-align: center;
     flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    font-family: var(--secondary-font);
     font-size: 1.25em;
     font-family: var(--main-font);
 }
@@ -45,4 +46,36 @@ nav{
 
 #nav_list a:hover{
     color:var(--first-color);
+}
+
+#nav_list li {
+    width:80%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (min-width:450px){
+    .icon{
+        display:none;
+    }   
+}
+
+@media screen and (min-width:450px){
+    #nav_list{
+        display:flex;
+        flex-direction: row;
+        margin:0.5em 0 0.5em 0;
+    }
+}
+
+@media screen and (min-width:450px){
+    nav{
+        grid-template-columns: 1fr;
+        grid-template-areas: 
+            'title'
+            'list'
+        ;
+    }
 }

@@ -1,0 +1,5 @@
+#vendor_table_container{
+    display:grid;
+    justify-content: center;
+    grid-area: vendor_table;
+}
