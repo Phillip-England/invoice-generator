@@ -18,6 +18,17 @@ const toggle = {
         } else {
             element.style.display = 'none'
         }
+    },
+
+    //takes in an array and toggles their display from none to default
+    simpleArray: (elements) => {
+        for (x = 0; x < elements.length; x++){
+            if (elements[x].style.display == 'none'){
+                elements[x].style.display = ''
+            } else {
+                elements[x].style.display = 'none'
+            }
+        }
     }
 
 

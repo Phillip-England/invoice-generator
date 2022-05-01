@@ -1,3 +1,67 @@
-#single_invoice_header{
+#single_invoice_header_container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin:0.5em;
     grid-area: invoice_header;
+}
+
+
+#single_invoice_header{
+    display: grid;
+    padding: 0.5em;
+    border: solid black 1px;
+    border-radius: 10px;
+    max-width: 425px;
+    width:100%;
+    grid-template-columns: 4fr 1fr;
+    grid-template-areas: 
+        "name cost"
+        "date date"
+        "description description"
+        ". print"
+    ;
+}
+
+.header_invoice_name{
+    grid-area: name;
+    font-family: var(--secondary-font);
+}
+
+.header_invoice_date{
+    grid-area:date;
+    font-family: var(--main-font);
+}
+
+.header_invoice_description{
+    grid-area: description;
+    font-family: var(--main-font);
+}
+
+.header_invoice_cost{
+    grid-area:cost;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+}
+
+.invoice_print_button{
+    grid-area:print;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--fifth-color);
+    border: solid black 1px;
+    border-radius: 3px;
+}
+
+.invoice_print_button:hover a{
+    background-color: var(--third-color);
+    color:var(--fifth-color);
+}
+
+.invoice_print_button a{
+    text-decoration: none;
+    width: 100%;
+    color: var(--third-color);
 }

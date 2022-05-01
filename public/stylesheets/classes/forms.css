@@ -31,6 +31,10 @@
     padding-left: 0.5em;
 }
 
+select{
+    background-color: white;
+}
+
 .form_input:focus{
     outline:black;
     border:solid var(--first-color) 2px;

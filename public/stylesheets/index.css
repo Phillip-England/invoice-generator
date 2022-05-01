@@ -14,9 +14,12 @@
 /* variables */
 
 :root {
-    --first-color: #0a91ff;
+    --first-color: #07eb84;
     --second-color: white;
     --third-color:black;
+    --fourth-color:#e6e6e6;
+    --fifth-color:#00AEFF;
+    --sixth-color:#FF4748;
     --main-font: 'EB Garamond', serif;
     --secondary-font: 'Roboto', sans-serif;
     --light-font-weight:100;

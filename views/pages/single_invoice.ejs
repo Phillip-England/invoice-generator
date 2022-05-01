@@ -7,20 +7,23 @@
     <title><%=invoice.name%></title>
     <%- include('../partials/styles.ejs') %>
 </head>
-<body>
+<body NODE_ENV="<%=NODE_ENV%>">
     
     <div id="single_invoice_page_container">
 
         <%- include('../partials/navbar.ejs') %>
 
-        <section id="single_invoice_header">
-            <h1><%=invoice.name%></h1>
-            <h2><%=invoice.date%></h2>
-            <p><%=invoice.description%></p>
-            <h2>Expenses</h2>
-            <h3 id="invoice_cost"><%=invoice.cost%></h3>
-            <a href=<%= 'http://localhost:5000/invoice/generateInvoicePdf/' + invoice._id %>>Print</a>
-            <button id="expense_delete_button" style="display:none;" onclick="deleteExpenses(this, '<%=NODE_ENV%>')">Delete</button>
+        <section id="single_invoice_header_container">
+            <div id="single_invoice_header">
+                <h2 class="header_invoice_name"><%=invoice.name%></h2>
+                <h3 class="header_invoice_date"><%=invoice.date%></h3>
+                <p class="header_invoice_description"><%=invoice.description%></p>
+                <h4 class="header_invoice_cost" id="invoice_cost">$<%=invoice.cost%></h4>
+                    <button class="invoice_print_button">
+                        <a href=<%= 'http://localhost:5000/invoice/generateInvoicePdf/' + invoice._id %>>Print</a>
+                    </button>
+                <button id="expense_delete_button" style="display:none;" onclick="deleteExpenses(this, '<%=NODE_ENV%>')">Delete</button>
+            </div>
         </section>
 
         <section id="add_expense_container">
@@ -36,7 +39,7 @@
                     <% }) %>
                 </select>
                 <label class="form_label" for="expense_name">Vendor</label>
-                <select name="expense_vendor" id="expense_vendor">
+                <select class="form_input" name="expense_vendor" id="expense_vendor">
                     <option value=""></option>
                     <% vendors.forEach(vendor => { %>
                         <option value="<%=vendor.name%>"><%=vendor.name%></option>
@@ -54,7 +57,134 @@
             </form>
         </section>
 
-        <section id="expense_table">
+        <section id="mobile_expense_table_container">
+
+            <% if (expenses.length > 0) { %>
+
+                <table class="mobile_expense_table">
+
+                    <% expenses.forEach(expense => { %>
+
+                        <tbody>
+
+                            <form action=<%="/expense/updateExpense/" + invoice._id + '/' + expense._id%> method='POST'>
+
+                                <tr class="mobile_expense_main_row" onclick="toggleMobileTable(this, '<%=expense._id%>')">
+                                    <th>
+                                        <%= expense.date %>
+                                    </th>
+                                    <th>
+                                        <%= expense.vendor %>
+                                    </th>
+                                    <th>
+                                        $<%= expense.cost %>
+                                    </th>
+                                    <th>
+                                        <i class="fa-solid fa-angle-up" style="display:none;"></i>
+                                        <i class="fa-solid fa-angle-down"></i>
+                                    </th>
+                                </tr>
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td>Date</td>
+                                    <td colspan="3">
+                                        <input class='expense_input' type="text" name="expense_date" value="<%=expense.date%>">
+                                    </td>
+                                </tr>
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td>Category</td>
+                                    <td colspan="3">
+                                        <select name="expense_category">
+                                            <option value="<%=expense.category%>"><%=expense.category%></option>
+                                            <% categories.forEach(category => { %>
+                                                <!-- omit the current category from the lisitng -->
+                                                <%if (expense.category != category.name) { %>
+                                                    <option value="<%=category.name%>"><%=category.name%></option>
+                                                <% } %>
+                                            <% }) %>
+                                        </select>
+                                    </td>
+                                </tr> 
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td>Vendor</td>
+                                    <td colspan="3">
+                                        <select name="expense_vendor">
+                                            <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
+                                            <% vendors.forEach(vendor => { %>
+                                                <!-- omit the current category from the lisitng -->
+                                                <%if (expense.vendor != vendor.name) { %>
+                                                    <option value="<%=vendor.name%>"><%=vendor.name%></option>
+                                                <% } %>
+                                            <% }) %>
+                                        </select>
+                                    </td>
+                                </tr>
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td>Description</td>
+                                    <td colspan="3">
+                                        <input class='expense_input_description' type="text" name="expense_description" value="<%=expense.description%>">
+                                    </td>
+                                </tr>
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td>Cost</td>
+                                    <td colspan="3">
+                                        <input class='expense_input_cost' type="text" name="expense_cost" value="<%=expense.cost%>">
+                                    </td>
+                                    
+                                </tr>
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td>Complete</td>
+                                    <td colspan="3">
+                                        <% if (expense.completed == true) { %>
+                                            <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
+                                        <% } else { %>
+                                            <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
+                                        <% } %>
+                                    </td>
+                                </tr>
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td>Delete</td>
+                                    <td colspan="3">
+                                        <input type="checkbox" class="expense_delete_checkbox" id="<%=expense._id + 'mobile_expense_delete_checkbox'%>" onclick="toggleMobileExpenseDeleteButton(this, '<%= expense._id%>')">
+                                    </td>
+                                </tr>
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td colspan="4">
+                                        <button type="submit" class="mobile_save_button" id=<%=expense._id%>>Save</button>
+                                    </td>
+                                </tr>
+
+                            </form>
+
+                            <tr id="<%=expense._id + 'mobile_expense_delete_button'%>" style="display:none;">
+                                <td colspan="4">
+                                    <button type="button" class="mobile_delete_button " onclick="deleteMobileExpense(this, '<%=expense._id%>')">Delete</button>
+                                </td>
+                            </tr>
+                        
+                        </tbody>
+
+                    <% }) %>
+
+                </table>
+
+            <% } %>
+
+             
+
+
+        </section> 
+
+        </section>
+
+        <section id="expense_table_container">
 
             <% if (expenses.length > 0) { %>
                 <table id="expense_table">
@@ -70,31 +200,12 @@
                     </tr>
                     <% expenses.forEach(expense => { %>
                         <tr class="expense_info_row" expense="<%=expense._id%>">
-                            <td><%=expense.date%></td>
-                            <td><%=expense.category%></td>
-                            <td><%=expense.vendor%></td>
-                            <td><%=expense.description%></td>
-                            <td class="expense_cost"><%=expense.cost%></td>
-                            <td>
-                                <% if (expense.completed == true) { %>
-                                    <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
-                                <% } else { %>
-                                    <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
-                                <% } %>
-                            </td>
-                            <td>
-                                <input type="checkbox" class="expense_delete_checkbox" onclick="toggleExpenseDeleteButton(this)">
-                            </td>
-                            <td>
-                                <button toggled='false' name="edit_button" class="expense_edit_button" onclick="toggleEditForm(this)">Edit</button>
-                            </td>
-                        </tr>
-                        <!-- need to move this over to css later (this inline styling) -->
-                        <tr style="display:none;">
                             <form action=<%="/expense/updateExpense/" + invoice._id + '/' + expense._id%> method='POST'>
+
                                 <td>
-                                    <input type="text" name="expense_date" value="<%=expense.date%>">
+                                    <input class='expense_input' type="text" name="expense_date" value="<%=expense.date%>">
                                 </td>
+
                                 <td>
                                     <select name="expense_category">
                                         <option value="<%=expense.category%>"><%=expense.category%></option>
@@ -106,6 +217,7 @@
                                         <% }) %>
                                     </select>
                                 </td>
+
                                 <td>
                                     <select name="expense_vendor">
                                         <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
@@ -117,16 +229,31 @@
                                         <% }) %>
                                     </select>
                                 </td>
+
                                 <td>
-                                    <input type="text" name="expense_description" value="<%=expense.description%>">
+                                    <input class='expense_input_description' type="text" name="expense_description" value="<%=expense.description%>">
                                 </td>
+
+                                <td class="expense_cost">
+                                    <input class='expense_input_cost' type="text" name="expense_cost" value="<%=expense.cost%>">
+                                </td>
+
                                 <td>
-                                    <input type="text" name="expense_cost" value="<%=expense.cost%>">
+                                    <% if (expense.completed == true) { %>
+                                        <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
+                                    <% } else { %>
+                                        <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
+                                    <% } %>
                                 </td>
+
                                 <td>
-                                    <button type="submit" onclick="toggleEditForm(this)" id=<%=expense._id%>>Save</button>
-                                    <button type="button" onclick="toggleEditForm(this)">Cancel</button>
+                                    <input type="checkbox" class="expense_delete_checkbox" onclick="toggleExpenseDeleteButton(this)">
                                 </td>
+
+                                <td>
+                                    <button type="submit" id=<%=expense._id%>>Save</button>
+                                </td>
+
                             </form>
                         </tr>
                     <% }) %>
@@ -147,17 +274,6 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
 <!-- provides us with the ability to convert an html page into a pdf -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <!-- contains functions to work with tables -->
@@ -165,107 +281,101 @@
 <!-- contains functions to work with URLS -->
 <script src="../../public/service/URLFunctions.js"></script>
 
+
 <script>
 
-    const toggleEditForm = async (e) => {
-
-        //initializing our variables
-        let editFormRow //this is the hidden row which contains a form to update the expenses
-        let expenseInfoRow //this is the row that is shown by default and contains info about the expenses
-
-        //these columns will be removed upon editing the expenses
-        const completeColumn = document.getElementById('complete_column')
-        const deleteColumn = document.getElementById('delete_column')
-
-        //every checkbox in these classes will be removed
-        const expenseCompleteCheckbox = document.getElementsByClassName('expense_complete_checkbox')
-        const expenseDeleteCheckbox = document.getElementsByClassName('expense_delete_checkbox')
-        const expenseEditButton = document.getElementsByClassName('expense_edit_button')
-        const elementsToHide = [].concat(expenseCompleteCheckbox, expenseDeleteCheckbox, expenseEditButton)
-
-        toggleTableCells(expenseCompleteCheckbox)
-        toggleTableCells(expenseDeleteCheckbox)
-        toggleTableCells(expenseEditButton)
-
-
-
-
-        //using a switch statement to identify the editFormRow and expenseInfoRow based off of the e.getAttribute('name')
-        switch(e.getAttribute('name')){
-            case 'edit_button':
-                //relative routes from our edit button
-                editFormRow = e.parentElement.parentElement.nextElementSibling
-                expenseInfoRow = e.parentElement.parentElement
-                break
-            default:
-                //relative routes from our save and cancel button (may need to modify if we move location of buttons)
-                editFormRow = e.parentElement.parentElement
-                expenseInfoRow = e.parentElement.parentElement.previousElementSibling
-                break
-        }
-
-        //using a switch statement to change the display of the rows identified above (toggled functionality)
-        switch (editFormRow.toggled){
-            case undefined:
-                editFormRow.toggled = true
-                editFormRow.style.display = 'table-row'
-                expenseInfoRow.style.display = 'none'
-                deleteColumn.style.display = 'none'
-                completeColumn.style.display = 'none'
-                break
-            case true:
-                editFormRow.toggled = false
-                editFormRow.style.display = 'none'
-                expenseInfoRow.style.display = 'table-row'
-                deleteColumn.style.display = 'table-cell'
-                completeColumn.style.display = 'table-cell'
-                break
-            case false:
-                editFormRow.toggled = true
-                editFormRow.style.display = 'table-row'
-                expenseInfoRow.style.display = 'none'
-                deleteColumn.style.display = 'none'
-                completeColumn.style.display = 'none'
-                break
-        }
+    const toggleMobileExpenseDeleteButton = (e, expenseID) => {
+        toggle.simple({
+            deleteButton: document.getElementById(expenseID + 'mobile_expense_delete_button')
+        })
     }
 
-    const deleteExpense = async (e, env, expense, invoice) => {
+    const toggleMobileTable = (e, expenseID) => {
+
+        //getting our variables
+        let expenseChildren = e.children
+        let lastChild = expenseChildren[expenseChildren.length-1]
+        let deleteCheckbox = document.getElementById(expenseID + 'mobile_expense_delete_checkbox')
+
+        //toggling which direction the arrow is pointing
+        toggle.simple({
+            upArrow: lastChild.children[0],
+            downArrow: lastChild.children[1],
+        })
+
+        //toggling all rows in associated with the expense by their classname
+        toggle.simpleArray(document.getElementsByClassName(expenseID + 'more_info'))
+
+        //checking if the delete checkbox is toggled
+        if (deleteCheckbox.checked){
+            deleteCheckbox.checked = false
+            toggle.simple({
+                deleteButton: document.getElementById(expenseID + 'mobile_expense_delete_button')
+            })
+        }
+
+
+    }
+
+    const deleteMobileExpense = async (e, expenseID) => {
 
         //setting up our variables
         let url
-        const expenseInfoRow = e.parentElement.parentElement
-        const expenseFormRow = e.parentElement.parentElement.previousElementSibling
-        const expenseTable = document.getElementById('expense_table')
 
-        console.log(expenseTable.firstElementChild.children.length)
-        
-        //deleting the row from the DOM | if it is the last row, deleting the table
-        if (expenseTable.firstElementChild.children.length <= 3) {
-            expenseTable.remove()
-        } else {
-            expenseInfoRow.remove()
-            expenseFormRow.remove()
-        }
-        
-        //establishing our URL (dev or production)
-        if (e.getAttribute('env') == 'development'){
-            url = 'http://localhost:5000/expense/deleteExpense/' + expense
-        } else {
-            //production url goes here
-        }
+        //grabbing our NODE_ENV from the body
+        const NODE_ENV = document.getElementsByTagName('body')[0].getAttribute('NODE_ENV')
 
-        //doing our fetch request
-        try {
-            const response = await fetch(url, {
-            method: 'delete',
-            })
-        } catch (error) {
-            console.log(error)
-        }
+        //removing the expense row
+        e.parentElement.parentElement.parentElement.remove()
 
-        
+        //getting our url for our fetch request
+        url = getURL(NODE_ENV, '/expense/deleteExpense', {
+                expenseID: expenseID
+        })
+
+        //calling our fetch request to delete the expense/expenses
+        const response = await fetch(url, {
+                method:'DELETE'
+        })
+
+        //getting the data back (the new cost of the invoice)
+        const data = await response.json()
+
+        //updating the cost of our invoice in the DOM
+        document.getElementById('invoice_cost').innerText = "$" + data.cost
+
     }
+
+    const setExpenseInputWidth = () => {
+
+        const setWidthInputs = document.getElementsByClassName('expense_input')
+        const descriptionInputs = document.getElementsByClassName('expense_input_description')
+        const costInput = document.getElementsByClassName('expense_input_cost')
+
+        //cycling through set width inputs
+        //these are all the same width no matter what
+        for (x = 0; x < setWidthInputs.length; x++){
+            setWidthInputs[x].size = setWidthInputs[x].value.length
+        }
+
+        const setToMaxWidth = (classElements) => {
+            let max = 0
+            for (x = 0; x < classElements.length; x++){
+                if (classElements[x].value.length > max){
+                    max = classElements[x].value.length
+                }
+            }
+            for (x = 0; x < classElements.length; x++){
+                classElements[x].size = max
+            }
+        }
+
+        setToMaxWidth(descriptionInputs)
+        setToMaxWidth(costInput)
+
+    }
+
+    setExpenseInputWidth()
 
     const completeExpense = async (e, env, expense, invoice) => {
         
@@ -286,7 +396,7 @@
             method: 'put'
             })
             const data = await response.json()
-            document.getElementById('invoice_cost').innerText = data.cost
+            document.getElementById('invoice_cost').innerText = "$" + data.cost
             
         } catch (error) {
            console.log(error) 
@@ -335,15 +445,15 @@
         //removing our delete button
         e.style.display = 'none'
 
-        // looping through our rows (each representing an invoice) to call fetch requests for deletion
+        // looping through our rows (each representing an expense to call fetch requests for deletion
         for (x = 0; x < checkedRows.length; x++) {
             
             //getting our url based off our NODE_ENV
             url = getURL(env, '/expense/deleteExpense', {
-                invoice: checkedRows[x].getAttribute('expense')
+                expense: checkedRows[x].getAttribute('expense')
             })
 
-            //calling our fetch request to delete the invoice/invoices
+            //calling our fetch request to delete the expense/expenses
             const response = await fetch(url, {
                 method:'DELETE'
             })
@@ -354,7 +464,7 @@
             //if it is the last loop, get the cost and render it to the screen
             if (x == checkedRows.length-1) {
                 console.log('hit')
-                document.getElementById('invoice_cost').innerText = data.cost
+                document.getElementById('invoice_cost').innerText = "$" + data.cost
             }
 
         }

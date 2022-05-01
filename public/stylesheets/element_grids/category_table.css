@@ -1,5 +1,5 @@
 #category_table_container{
-    display:grid;
+    display:flex;
     justify-content: center;
     grid-area: category_table;
 }

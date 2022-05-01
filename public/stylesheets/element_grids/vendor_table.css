@@ -1,5 +1,5 @@
 #vendor_table_container{
-    display:grid;
+    display:flex;
     justify-content: center;
     grid-area: vendor_table;
 }
