@@ -50,30 +50,32 @@ const updateExpense = async (req, res, next) => {
             expense_category,
             expense_date,
             expense_vendor,
-            expense_cost
+            expense_description,
+            expense_cost,
+            expense_invoice
         } = req.body
 
+
         //checking if all the form fields were filled out
-        if (!expense_category || !expense_date || !expense_vendor || !expense_cost){
+        if (!expense_category || !expense_date || !expense_vendor || !expense_description || !expense_cost || !expense_invoice){
             throw new Error('Please fill out all of the form fields')
         }
 
-        //getting the invoice the expense is associated with
-        //the invoice id is passed along in the url in this case
-        const invoice = await Invoice.findById(req.params.invoice)
-
+        //getting the invoice the expense is associated with based off the passed in name
+        const newInvoice = await Invoice.findOne({name:expense_invoice})
+        
         //updating the expense
         const updatedExpense = await Expense.findByIdAndUpdate(req.params.expense, {
-            invoice: invoice,
+            invoice: newInvoice,
             category: expense_category,
             date: expense_date,
             vendor: expense_vendor,
+            description: expense_description,
             cost: expense_cost,
         })
 
         //getting all the expenses associated with the invoice
         const invoiceExpenses = await Expense.find({invoice:updatedExpense.invoice, completed:true})
-
 
         //running a loop to get the cost of the expenses
         let cost = 0
@@ -81,10 +83,25 @@ const updateExpense = async (req, res, next) => {
             cost = cost + invoiceExpenses[x].cost
         }
 
-        //updating the cost of the invoice the expense if associated with
+        //updating the cost of the invoice the expense is associated with
         const updatedInvoice = await Invoice.findByIdAndUpdate(req.params.invoice, {
             cost: cost
         })
+
+        //checking if the expense was transferred to another invoice
+        if (newInvoice._id != updatedInvoice._id) {
+            //getting all the expenses associated with the new invoice
+            const newInvoiceExpenses = await Expense.find({invoice:newInvoice._id, completed:true})
+            //running a loop to get the cost of the expenses
+            let cost = 0
+            for (x = 0; x < newInvoiceExpenses.length; x++){
+                cost = cost + newInvoiceExpenses[x].cost
+            }
+            //updating the cost of the invoice the expense is associated with
+            const newUpdatedInvoice = await Invoice.findByIdAndUpdate(newInvoice._id, {
+                cost: cost
+            })
+        }
 
         res.status(200).redirect('/invoice/' + req.params.invoice)
         

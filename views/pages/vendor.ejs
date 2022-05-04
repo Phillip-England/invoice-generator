@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -59,6 +60,36 @@
 </html>
 
 
+=======
+<%- include('../partials/navbar.ejs') %>
+
+<h2>Add a Vendor</h2>
+<form action="/vendor/addVendor" method="POST">
+    <label for="vendor_name">Vendor Name</label>
+    <input type="text" name="vendor_name">
+    <input type="hidden" name="_csrf" value=<%=csrfToken%>>
+    <button>Submit</button>
+</form>
+
+<button id='vendor_delete_button' style='display:none;' onclick="deleteVendor(this, '<%=NODE_ENV%>')" >Delete</button>
+
+    <% if (vendors.length > 0) { %>
+        <table id="vendor_table">
+            <tr>
+                <th>Vendor</th>
+                <th>Delete</th>
+            </tr>
+            <% vendors.forEach(vendor => { %>
+                <tr class="vendor_info_row" user=<%= user._id %> vendor=<%= vendor._id %>  >
+                    <td><%=vendor.name%></td>
+                    <td>
+                        <input class='vendor_delete_checkbox' type="checkbox" onclick="toggleDeleteButton(this)">
+                    </td>
+                </tr>
+            <% }) %>
+        </table>
+    <% } %>
+>>>>>>> main
 
 
 <!-- contains functions to work with tables -->
