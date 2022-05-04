@@ -7,7 +7,7 @@
     <%- include('../partials/styles.ejs') %>
     <title>Invoices</title>
 </head>
-<body>
+<body NODE_ENV="<%=NODE_ENV%>">
 
     <div id="invoice_page_grid">
 
@@ -16,23 +16,24 @@
         <div id="invoice_form_container">
             <form id='add_invoice_form' class="form_styles_general" action="/invoice/addInvoice" method="POST">
                 <h2 class="form_header">Add a New Invoice</h2>
-                <label class="form_label" for="invoice_name">Invoice Name</label>
+                <label class="form_label" for="invoice_name">Invoice Name<span class="form_astrick">*</span></label>
                 <input class="form_input" type="text" name="invoice_name">
-                <label class="form_label" for="invoice_description">Invoice Description</label>
+                <label class="form_label" for="invoice_description">Invoice Description<span class="form_astrick">*</span></label>
                 <input class="form_input" type="text" name="invoice_description">
                 <input type="hidden" name="invoice_date" id="invoice_date">
                 <input type="hidden" name="_csrf" value=<%=csrfToken%>>
                 <div class="form_button_container">
-                    <button class="form_button" onclick="loadDate(this)">
+                    <button type='button' class="form_button" onclick="addInvoice(this)">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-file-invoice-dollar"></i>
                     </button>
+                    <div class="loading_icon"></div>
                 </div>
             </form>
         </div>
         
 
-        <button style=display:none; id="delete_invoice_button" onclick="deleteInvoices(this, '<%= NODE_ENV %>')">Delete</button>
+        <button style=display:none; id="delete_invoice_button" onclick="deleteInvoices(this)">Delete</button>
 
         <div id="invoice_table_container">
             <% if (invoices.length > 0) { %>
@@ -76,18 +77,46 @@
 <script src="../../public/service/tableFunctions.js"></script>
 <!-- contains functions to work with URLS -->
 <script src="../../public/service/URLFunctions.js"></script>
+<!-- contains functions to work with forms -->
+<script src="../../public/service/forms.js"></script>
 
 
 <script>
-    
-    //automatically places todays date into the date created section for us
-    //formats it the way we like
-    const loadDate = () => {
+
+    const addInvoice = async (e) => {
+
+        //setting up our variables
         const dateInput = document.getElementById('invoice_date')
-        const date = new Date()
-        const todaysDate = String( Number(date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear())
-        dateInput.value = todaysDate
+        let url
+        let addInvoiceForm = document.getElementById('add_invoice_form')
+        let NODE_ENV = document.getElementsByTagName('body')[0].getAttribute('NODE_ENV')
+        form.hiddenDate(dateInput) //adding our date before we check for uncompleted fields
+        let uncompletedFields = form.getEmptyFields(addInvoiceForm)
+
+        console.log(uncompletedFields)
+
+        //checking if we have empty fields
+        if (uncompletedFields.length > 0) {
+            form.showAtricks(uncompletedFields)
+            return
+        } else {
+            form.displayLoader(e)
+        }
+        
+        //getting our url for our request
+        url = getURL('/invoice/addInvoice')
+
+        //calling our fetch request
+        const response = await fetch(url, {
+            method: "POST",
+            body: form.getData(addInvoiceForm),
+        })
+
+        //reloading the page
+        window.location.reload()
+
     }
+    
 
     //toggles a delete button to remove specific invoices
     const toggledDeleteButton = () => {
@@ -98,7 +127,7 @@
     }
 
     //deletes the checked invoice
-    const deleteInvoices = async (e, env) => {
+    const deleteInvoices = async (e) => {
 
         let url //will hold the url to delete invoices
         const invoiceTable = document.getElementById('invoice_table')
@@ -119,7 +148,7 @@
         for (x = 0; x < checkedRows.length; x++) {
             
             //getting our url based off our NODE_ENV
-            url = getURL(env, '/invoice/deleteInvoice', {
+            url = getURL('/invoice/deleteInvoice', {
                 user: checkedRows[x].getAttribute('invoice')
             })
 

@@ -7,7 +7,7 @@
     <title>Vendors</title>
     <%- include('../partials/styles.ejs') %>
 </head>
-<body>
+<body NODE_ENV="<%= NODE_ENV %>">
 
     <div id="vendor_page_container">
 
@@ -95,7 +95,7 @@
         for (x = 0; x < checkedRows.length; x++) {
 
             //getting the url
-            url = getURL(NODE_ENV, '/vendor/deleteVendor', {
+            url = getURL('/vendor/deleteVendor', {
                 vendor: checkedRows[x].getAttribute('vendor') //vendor _id stashed here
             })
 

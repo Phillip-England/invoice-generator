@@ -3,9 +3,10 @@
 //midURL is our URL without the additions at the end (midURL must contain slashes at start, but not at end)
 //the additions are variables (most commononly _id values)
 //additions must be an object
-const getURL = (NODE_ENV, midURL, additions) => {
+const getURL = (midURL, additions) => {
     let baseURL //will contain the start of our url, which is different for production and development
     let URLWithAdditions //will hold our URL if additions are needed (like _id values attached at the end)
+    let NODE_ENV = document.getElementsByTagName('body')[0].getAttribute('NODE_ENV')
     if (NODE_ENV == 'development'){
         baseURL = 'http://localhost:5000'
     } else {

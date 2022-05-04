@@ -4,9 +4,9 @@ const Expense = require('../models/expenseModel')
 //create a new expense category
 const addCategory = async (req, res, next) => {
     try {
-        const {category_name, category_description} = req.body
+        const {category_name} = req.body
         //checking if form fields were completed
-        if(!category_name || !category_description){
+        if(!category_name){
             throw new Error('Please fill out all the form fields')
         }
         //checking if category already exists
@@ -19,7 +19,6 @@ const addCategory = async (req, res, next) => {
         const newCategory = Category.create({
             user: req.user._id,
             name: category_name,
-            description: category_description
         })
         //checking if category was actually created
         if (!newCategory){
@@ -52,10 +51,8 @@ const categoryPage = async (req, res) => {
 const deleteCategory = async (req, res, next) => {
     try {
         const deletedCategory = await Category.findByIdAndDelete(req.params.category) //getting the category
-        const deletedCategoryExpenses = await Expense.deleteMany({user: req.params.user, category: deletedCategory.name}) //getting all the expenses associated with the category
         res.status(200).json({
             deletedCategory,
-            deletedCategoryExpenses
         })
     } catch (error) {
         next(error)

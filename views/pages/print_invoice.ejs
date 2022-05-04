@@ -1,14 +1,32 @@
-<body id="invoice" onload="printInvoice(this, '<%=NODE_ENV%>', '<%=invoice._id%>')">
-    <h1><%=invoice.name%></h1>
-    <h2><%=invoice.date%></h2>
-    <h3>$<%=invoice.cost%></h3>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Print Invoice</title>
+    <%- include('../partials/styles.ejs') %>
 
-    <table>
+</head>
+<body id="invoice" NODE_ENV="<%=NODE_ENV%>" onload="printInvoice(this, '<%=NODE_ENV%>', '<%=invoice._id%>')">
+
+
+
+    <div id="print_invoice_header">
+        <h3 id="invoice_date"><%=invoice.date%></h3>
+        <h3 id="invoice_name"><%=invoice.name%></h3>
+        <h3 id="invoice_cost">$<%=invoice.cost%></h3>
+    </div>
+
+
+
+
+    <% categories.forEach(category => { %>
 
         <!-- setting our total to 0 (initializing) -->
         <% let total = 0 %>
 
-        <% categories.forEach(category => { %>
+            <table class="print_invoice_table break-after">
 
             <!-- resetting the total at the start of each category -->
             <% total = 0 %> 
@@ -17,7 +35,7 @@
             <!-- running through each expense to see if it even has completed categories -->
             <% expenses.forEach(expense => { %>
                 <!-- if the expense matches the current category and is completed then include the category -->
-                <% if (expense.category == category.name && expense.completed == true) { %>
+                <% if (expense.category == category && expense.completed == true) { %>
                     <% includeCategory = true %> 
                 <% } %>
             <% }) %>
@@ -25,7 +43,7 @@
             <% if (includeCategory == true) { %>
 
                 <tr>
-                    <th><%=category.name%></th>
+                    <th class="title_row" colspan="4"><%=category%></th>
                 </tr>
 
                 <tr>
@@ -39,51 +57,55 @@
                 <% expenses.forEach(expense => { %>
 
                     <!-- if the expense name matches the category name and the expense is completed, then add it to the invoice -->
-                    <% if (expense.category == category.name && expense.completed == true) { %>
+                    <% if (expense.category == category && expense.completed == true) { %>
                         <!-- keep a running total by adding the cost to the total -->
                         <% total = total + expense.cost %>
                         <tr>
                             <td><%= expense.date %></td>
                             <td><%= expense.vendor %> </td>
                             <td><%= expense.description %> </td>
-                            <td><%= expense.cost %> </td>
+                            <td>$<%= expense.cost %> </td>
                         </tr>
                     <% } %>
 
                 <% }) %>
 
-                <tr>
-                    <td></td>
-                    <td></td>
-                    <td></td>
+                <tr class="total_row">
                     <!-- make sure to round the total to the hunderedths place -->
-                    <td><strong><%=Math.round(100*total)/100%></strong></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td><strong>$<%=Math.round(100*total)/100%></strong></td>
                 </tr>
             
             <% } %>
 
+            </table>
+
         <% }) %>
 
-    </table>
 
 </body>
 
+</html>
+
+    
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js" integrity="sha512-GsLlZN/3F2ErC5ifS5QtgpiJtWd43JWSuIgh7mbzZ8zBps+dvLusV+eNQATqgA/HdeKFVgA5v3S/cIrLF7QnIg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<!-- contains functions to work with URLS -->
+<script src="../../public/service/URLFunctions.js"></script>
 
 <script>
-    const printInvoice = (e, env, invoice) => {
+    const printInvoice = (e, env, invoiceID) => {
         //setting up our url
         let url
 
-        //basing url off of node env
-        if (env == 'development'){
-            url = "http://localhost:5000/invoice/" + invoice
-        } else {
-            //production url here
-        }
+        url = getURL('/invoice', {
+            invoiceID: invoiceID
+        })
 
-        //converting page into pdf
-        html2pdf(document.getElementById('invoice'))
+        // converting page into pdf
+        // html2pdf(document.getElementById('invoice'))
         
         //redirecting
         window.location.replace(url)

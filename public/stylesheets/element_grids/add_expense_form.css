@@ -3,3 +3,9 @@
     justify-content:center;
     grid-area:expense_form;
 }
+
+@media screen and (min-width:900px){
+    #add_expense_container{
+        justify-content: start;
+    }   
+}

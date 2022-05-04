@@ -74,9 +74,15 @@ const getInvoiceSinglePage = async (req, res) => {
 
 const generateInvoicePdf = async (req, res, next) => {
     try {
-        const categories = await Category.find({user:req.user._id}) //getting all categories associated with our user
+        let categories = [] //will hold all our categories associated with our expenses
         const invoice = await Invoice.findById(req.params.invoice) //getting the invoice associated with the id in the url (passed from <a> tag)
-        const expenses = await Expense.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice    
+        const expenses = await Expense.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice
+        //looping through our expenses to get our categories
+        for (x = 0; x < expenses.length; x++){
+            if (categories.includes(expenses[x].category) == false){
+                categories.push(expenses[x].category)
+            }
+        }
         res.render('print_invoice.ejs', {
             user: req.user,
             categories: categories,

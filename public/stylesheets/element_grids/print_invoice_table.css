@@ -1,0 +1,14 @@
+.print_invoice_table{
+    margin:1.5em;
+}
+
+
+.total_row td{
+    background-color: white;
+}
+
+.title_row{
+    text-align: left;
+    /* padding-left: 0.5em; */
+    background-color: white;
+}

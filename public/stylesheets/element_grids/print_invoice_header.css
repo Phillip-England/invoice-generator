@@ -1,0 +1,28 @@
+#print_invoice_header{
+    display: grid;
+    margin:1.5em;
+    font-family: var(--secondary-font);
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-areas: 
+        "date name cost"
+    ;
+}
+
+#invoice_date{
+    grid-area: date;
+}
+
+#invoice_name{
+    grid-area: name;
+    text-align: center;
+}
+
+#invoice_cost{
+    grid-area: cost;
+    text-align: right;
+}
+
+#print_invoice_header h2{
+    margin: 0.5em;
+}
+

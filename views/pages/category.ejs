@@ -7,7 +7,7 @@
     <title>Categories</title>
     <%- include('../partials/styles.ejs') %>
 </head>
-<body>
+<body NODE_ENV="<%=NODE_ENV%>">
 
 
     <div id="category_page_container">
@@ -29,7 +29,7 @@
             </form>
         </div>
 
-        <button id='delete_category_button' style='display:none;' onclick="deleteCategory(this, '<%=NODE_ENV%>')">Delete</button>
+        <button id='delete_category_button' style='display:none;' onclick="deleteCategory(this)">Delete</button>
 
         <div id="category_table_container">
             <% if (categories.length > 0) { %>
@@ -75,7 +75,7 @@ const toggleDeleteButton = () => {
         toggleCheckboxButton(deleteCheckboxes, deleteButton, 'flex')
     }
 
-const deleteCategory = async (e, env) => {
+const deleteCategory = async (e) => {
 
     //setting up our variables
     let url
@@ -97,7 +97,7 @@ const deleteCategory = async (e, env) => {
     for (x = 0; x < checkedRows.length; x++) {
             
             //getting our url based off our NODE_ENV
-            url = getURL(env, '/category/deleteCategory', {
+            url = getURL('/category/deleteCategory', {
                 user: checkedRows[x].getAttribute('user'),
                 category: checkedRows[x].getAttribute('category')
             })

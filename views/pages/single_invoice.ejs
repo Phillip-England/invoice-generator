@@ -7,7 +7,7 @@
     <title><%=invoice.name%></title>
     <%- include('../partials/styles.ejs') %>
 </head>
-<body NODE_ENV="<%=NODE_ENV%>">
+<body NODE_ENV="<%=NODE_ENV%>" page="single_invoice_page">
     
     <div id="single_invoice_page_container">
 
@@ -29,30 +29,32 @@
         <section id="add_expense_container">
             <form id="add_expense_form" class="form_styles_general" action=<%="/expense/addExpense/"+ user._id + '/' + invoice._id%> method="POST">
                 <h2 class="form_header">Add an Expense</h2>
-                <label class="form_label" for="expense_date">Expense Date</label>
-                <input class="form_input" type="text" name="expense_date" placeholder="01/01/2022">
-                <label class="form_label" for="expense_category">Expense Category</label>
-                <select class="form_input" name="expense_category" id="expense_category">
+                <label class="form_label" for="expense_date">Date<span class="form_astrick">*</span></label>
+                <input id="expense_date" class="form_input" type="text" name="expense_date" placeholder="01/01/2022">
+                <label class="form_label" for="expense_category">Category<span class="form_astrick">*</span></label>
+                <select id="expense_category" class="form_input" name="expense_category" id="expense_category">
                     <option value=""></option>
                     <% categories.forEach(category => { %>
                         <option value="<%=category.name%>"><%=category.name%></option>
                     <% }) %>
                 </select>
-                <label class="form_label" for="expense_name">Vendor</label>
-                <select class="form_input" name="expense_vendor" id="expense_vendor">
+                <label class="form_label" for="expense_name">Vendor<span class="form_astrick">*</span></label>
+                <select id="expense_vendor" class="form_input" name="expense_vendor" id="expense_vendor">
                     <option value=""></option>
                     <% vendors.forEach(vendor => { %>
                         <option value="<%=vendor.name%>"><%=vendor.name%></option>
                     <% }) %>
                 </select>
-                <label class="form_label" for="expense_description">Expense Description</label>
-                <input class="form_input" type="text" name="expense_description">
-                <label class="form_label" for="expense_cost">Cost</label>
-                <input class="form_input" type="text" name="expense_cost">
+                <label class="form_label" for="expense_description">Description<span class="form_astrick">*</span></label>
+                <input id="expense_description" class="form_input" type="text" name="expense_description">
+                <label class="form_label" for="expense_cost">Cost<span class="form_astrick">*</span></label>
+                <input id="expense_cost" class="form_input" type="text" name="expense_cost">
                 <div class="form_button_container">
-                    <button class="form_button">
+                    <button type="button" onclick="addExpense(this, '<%= user._id %>', '<%= invoice._id %>')" class="form_button">
                         <p class="form_button_text">Add</p>
+                        <i class="fa-solid fa-money-check"></i>
                     </button>
+                    <div class="loading_icon"></div>
                 </div>
             </form>
         </section>
@@ -280,9 +282,43 @@
 <script src="../../public/service/tableFunctions.js"></script>
 <!-- contains functions to work with URLS -->
 <script src="../../public/service/URLFunctions.js"></script>
+<!-- contains functions to work with forms -->
+<script src="../../public/service/forms.js"></script>
 
 
 <script>
+
+    const addExpense = async (e, userID, invoiceID) => {
+
+        //setting up our variables
+        let addExpenseForm = document.getElementById('add_expense_form')
+        let NODE_ENV = document.getElementsByTagName('body')[0].getAttribute('NODE_ENV')
+        let url
+        let uncompletedFields = form.getEmptyFields(addExpenseForm)
+
+        if (uncompletedFields.length > 0) {
+            form.showAtricks(uncompletedFields)
+            return
+        } else {
+            form.displayLoader(e)
+        }
+        
+        //getting our url for our request
+        url = getURL('/expense/addExpense', {
+                userID: userID,
+                invoiceID: invoiceID,
+        })
+
+        //calling our fetch request
+        const response = await fetch(url, {
+            method: "POST",
+            body: form.getData(addExpenseForm),
+        })
+
+        //reloading the page
+        window.location.reload()
+
+    }
 
     const toggleMobileExpenseDeleteButton = (e, expenseID) => {
         toggle.simple({
@@ -329,7 +365,7 @@
         e.parentElement.parentElement.parentElement.remove()
 
         //getting our url for our fetch request
-        url = getURL(NODE_ENV, '/expense/deleteExpense', {
+        url = getURL('/expense/deleteExpense', {
                 expenseID: expenseID
         })
 
@@ -449,7 +485,7 @@
         for (x = 0; x < checkedRows.length; x++) {
             
             //getting our url based off our NODE_ENV
-            url = getURL(env, '/expense/deleteExpense', {
+            url = getURL('/expense/deleteExpense', {
                 expense: checkedRows[x].getAttribute('expense')
             })
 

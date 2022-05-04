@@ -1,10 +1,13 @@
 const User = require('../models/userModel')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
+const Invoice = require('../models/invoiceModel')
 
 //getting the login page
 const loginPage = (req, res) => {
-    res.render('login.ejs')
+    res.render('login.ejs', {
+        NODE_ENV: process.env.NODE_ENV
+    })
 }
 
 //getting the registration page
@@ -14,11 +17,14 @@ const registerPage = (req, res) => {
 
 //getting the homepage if user is logged in
 //if not, sending them back to login page
-const homePage = (req, res) => {
+const homePage = async (req, res) => {
     if (req.user) {
-        res.render('home.ejs', {
+        const invoices = await Invoice.find({user:req.user._id}) // getting our user invoice
+        res.render('invoice.ejs', {
             user: req.user,
-            csrfToken: req.csrfToken() //including csrf token in our homepage request
+            invoices: invoices,
+            csrfToken: req.csrfToken(),
+            NODE_ENV: process.env.NODE_ENV
         })
     } else {
         res.render('login.ejs')

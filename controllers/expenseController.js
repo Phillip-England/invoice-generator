@@ -4,16 +4,17 @@ const Invoice = require('../models/invoiceModel')
 
 const addExpense = async (req, res, next) => {
     try {
+        console.log(req.body)
         //grabbing data from the client form
         const {
-            expense_category,
             expense_date,
+            expense_category,
             expense_vendor,
             expense_description,
             expense_cost,
         } = req.body
         //checking if all the form fields were filled out
-        if (!expense_category || !expense_date || !expense_vendor || !expense_description || !expense_cost){
+        if (!expense_date || !expense_category || !expense_vendor || !expense_description || !expense_cost){
             throw new Error('Please fill out all of the form fields')
         }
         //getting the invoice the expense is associated with
@@ -37,6 +38,7 @@ const addExpense = async (req, res, next) => {
         res.status(200)
         res.redirect(('/invoice/' + req.params.invoice))
     } catch (error) {
+        console.log(error.message)
         next(error)
     }
 }

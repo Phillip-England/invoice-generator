@@ -9,3 +9,15 @@
         "expense_table"
     ;
 }
+
+@media screen and (min-width:900px){
+    #single_invoice_page_container{
+        grid-template-columns: 1fr 1fr;
+        grid-template-areas: 
+            "navbar navbar"
+            "invoice_header expense_form"
+            "mobile_expense_table mobile_expense_table"
+            "expense_table expense_table"
+        ;
+    }   
+}

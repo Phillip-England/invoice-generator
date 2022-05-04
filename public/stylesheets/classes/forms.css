@@ -80,3 +80,8 @@ select{
     align-items: center;
     font-family:var(--main-font);
 }
+
+.form_astrick{
+    color:var(--sixth-color);
+    display:none;
+}
