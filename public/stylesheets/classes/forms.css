@@ -6,7 +6,8 @@
     border-radius: 10px;
     background-color: var(--second-color);
     color:var(--third-color);
-    border:solid var(--third-color) 1px;
+    box-shadow:var(--shadow-card);
+    border-top: var(--top-border);
     margin: 0.5em;
     padding: 0.5em;
 }

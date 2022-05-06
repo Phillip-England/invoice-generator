@@ -19,15 +19,17 @@
                 <h3 class="header_invoice_date"><%=invoice.date%></h3>
                 <p class="header_invoice_description"><%=invoice.description%></p>
                 <h4 class="header_invoice_cost" id="invoice_cost">$<%=invoice.cost%></h4>
-                    <button class="invoice_print_button">
-                        <a href=<%= 'http://localhost:5000/invoice/generateInvoicePdf/' + invoice._id %>>Print</a>
-                    </button>
-                <button id="expense_delete_button" style="display:none;" onclick="deleteExpenses(this, '<%=NODE_ENV%>')">Delete</button>
+                <a class="invoice_print_link" href=<%= 'http://localhost:5000/invoice/generateInvoicePdf/' + invoice._id %>>
+                    <i class="fa-solid fa-print fa-lg"></i>
+                </a>
+                <button id="expense_delete_button" style="display:none;" onclick="deleteExpenses(this, '<%=NODE_ENV%>')">
+                    <i class="fa-solid fa-trash-can fa-xl"></i>
+                </button>
             </div>
         </section>
 
         <section id="add_expense_container">
-            <form id="add_expense_form" class="form_styles_general" action=<%="/expense/addExpense/"+ user._id + '/' + invoice._id%> method="POST">
+            <form id="add_expense_form" class="form_styles_general" onsubmit="event.preventDefault()">
                 <h2 class="form_header">Add an Expense</h2>
                 <label class="form_label" for="expense_date">Date<span class="form_astrick">*</span></label>
                 <input id="expense_date" class="form_input" type="text" name="expense_date" placeholder="01/01/2022">
@@ -50,11 +52,13 @@
                 <label class="form_label" for="expense_cost">Cost<span class="form_astrick">*</span></label>
                 <input id="expense_cost" class="form_input" type="text" name="expense_cost">
                 <div class="form_button_container">
-                    <button type="button" onclick="addExpense(this, '<%= user._id %>', '<%= invoice._id %>')" class="form_button">
+                    <button type="submit" onclick="addExpense(this, '<%= user._id %>', '<%= invoice._id %>')" class="form_button">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-money-check"></i>
                     </button>
-                    <div class="loading_icon"></div>
+                    <div class="loading_icon_container" id="<%=invoice._id + 'loading_icon_container'%>">
+                        <div id="<%=invoice._id + 'loading_icon'%>" class="loading_icon"></div>
+                    </div>
                 </div>
             </form>
         </section>
@@ -63,13 +67,15 @@
 
             <% if (expenses.length > 0) { %>
 
-                <table class="mobile_expense_table">
 
-                    <% expenses.forEach(expense => { %>
+                <% expenses.forEach(expense => { %>
+
+                    <table class="mobile_expense_table">
+                    
 
                         <tbody>
 
-                            <form action=<%="/expense/updateExpense/" + invoice._id + '/' + expense._id%> method='POST'>
+                            <form id="<%=expense._id + 'mobile_expense_form'%>" onsubmit='event.preventDefault()'>
 
                                 <tr class="mobile_expense_main_row" onclick="toggleMobileTable(this, '<%=expense._id%>')">
                                     <th>
@@ -90,14 +96,29 @@
                                 <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
                                     <td>Date</td>
                                     <td colspan="3">
-                                        <input class='expense_input' type="text" name="expense_date" value="<%=expense.date%>">
+                                        <input class='expense_input' onclick="toggleMobileSaveButton('<%=expense._id%>')" type="text" name="expense_date" value="<%=expense.date%>">
+                                    </td>
+                                </tr>
+
+                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
+                                    <td>Invoice</td>
+                                    <td colspan="3">
+                                        <select onclick="toggleMobileSaveButton('<%=expense._id%>')" name="expense_invoice">
+                                            <option value="<%=invoice.name%>"><%=invoice.name%></option>
+                                            <% invoices.forEach(inv => { %>
+                                                <!-- omit the current category from the lisitng -->
+                                                <%if (inv.name != invoice.name) { %>
+                                                    <option value="<%=inv.name%>"><%=inv.name%></option>
+                                                <% } %>
+                                            <% }) %>
+                                        </select>
                                     </td>
                                 </tr>
 
                                 <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
                                     <td>Category</td>
                                     <td colspan="3">
-                                        <select name="expense_category">
+                                        <select onclick="toggleMobileSaveButton('<%=expense._id%>')" name="expense_category">
                                             <option value="<%=expense.category%>"><%=expense.category%></option>
                                             <% categories.forEach(category => { %>
                                                 <!-- omit the current category from the lisitng -->
@@ -112,7 +133,7 @@
                                 <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
                                     <td>Vendor</td>
                                     <td colspan="3">
-                                        <select name="expense_vendor">
+                                        <select onclick="toggleMobileSaveButton('<%=expense._id%>')" name="expense_vendor">
                                             <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
                                             <% vendors.forEach(vendor => { %>
                                                 <!-- omit the current category from the lisitng -->
@@ -127,14 +148,14 @@
                                 <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
                                     <td>Description</td>
                                     <td colspan="3">
-                                        <input class='expense_input_description' type="text" name="expense_description" value="<%=expense.description%>">
+                                        <input onclick="toggleMobileSaveButton('<%=expense._id%>')" class='expense_input_description' type="text" name="expense_description" value="<%=expense.description%>">
                                     </td>
                                 </tr>
 
                                 <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
                                     <td>Cost</td>
                                     <td colspan="3">
-                                        <input class='expense_input_cost' type="text" name="expense_cost" value="<%=expense.cost%>">
+                                        <input onclick="toggleMobileSaveButton('<%=expense._id%>')" class='expense_input_cost' type="text" name="expense_cost" value="<%=expense.cost%>">
                                     </td>
                                     
                                 </tr>
@@ -143,9 +164,9 @@
                                     <td>Complete</td>
                                     <td colspan="3">
                                         <% if (expense.completed == true) { %>
-                                            <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
+                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>')" type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
                                         <% } else { %>
-                                            <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
+                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>')" type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
                                         <% } %>
                                     </td>
                                 </tr>
@@ -157,9 +178,14 @@
                                     </td>
                                 </tr>
 
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td colspan="4">
-                                        <button type="submit" class="mobile_save_button" id=<%=expense._id%>>Save</button>
+                                <tr id="<%=expense._id + 'mobile_expense_save_button'%>" style="display:none;">
+                                    <td colspan="4" class="mobile_save_button_cell">
+                                        <button type="submit" class="mobile_save_button" onclick="updateMobileExpense(this, '<%=invoice._id%>', '<%=expense._id%>')">
+                                            <i class="fa-solid fa-floppy-disk"></i>
+                                        </button>
+                                        <div id="<%= expense._id + 'loading_container' %>" class="loading_icon_container base_padding">
+                                            <div id="<%= expense._id + 'loading_icon'%>" class="loading_icon"></div>
+                                        </div>
                                     </td>
                                 </tr>
 
@@ -167,16 +193,18 @@
 
                             <tr id="<%=expense._id + 'mobile_expense_delete_button'%>" style="display:none;">
                                 <td colspan="4">
-                                    <button type="button" class="mobile_delete_button " onclick="deleteMobileExpense(this, '<%=expense._id%>')">Delete</button>
+                                    <button type="button" class="mobile_delete_button " onclick="deleteMobileExpense(this, '<%=expense._id%>')">
+                                        <i class="fa-solid fa-trash-can"></i>
+                                    </button>
                                 </td>
                             </tr>
                         
                         </tbody>
 
-                    <% }) %>
+                    </table>
 
-                </table>
-
+                <% }) %>
+                
             <% } %>
 
              
@@ -192,20 +220,33 @@
                 <table id="expense_table">
                     <tr>
                         <th>Date</th>
+                        <th>Invoice</th>
                         <th>Category</th>
                         <th>Vendor</th>
                         <th>Description</th>
                         <th>Cost</th>
                         <th id="complete_column">Complete</th>
                         <th id="delete_column">Delete</th>
-                        <th>Modify</th>
+                        <th>Save</th>
                     </tr>
                     <% expenses.forEach(expense => { %>
                         <tr class="expense_info_row" expense="<%=expense._id%>">
-                            <form action=<%="/expense/updateExpense/" + invoice._id + '/' + expense._id%> method='POST'>
+                            <form id="<%=expense._id + 'form'%>" onsubmit='event.preventDefault()'>
 
                                 <td>
                                     <input class='expense_input' type="text" name="expense_date" value="<%=expense.date%>">
+                                </td>
+
+                                <td>
+                                    <select name="expense_invoice">
+                                        <option value="<%=invoice.name%>"><%=invoice.name%></option>
+                                        <% invoices.forEach(inv => { %>
+                                            <!-- omit the current category from the lisitng -->
+                                            <%if (inv.name != invoice.name) { %>
+                                                <option value="<%=inv.name%>"><%=inv.name%></option>
+                                            <% } %>
+                                        <% }) %>
+                                    </select>
                                 </td>
 
                                 <td>
@@ -251,9 +292,13 @@
                                 <td>
                                     <input type="checkbox" class="expense_delete_checkbox" onclick="toggleExpenseDeleteButton(this)">
                                 </td>
-
-                                <td>
-                                    <button type="submit" id=<%=expense._id%>>Save</button>
+                                <td class="save_expense_container">
+                                    <button type="submit" id=<%=expense._id%> onclick="updateExpense(this, '<%= invoice._id %>', '<%=expense._id%>')">
+                                        <i class="fa-solid fa-floppy-disk"></i>
+                                    </button>
+                                    <div id="<%=expense._id + 'loading_container'%>" class="loading_icon_container">
+                                        <div id="<%=expense._id + 'loading_icon'%>" class="small_loading_icon"></div>
+                                    </div>
                                 </td>
 
                             </form>
@@ -292,15 +337,16 @@
 
         //setting up our variables
         let addExpenseForm = document.getElementById('add_expense_form')
-        let NODE_ENV = document.getElementsByTagName('body')[0].getAttribute('NODE_ENV')
         let url
         let uncompletedFields = form.getEmptyFields(addExpenseForm)
+        let loadingIcon = document.getElementById(invoiceID + 'loading_icon')
+        let loadingIconContainer = document.getElementById(invoiceID + 'loading_icon_container')
 
         if (uncompletedFields.length > 0) {
-            form.showAtricks(uncompletedFields)
+            form.showAstricks(uncompletedFields)
             return
         } else {
-            form.displayLoader(e)
+            form.displayLoader(e, loadingIcon, loadingIconContainer)
         }
         
         //getting our url for our request
@@ -320,10 +366,85 @@
 
     }
 
+    const updateExpense = async (e, invoiceID, expenseID) => {
+
+        //setting up our variables
+        const updateExpenseForm = document.getElementById(expenseID + 'form')
+        const loadingIcon = document.getElementById(expenseID+'loading_icon')
+        const loadingContainer = document.getElementById(expenseID+'loading_container')
+        let url
+
+        //displaying our loading icon
+        form.displayLoader(e, loadingIcon, loadingContainer)
+
+        //getting our url for fetch
+        url = getURL('/expense/updateExpense', {
+            invoiceID: invoiceID,
+            expenseID: expenseID,
+        })
+
+        //calling our fetch request
+        const response = await fetch(url, {
+            method: "POST",
+            body: form.getData(updateExpenseForm),
+        })
+
+        //reloading the page
+        window.location.reload()
+
+    }
+
+    const updateMobileExpense = async (e, invoiceID, expenseID) => {
+
+        //setting up our variables
+        const updateMobileExpenseForm = document.getElementById(expenseID + 'mobile_expense_form')
+        const loadingIcon = document.getElementById(expenseID + 'loading_icon')
+        const loadingContainer = document.getElementById(expenseID+'loading_container')
+        let url
+
+        //display loader
+        form.displayLoader(e, loadingIcon, loadingContainer)
+
+        //getting our url
+        url = getURL('/expense/updateExpense', {
+            invoiceID: invoiceID,
+            expenseID: expenseID,
+        })
+
+        // //calling our fetch request
+        // const response = await fetch(url, {
+        //     method: "POST",
+        //     body: form.getData(updateMobileExpenseForm),
+        // })
+
+        // //reloading the page
+        // window.location.reload()
+
+    }
+
+    const toggleMobileSaveButton = (expenseID) => {
+
+        deleteCheckbox = document.getElementById(expenseID + 'mobile_expense_delete_checkbox')
+
+        //unchecking the delete checkbox if it is checked to toggle off delete button
+        if (deleteCheckbox.checked){
+            deleteCheckbox.click()
+        }
+
+        toggle.oneWay('', {
+            saveButton: document.getElementById(expenseID + 'mobile_expense_save_button')
+        })
+    }
+
     const toggleMobileExpenseDeleteButton = (e, expenseID) => {
         toggle.simple({
             deleteButton: document.getElementById(expenseID + 'mobile_expense_delete_button')
         })
+        if (document.getElementById(expenseID + 'mobile_expense_save_button').style.display != 'none'){
+            toggle.simple({
+                saveButton: document.getElementById(expenseID + 'mobile_expense_save_button')
+            })
+        }
     }
 
     const toggleMobileTable = (e, expenseID) => {
@@ -332,12 +453,30 @@
         let expenseChildren = e.children
         let lastChild = expenseChildren[expenseChildren.length-1]
         let deleteCheckbox = document.getElementById(expenseID + 'mobile_expense_delete_checkbox')
+        let mobileExpenseSaveButton = document.getElementById(expenseID + 'mobile_expense_save_button')
+        let cssRoot = document.querySelector(":root")
+        let cssVariables = getComputedStyle(cssRoot)
+        let firstColor = cssVariables.getPropertyValue('--first-color')
+        let thirdColor = cssVariables.getPropertyValue('--second-color')
 
         //toggling which direction the arrow is pointing
         toggle.simple({
             upArrow: lastChild.children[0],
             downArrow: lastChild.children[1],
         })
+
+        if (mobileExpenseSaveButton.style.display != 'none'){
+            toggle.simple({
+                saveButton: mobileExpenseSaveButton
+            })
+        }
+
+        //changing the background color on click
+        for (x = 0; x < e.children.length; x++){
+            toggle.backgroundColor(firstColor, thirdColor, {
+                e: e.children[x],
+            })
+        }    
 
         //toggling all rows in associated with the expense by their classname
         toggle.simpleArray(document.getElementsByClassName(expenseID + 'more_info'))
@@ -349,8 +488,6 @@
                 deleteButton: document.getElementById(expenseID + 'mobile_expense_delete_button')
             })
         }
-
-
     }
 
     const deleteMobileExpense = async (e, expenseID) => {

@@ -4,6 +4,24 @@
     grid-template-areas: 
         "navbar"
         "add_vendor_form"
+        "delete"
         "vendor_table"
     ;
+}
+
+#wrapper_delete_vendor_button{
+    grid-area: delete;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#vendor_delete_button{
+    background-color: var(--second-color);
+    padding:1em;
+    width:fit-content;
+}
+
+#vendor_delete_button:hover{
+    color:var(--sixth-color);
 }

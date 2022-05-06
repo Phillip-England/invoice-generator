@@ -3,19 +3,8 @@ table{
     max-width: 425px;
     width:100%;
     border-collapse: collapse;
+    box-shadow: var(--shadow-card);
     /* padding: 0.5em; */
-}
-
-tr:nth-child(odd){
-    background-color: var(--fourth-color);
-}
-
-tr:nth-child(odd) select{
-    background-color: var(--fourth-color);
-}
-
-tr:nth-child(odd) input{
-    background-color: var(--fourth-color);
 }
 
 th{
@@ -28,9 +17,9 @@ th{
 
 td{
     font-family: var(--main-font);
-    /* margin:0.5em; */
     text-align: center;
-    /* border-radius: 10px; */
 }
 
-
+td:hover{
+    box-shadow: var(--shadow-card)
+}

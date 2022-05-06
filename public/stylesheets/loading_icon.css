@@ -6,7 +6,32 @@
     border:solid var(--fourth-color) 4px;
     border-top:solid var(--first-color) 4px;
     animation: loading 1s linear infinite;
+    font-size: 0px;
 }
+
+.small_loading_icon{
+    display: none;
+    height:15px;
+    width:15px;
+    border-radius: 50%;
+    border-top:solid var(--first-color) 3px;
+    animation: loading 1s linear infinite;
+    font-size: 0px;
+}
+
+.loading_icon_container{
+    display: none;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+
+}
+
+
+.base_padding{
+    padding:1em;
+}
+
 
 @keyframes loading {
     0% {

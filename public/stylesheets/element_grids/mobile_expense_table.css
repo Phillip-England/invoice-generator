@@ -27,37 +27,61 @@
     font-size: 1.25rem;   
 }
 
+#mobile_expense_table_container table{
+    box-shadow: var(--shadow-card);  
+    border-top: var(--top-border);
+}
+
 .mobile_save_button{
-    background-color: var(--fifth-color);
+    cursor: pointer;
+    padding: 0.5em;
+    background-color: var(--second-color);
 }
 
 .mobile_save_button:hover{
-    color:var(--fifth-color);
-    background-color: var(--third-color);
+    color:var(--first-color);
 }
 
 .mobile_delete_button{
-    background-color: var(--sixth-color);
+    cursor: pointer;
+    padding: 0.5em;
+    background-color: var(--second-color);
 }
 
 .mobile_delete_button:hover{
     color:var(--sixth-color);
-    background-color: var(--third-color);
 }
 
 .mobile_expense_table{
     max-width: 425px;
 }
 
+.mobile_expense_table td, input, select{
+    font-size: 1rem
+}
 
-.mobile_expense_table tr{
-    margin: 0.5em;
+.mobile_expense_table td:hover{
+    background-color: var(--fourth-color);
+    box-shadow:none;
+}
+
+.mobile_expense_table input:hover{
+    background-color: var(--fourth-color);
+    box-shadow:none;
+
+}
+
+.mobile_expense_table select:hover{
+    background-color: var(--fourth-color);
+    box-shadow:none;
+
 }
 
 .mobile_expense_table input{
     width:100%;
     text-align: center;
     font-family: var(--main-font);
+    background-color: white;
 }
 
 .mobile_expense_table select{
@@ -71,7 +95,16 @@
     font-size: 1.25rem;
 }
 
+.mobile_expense_main_row th{
+    color:var(--third-color);
+    background-color:var(--second-color);
+}
+
 .mobile_expense_main_row:hover th{
-    color:var(--first-color);
-    background-color:var(--third-color);
+    color:var(--third-color)!important;
+    background-color:var(--first-color)!important;
+}
+
+.mobile_save_button_cell:hover{
+    background-color: var(--second-color);
 }

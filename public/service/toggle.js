@@ -11,6 +11,13 @@ const toggle = {
         })    
     },
 
+    //toggles elements display but will not allow it to toggle back
+    oneWay: (display, elements) => {
+        Object.values(elements).forEach(val => {
+            val.style.display = display
+        }) 
+    },
+
     //toggles a single element from the given display and back
     pickStyle: (element, display) => {
         if (element.style.display != display){
@@ -29,6 +36,16 @@ const toggle = {
                 elements[x].style.display = 'none'
             }
         }
+    },
+
+    backgroundColor: (firstColor, secondColor, elements) => {
+        Object.values(elements).forEach(val => {
+            if (val.style.backgroundColor == firstColor){
+                val.style.backgroundColor = secondColor
+            } else {
+                val.style.backgroundColor = firstColor
+            }
+        }) 
     }
 
 

@@ -14,17 +14,19 @@
 /* variables */
 
 :root {
-    --first-color: #07eb84;
-    --second-color: white;
-    --third-color:black;
-    --fourth-color:#e6e6e6;
-    --fifth-color:#00AEFF;
-    --sixth-color:#FF4748;
+    --first-color:rgb(7, 235, 132);
+    --second-color:rgb(255, 255, 255);
+    --third-color:rgb(0, 0, 0);
+    --fourth-color:rgb(230, 230, 230);
+    --fifth-color:rgb(0, 174, 255);
+    --sixth-color:rgb(255, 71, 72);
     --main-font: 'EB Garamond', serif;
     --secondary-font: 'Roboto', sans-serif;
     --light-font-weight:100;
     --medium-font-weight:300;
     --heavy-font-weight:500;
+    --shadow-card:1px 1px 10px gray;
+    --top-border:solid var(--first-color) 3px;
 }
 
 /* colors */

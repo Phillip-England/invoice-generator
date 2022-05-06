@@ -30,7 +30,7 @@ const form = {
     //takes in uncompleted form fields as an array and displays their astricks
     //this assumes the form label is the previous element of our input tag
     //it also assumes the astrick is embedded as a child of the label tag
-    showAtricks: (uncompletedFields) => {
+    showAstricks: (uncompletedFields) => {
 
         //looping through our uncompleted fields
         for (x = 0; x < uncompletedFields.length; x++){
@@ -49,13 +49,21 @@ const form = {
     },
 
     //this assumse the loader is the next element sibling of the button
-    displayLoader: (button) => {
+    displayLoader: (button, loader, container) => {
+
         //toggling our button off
         toggle.simple({
             button: button,
         })
+        
         //toggling our loader on
-        toggle.pickStyle(button.nextElementSibling, 'block')
+        toggle.pickStyle(loader, 'block')
+
+        //toggling our container on
+        if (container){
+            toggle.pickStyle(container, 'flex')
+
+        }
     },
 
     //gets todays date and formats it a specific way then places the value into a hidden input

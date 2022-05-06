@@ -4,6 +4,24 @@
     grid-template-areas: 
         'navbar'
         'add_category_form'
+        'delete'
         'category_table'
     ;
+}
+
+#wrapper_delete_category_button{
+    grid-area: delete;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#delete_category_button{
+    background-color: var(--second-color);
+    padding:1em;
+    width:fit-content;
+}
+
+#delete_category_button:hover{
+    color:var(--sixth-color);
 }

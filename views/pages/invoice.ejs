@@ -14,7 +14,7 @@
         <%- include('../partials/navbar.ejs') %>
 
         <div id="invoice_form_container">
-            <form id='add_invoice_form' class="form_styles_general" action="/invoice/addInvoice" method="POST">
+            <form id='add_invoice_form' class="form_styles_general" onsubmit="event.preventDefault()">
                 <h2 class="form_header">Add a New Invoice</h2>
                 <label class="form_label" for="invoice_name">Invoice Name<span class="form_astrick">*</span></label>
                 <input class="form_input" type="text" name="invoice_name">
@@ -23,7 +23,7 @@
                 <input type="hidden" name="invoice_date" id="invoice_date">
                 <input type="hidden" name="_csrf" value=<%=csrfToken%>>
                 <div class="form_button_container">
-                    <button type='button' class="form_button" onclick="addInvoice(this)">
+                    <button type='submit' class="form_button" onclick="addInvoice(this)">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-file-invoice-dollar"></i>
                     </button>
@@ -89,18 +89,16 @@
         const dateInput = document.getElementById('invoice_date')
         let url
         let addInvoiceForm = document.getElementById('add_invoice_form')
-        let NODE_ENV = document.getElementsByTagName('body')[0].getAttribute('NODE_ENV')
         form.hiddenDate(dateInput) //adding our date before we check for uncompleted fields
         let uncompletedFields = form.getEmptyFields(addInvoiceForm)
-
-        console.log(uncompletedFields)
+        let loadingIcon = document.getElementsByClassName('loading_icon')
 
         //checking if we have empty fields
         if (uncompletedFields.length > 0) {
-            form.showAtricks(uncompletedFields)
+            form.showAstricks(uncompletedFields)
             return
         } else {
-            form.displayLoader(e)
+            form.displayLoader(e, loadingIcon[0])
         }
         
         //getting our url for our request

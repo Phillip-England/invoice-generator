@@ -15,21 +15,26 @@
         <%- include('../partials/navbar.ejs') %>
 
         <div id="category_form_container">
-            <form id="category_form" class="form_styles_general" action="/category/addCategory" method="POST">
+            <form id="add_category_form" class="form_styles_general" onsubmit="event.preventDefault()">
                 <h2 class="form_header">Add an Expense Category</h2>
-                <label class="form_label" for="category_name">Category Name</label>
+                <label class="form_label" for="category_name">Category Name<span class="form_astrick">*</span></label>
                 <input class="form_input" type="text" name="category_name">
                 <input type="hidden" name="_csrf" value=<%=csrfToken%>>
                 <div class="form_button_container">
-                    <button class="form_button">
+                    <button class="form_button" type="submit" onclick="addCategory(this)">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-boxes-stacked"></i>
                     </button>
+                    <div class="loading_icon"></div>
                 </div>
             </form>
         </div>
 
-        <button id='delete_category_button' style='display:none;' onclick="deleteCategory(this)">Delete</button>
+        <div id="wrapper_delete_category_button">
+            <button id='delete_category_button' style='display:none;' onclick="deleteCategory(this)">
+                <i class="fa-solid fa-trash-can fa-lg"></i>
+            </button>
+        </div>
 
         <div id="category_table_container">
             <% if (categories.length > 0) { %>
@@ -63,9 +68,38 @@
 <script src="../../public/service/tableFunctions.js"></script>
 <!-- contains functions to work with URLS -->
 <script src="../../public/service/URLFunctions.js"></script>
+<!-- contains functions to work with forms -->
+<script src="../../public/service/forms.js"></script>
     
 
 <script>
+
+const addCategory = async (e) => {
+    const addCategoryForm = document.getElementById('add_category_form')
+    let url
+    let uncompletedFields = form.getEmptyFields(addCategoryForm)
+    let loadingIcon = document.getElementsByClassName('loading_icon')
+
+    if (uncompletedFields.length > 0) {
+        form.showAstricks(uncompletedFields)
+        return
+    } else {
+        form.displayLoader(e, loadingIcon[0])
+    }
+    
+    //getting our url for our request
+    url = getURL('/category/addCategory')
+
+    //calling our fetch request
+    const response = await fetch(url, {
+        method: "POST",
+        body: form.getData(addCategoryForm),
+    })
+
+    //reloading the page
+    window.location.reload()
+
+}
 
 //toggles a delete button to remove specific invoices
 const toggleDeleteButton = () => {
