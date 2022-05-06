@@ -369,7 +369,7 @@
     const updateExpense = async (e, invoiceID, expenseID) => {
 
         //setting up our variables
-        const updateExpenseForm = document.getElementById(expenseID + 'form')
+        let updateExpenseForm = document.getElementById(expenseID + 'form')
         const loadingIcon = document.getElementById(expenseID+'loading_icon')
         const loadingContainer = document.getElementById(expenseID+'loading_container')
         let url
