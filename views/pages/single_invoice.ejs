@@ -164,9 +164,9 @@
                                     <td>Complete</td>
                                     <td colspan="3">
                                         <% if (expense.completed == true) { %>
-                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>')" type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
+                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>'), completeExpense(this, '<%=expense._id%>', '<%=invoice._id%>')" type="checkbox" name="expense_completed" class='expense_complete_checkbox' checked>
                                         <% } else { %>
-                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>')" type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
+                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>'), completeExpense(this, '<%=expense._id%>', '<%=invoice._id%>')" type="checkbox" name="expense_completed" class="expense_complete_checkbox">
                                         <% } %>
                                     </td>
                                 </tr>
@@ -283,9 +283,9 @@
 
                                 <td>
                                     <% if (expense.completed == true) { %>
-                                        <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')" checked>
+                                        <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=expense._id%>', '<%=invoice._id%>')" checked>
                                     <% } else { %>
-                                        <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=NODE_ENV%>', '<%=expense._id%>', '<%=invoice._id%>')">
+                                        <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=expense._id%>', '<%=invoice._id%>')">
                                     <% } %>
                                 </td>
 
@@ -411,14 +411,14 @@
             expenseID: expenseID,
         })
 
-        // //calling our fetch request
-        // const response = await fetch(url, {
-        //     method: "POST",
-        //     body: form.getData(updateMobileExpenseForm),
-        // })
+        //calling our fetch request
+        const response = await fetch(url, {
+            method: "POST",
+            body: form.getData(updateMobileExpenseForm),
+        })
 
-        // //reloading the page
-        // window.location.reload()
+        //reloading the page
+        window.location.reload()
 
     }
 
@@ -550,18 +550,16 @@
 
     setExpenseInputWidth()
 
-    const completeExpense = async (e, env, expense, invoice) => {
+    const completeExpense = async (expenseID, invoiceID) => {
         
         //setting up our variables
         let url
 
-
         //defining our url based off of the NODE_ENV
-        if (env == 'development'){
-            url = 'http://localhost:5000/expense/completeExpense/' + invoice + '/' + expense
-        } else {
-            //enter production url here
-        }
+        url = getURL('expense/completeExpense', {
+            invoiceID: invoiceID,
+            expenseID: expenseID,
+        })
 
         //calling our fetch statement to complete the expense
         try {
