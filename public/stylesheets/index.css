@@ -83,3 +83,21 @@
 .test_border{
     border:solid black 1px;
 }
+
+.flex_left_align{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+}
+
+.flex_center_align{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex_right_align{
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}

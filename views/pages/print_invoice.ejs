@@ -13,9 +13,20 @@
 
 
     <div id="print_invoice_header">
-        <h3 id="invoice_date"><%=invoice.date%></h3>
-        <h3 id="invoice_name"><%=invoice.name%></h3>
-        <h3 id="invoice_cost">$<%=invoice.cost%></h3>
+
+
+        <div class="flex_left_align">
+            <h3 id="invoice_date"><%=invoice.date%></h3>
+        </div>
+
+        <div class="flex_center_align">
+            <h3 id="invoice_name"><%=invoice.name%></h3>
+        </div>
+
+        <div class="flex_right_align">
+            <h3 id="invoice_cost">$<%=invoice.cost%></h3>
+        </div>
+
     </div>
 
 
