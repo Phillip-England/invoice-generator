@@ -22,7 +22,3 @@
     padding:1em;
     width:fit-content;
 }
-
-#vendor_delete_button:hover{
-    color:var(--sixth-color);
-}

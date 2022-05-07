@@ -11,13 +11,17 @@
 
 #delete_invoice_button{
     background-color: var(--second-color);
-    color:black;
     padding:1em;
     width:fit-content;
 }
 
+#delete_invoice_button:hover{
+    color:var(--sixth-color);
+}
+
 #wrapper_delete_invoice_button{
     grid-area: delete;
+    color:black;
     display:flex;
     align-items: center;
     justify-content: center;
