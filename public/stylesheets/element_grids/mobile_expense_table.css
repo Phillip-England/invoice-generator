@@ -57,7 +57,11 @@
 }
 
 .mobile_expense_table td, input, select{
-    font-size: 1rem
+    font-size: 1rem;
+}
+
+.mobile_expense_table td{
+    padding: 0.2em;
 }
 
 .mobile_expense_table td:hover{
@@ -86,6 +90,7 @@
 
 .mobile_expense_table select{
     width:100%;
+    text-align: center;
     text-align: -webkit-center;
     font-family: var(--main-font);
 }
