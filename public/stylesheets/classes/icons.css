@@ -9,3 +9,7 @@ i{
 .hover_green:hover{
     color:var(--first-color)
 }
+
+.hover_white:hover{
+    color:var(--second-color);
+}

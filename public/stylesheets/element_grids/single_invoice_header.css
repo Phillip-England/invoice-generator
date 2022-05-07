@@ -50,7 +50,7 @@
     grid-area:cost;
     display: flex;
     align-items: center;
-    justify-content: right;
+    justify-content: flex-end;
     font-family: var(--secondary-font);
 }
 
