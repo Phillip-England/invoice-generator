@@ -92,7 +92,7 @@
 .mobile_expense_table select{
     width:100%;
     text-align: center;
-    text-align-last: center;
+    text-align:-webkit-center;
     font-family: var(--main-font);
 }
 
