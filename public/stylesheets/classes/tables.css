@@ -23,3 +23,7 @@ td{
 td:hover{
     box-shadow: var(--shadow-card)
 }
+
+.no_shadow{
+    box-shadow: none;
+}
