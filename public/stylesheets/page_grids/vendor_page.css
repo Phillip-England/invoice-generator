@@ -12,6 +12,7 @@
 #wrapper_delete_vendor_button{
     grid-area: delete;
     display: flex;
+    color:black;
     align-items: center;
     justify-content: center;
 }
