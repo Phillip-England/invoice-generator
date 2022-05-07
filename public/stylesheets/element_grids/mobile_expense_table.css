@@ -84,7 +84,7 @@
 .mobile_expense_table input{
     width:100%;
     text-align: center;
-    text-align-last: center;
+    padding-left: 50% !important;
     font-family: var(--main-font);
     background-color: white;
 }
