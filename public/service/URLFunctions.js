@@ -10,7 +10,7 @@ const getURL = (midURL, additions) => {
     if (NODE_ENV == 'development'){
         baseURL = 'http://localhost:5000'
     } else {
-        baseURL = "https://invoices-generate.herokuapp.com"
+        baseURL = "https://git.heroku.com/generator-invoices"
     }
     URLWithAdditions = baseURL + midURL //combining our baseURL and our midURL
     //checking to see if additions have been provided

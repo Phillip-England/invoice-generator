@@ -11,7 +11,7 @@ connectDB()
 const app = express()
 app.set('view engine', 'ejs')
 app.set('views', path.join(__dirname, '/views/pages')) //setting up where to look for our views
-app.use(cookieParser('secret')) //setting up and giving our cookie parser a secret
+app.use(cookieParser(process.env.COOKIE_SECRET)) //setting up and giving our cookie parser a secret
 app.use('/public', express.static(path.join(__dirname, 'public'))) //setting location for our static files
 app.use(express.json())
 app.use(express.urlencoded({extended:false}))
