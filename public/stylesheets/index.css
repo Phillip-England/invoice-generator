@@ -93,15 +93,11 @@
 .flex_center_align{
     display: flex;
     align-items: center;
-    justify-content:space-evenly;
+    justify-content:center;
 }
 
 .flex_right_align{
     display: flex;
     align-items: center;
     justify-content: flex-end;
-}
-
-.max_width{
-    width: 100%;
 }
