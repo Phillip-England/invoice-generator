@@ -1,3 +1,11 @@
 i{
-    /* background-color: var(--third-color); */
+    color: var(--third-color);
+}
+
+.hover_red:hover{
+    color:var(--fifth-color);
+}
+
+.hover_green:hover{
+    color:var(--first-color)
 }
