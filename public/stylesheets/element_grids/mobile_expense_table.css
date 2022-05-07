@@ -46,6 +46,7 @@
     cursor: pointer;
     padding: 0.5em;
     background-color: var(--second-color);
+    color:var(--third-color);
 }
 
 .mobile_delete_button:hover{
