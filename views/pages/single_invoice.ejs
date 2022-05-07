@@ -70,7 +70,7 @@
 
                 <% expenses.forEach(expense => { %>
 
-                    <table class="mobile_expense_table">
+                    <table class="mobile_expense_table" id="<%=expense._id + 'mobile_expense_table'%>">
                     
 
                         <tbody>
@@ -494,12 +494,13 @@
 
         //setting up our variables
         let url
+        let mobileExpenseTable = document.getElementById(expenseID + 'mobile_expense_table')
 
         //grabbing our NODE_ENV from the body
         const NODE_ENV = document.getElementsByTagName('body')[0].getAttribute('NODE_ENV')
 
-        //removing the expense row
-        e.parentElement.parentElement.parentElement.remove()
+        //removing the expense table
+        mobileExpenseTable.remove()
 
         //getting our url for our fetch request
         url = getURL('/expense/deleteExpense', {
