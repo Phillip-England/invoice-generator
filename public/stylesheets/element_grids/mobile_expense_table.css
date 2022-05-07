@@ -65,30 +65,27 @@
 }
 
 .mobile_expense_table td:hover{
-    background-color: var(--fourth-color);
     box-shadow:none;
 }
 
 .mobile_expense_table input:hover{
-    background-color: var(--fourth-color);
     box-shadow:none;
 
 }
 
 .mobile_expense_table select:hover{
-    background-color: var(--fourth-color);
     box-shadow:none;
 
 }
 
 .mobile_expense_table input{
-    /* width:100%; */
+    width:fit-content;
     font-family: var(--main-font);
     background-color: white;
 }
 
 .mobile_expense_table select{
-    /* width:100%; */
+    width:fit-content;
     font-family: var(--main-font);
 }
 
