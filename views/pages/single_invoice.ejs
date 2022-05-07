@@ -164,9 +164,9 @@
                                     <td>Complete</td>
                                     <td colspan="3">
                                         <% if (expense.completed == true) { %>
-                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>'), completeExpense(this, '<%=expense._id%>', '<%=invoice._id%>')" type="checkbox" name="expense_completed" class='expense_complete_checkbox' checked>
+                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>'), completeExpense('<%=expense._id%>', '<%=invoice._id%>')" type="checkbox" name="expense_completed" class='expense_complete_checkbox' checked>
                                         <% } else { %>
-                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>'), completeExpense(this, '<%=expense._id%>', '<%=invoice._id%>')" type="checkbox" name="expense_completed" class="expense_complete_checkbox">
+                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>'), completeExpense('<%=expense._id%>', '<%=invoice._id%>')" type="checkbox" name="expense_completed" class="expense_complete_checkbox">
                                         <% } %>
                                     </td>
                                 </tr>
@@ -283,9 +283,9 @@
 
                                 <td>
                                     <% if (expense.completed == true) { %>
-                                        <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense(this, '<%=expense._id%>', '<%=invoice._id%>')" checked>
+                                        <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense('<%=expense._id%>', '<%=invoice._id%>')" checked>
                                     <% } else { %>
-                                        <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense(this, '<%=expense._id%>', '<%=invoice._id%>')">
+                                        <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense('<%=expense._id%>', '<%=invoice._id%>')">
                                     <% } %>
                                 </td>
 
