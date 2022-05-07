@@ -82,13 +82,13 @@
 }
 
 .mobile_expense_table input{
-    width:100%;
+    /* width:100%; */
     font-family: var(--main-font);
     background-color: white;
 }
 
 .mobile_expense_table select{
-    width:100%;
+    /* width:100%; */
     font-family: var(--main-font);
 }
 

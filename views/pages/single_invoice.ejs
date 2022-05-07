@@ -180,7 +180,7 @@
 
                                 <tr id="<%=expense._id + 'mobile_expense_save_button'%>" class="hover_white" style="display:none;">
                                     <td colspan="4" class="mobile_save_button_cell">
-                                        <button type="submit" class="mobile_save_button" onclick="updateMobileExpense(this, '<%=invoice._id%>', '<%=expense._id%>')">
+                                        <button type="submit" class="mobile_save_button" onclick="updateMobileExpense(this, '<%=invoice._id%>', '<%=expense._id%>'), backgroundColorClick(e, 'white')">
                                             <i class="fa-solid fa-floppy-disk hover_green"></i>
                                         </button>
                                         <div id="<%= expense._id + 'loading_container' %>" class="loading_icon_container base_padding">
@@ -193,7 +193,7 @@
 
                             <tr id="<%=expense._id + 'mobile_expense_delete_button'%>" class="hover_white" style="display:none;">
                                 <td colspan="4">
-                                    <button type="button" class="mobile_delete_button " onclick="deleteMobileExpense(this, '<%=expense._id%>')">
+                                    <button type="button" class="mobile_delete_button " onclick="deleteMobileExpense(this, '<%=expense._id%>'), backgroundColorClick(e, 'white')">
                                         <i class="fa-solid fa-trash-can hover_red"></i>
                                     </button>
                                 </td>
@@ -332,6 +332,10 @@
 
 
 <script>
+
+    const backgroundColorClick = (e, color) => {
+        e.style.backgroundColor = color
+    }
 
     const addExpense = async (e, userID, invoiceID) => {
 
