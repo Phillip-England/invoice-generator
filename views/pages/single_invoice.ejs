@@ -77,7 +77,7 @@
 
                 <% expenses.forEach(expense => { %>
 
-                    <table class="mobile_expense_table" id="<%=expense._id + 'mobile_expense_table'%>">
+                    <table class="mobile_expense_table shadow_card" id="<%=expense._id + 'mobile_expense_table'%>">
                     
 
                         <tbody>
@@ -220,7 +220,7 @@
         <section id="expense_table_container">
 
             <% if (expenses.length > 0) { %>
-                <table id="expense_table">
+                <table id="expense_table" class="shadow_card">
                     <tr>
                         <th>Date</th>
                         <th>Invoice</th>

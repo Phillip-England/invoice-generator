@@ -3,8 +3,10 @@ table{
     max-width: 425px;
     width:100%;
     border-collapse: collapse;
+}
+
+.shadow_card{
     box-shadow: var(--shadow-card);
-    /* padding: 0.5em; */
 }
 
 th{
@@ -22,8 +24,4 @@ td{
 
 td:hover{
     box-shadow: var(--shadow-card)
-}
-
-.no_shadow{
-    box-shadow: none;
 }
