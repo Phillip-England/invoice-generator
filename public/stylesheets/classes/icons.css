@@ -2,6 +2,10 @@ i{
     /* color: var(--third-color); */
 }
 
+.color_black{
+    color:black;
+}
+
 .hover_red:hover{
     color:var(--fifth-color);
 }

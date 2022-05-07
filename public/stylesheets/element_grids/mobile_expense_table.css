@@ -108,3 +108,7 @@
 .mobile_save_button_cell:hover{
     background-color: var(--second-color);
 }
+
+.mobile_save_button{
+    color:black;
+}
