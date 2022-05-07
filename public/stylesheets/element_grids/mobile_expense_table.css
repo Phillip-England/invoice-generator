@@ -80,15 +80,13 @@
 .mobile_expense_table input{
     width:100%;
     text-align: center;
-    text-align: -webkit-center;
     font-family: var(--main-font);
     background-color: white;
 }
 
 .mobile_expense_table select{
     width:100%;
-    text-align: center;
-
+    text-align: -webkit-center;
     font-family: var(--main-font);
 }
 
