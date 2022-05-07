@@ -13,7 +13,7 @@ const {
 } = require('../controllers/userController')
 
 
-router.get('/login', loginPage).post('/login', loginUser) //getting login page and login functionality
+router.get('/', loginPage).post('/', loginUser) //getting login page and login functionality
 
 router.get('/logout', logoutUser) //logout functionality
 

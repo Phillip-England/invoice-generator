@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(express.urlencoded({extended:false}))
 
 
-app.use('/user', require('./routes/userRoutes')) //all our user routes found here
+app.use('/', require('./routes/userRoutes')) //all our user routes found here
 app.use('/category', require('./routes/categoryRoutes')) //all our category routes found here
 app.use('/invoice', require('./routes/invoiceRoutes')) //all our invoice routes
 app.use('/expense', require('./routes/expenseRoutes')) //all our expense routes

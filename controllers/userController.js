@@ -60,7 +60,7 @@ const registerUser = async (req, res, next) => {
         //checking if user was actually created
         if(user){
             res.status(200)
-            res.redirect('/user/login')
+            res.redirect('/')
         } else {
             res.status(400)
             throw new Error('Failed to create user')
@@ -85,7 +85,7 @@ const loginUser = async (req, res, next) => {
                 httpOnly: true,
                 signed: true
             })
-            res.redirect('/user/home')
+            res.redirect('/invoice')
         } else {
             res.status(400)
             throw new Error('Invalid credentials')
@@ -98,7 +98,7 @@ const loginUser = async (req, res, next) => {
 //logging a user out by deleting our jwt cookie
 const logoutUser = (req, res) => {
     res.clearCookie('token')
-    res.redirect('/user/login')
+    res.redirect('/')
 }
 
 
