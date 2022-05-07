@@ -4,6 +4,21 @@
     grid-template-areas: 
         'navbar'
         'add_invoice_form'
+        'delete'
         'invoice_table'
     ;
+}
+
+#delete_invoice_button{
+    background-color: var(--second-color);
+    color:black;
+    padding:1em;
+    width:fit-content;
+}
+
+#wrapper_delete_invoice_button{
+    grid-area: delete;
+    display:flex;
+    align-items: center;
+    justify-content: center;
 }
