@@ -100,7 +100,7 @@ const generateInvoicePdf = async (req, res, next) => {
 const deleteInvoice = async (req, res, next) => {
     try {
         //getting the current invoice
-        const deletedInvoice = await Invoice.deleteOne({id:req.params.invoice})
+        const deletedInvoice = await Invoice.findByIdAndDelete(req.params.invoice)
         //getting all the expenses associated with the invoice
         const deletedExpenses = await Expense.deleteMany({invoice:req.params.invoice})
         //throwing an error if the above did not work

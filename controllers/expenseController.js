@@ -85,7 +85,7 @@ const updateExpense = async (req, res, next) => {
 
         //updating the cost of the invoice the expense is associated with
         const updatedInvoice = await Invoice.findByIdAndUpdate(req.params.invoice, {
-            cost: cost
+            cost: Math.round(100*cost)/100
         })
 
         //checking if the expense was transferred to another invoice
@@ -99,7 +99,7 @@ const updateExpense = async (req, res, next) => {
             }
             //updating the cost of the invoice the expense is associated with
             const newUpdatedInvoice = await Invoice.findByIdAndUpdate(newInvoice._id, {
-                cost: cost
+                cost: Math.round(100*cost)/100
             })
         }
 
@@ -128,13 +128,13 @@ const deleteExpense = async (req, res, next) => {
  
          //updating the invoice with the new total cost
          const updatedInvoice = await Invoice.findByIdAndUpdate(deletedExpense.invoice, {
-             cost: cost
+             cost: Math.round(100*cost)/100
          })
  
 
          //ending the request and returning the total cost to front-end to update page
          res.status(200).json({
-             cost: cost
+             cost: Math.round(100*cost)/100
          })
 
     } catch (error) {
@@ -172,12 +172,12 @@ const completeExpense = async (req, res, next) => {
 
         //updating the invoice with the new total cost
         const updatedInvoice = await Invoice.findByIdAndUpdate(expense.invoice, {
-            cost: cost
+            cost: Math.round(100*cost)/100
         })
 
         //ending the request and returning the total cost to front-end to update page
         res.status(200).json({
-            cost: cost
+            cost: Math.round(100*cost)/100
         })
 
     } catch (error) {
