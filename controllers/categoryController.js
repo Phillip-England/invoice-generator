@@ -38,7 +38,7 @@ const categoryPage = async (req, res) => {
     if (req.user == undefined){
         res.render('login.ejs')
     } else {
-        const categories = await Category.find({user:req.user._id}) //getting our users categories
+        const categories = await Category.find({user:req.user._id}).sort({'name':'asc'}) //getting our users categories
         res.render('category.ejs', {
             user: req.user,
             categories: categories,

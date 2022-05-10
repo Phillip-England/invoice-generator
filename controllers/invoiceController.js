@@ -56,10 +56,10 @@ const getInvoiceSinglePage = async (req, res) => {
     if (req.user == undefined){
         res.render('login.ejs')
     } else {
-        const categories = await Category.find({user:req.user._id}) //getting all categories associated with our user
+        const categories = await Category.find({user:req.user._id}).sort({'name':'asc'}) //getting all categories associated with our user
         const invoice = await Invoice.findById(req.params.invoice) //getting the invoice associated with the id in the url (passed from <a> tag)
-        const expenses = await Expense.find({invoice:req.params.invoice}) //getting all the expenses associated with the invoice
-        const vendors = await Vendor.find({user:req.user._id}) //getting all the vendors associated with the user
+        const expenses = await Expense.find({invoice:req.params.invoice}).sort({'vendor':'asc'}) //getting all the expenses associated with the invoice
+        const vendors = await Vendor.find({user:req.user._id}).sort({'name':'asc'}) //getting all the vendors associated with the user
         const invoices = await Invoice.find({user: req.user._id}) //getting all the invoices associated with our user
         res.render('single_invoice.ejs', {
             user: req.user,

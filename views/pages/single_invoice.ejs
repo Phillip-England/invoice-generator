@@ -41,20 +41,20 @@
                 <h2 class="form_header">Add an Expense</h2>
                 <label class="form_label" for="expense_date">Date<span class="form_astrick">*</span></label>
                 <input id="expense_date" class="form_input" type="text" name="expense_date" placeholder="01/01/2022">
-                <label class="form_label" for="expense_category">Category<span class="form_astrick">*</span></label>
-                <select id="expense_category" class="form_input" name="expense_category" id="expense_category">
-                    <option value=""></option>
-                    <% categories.forEach(category => { %>
-                        <option value="<%=category.name%>"><%=category.name%></option>
-                    <% }) %>
-                </select>
-                <label class="form_label" for="expense_name">Vendor<span class="form_astrick">*</span></label>
+                <label class="form_label" for="expense_vendor">Vendor<span class="form_astrick">*</span></label>
                 <select id="expense_vendor" class="form_input" name="expense_vendor" id="expense_vendor">
                     <option value=""></option>
                     <% vendors.forEach(vendor => { %>
                         <option value="<%=vendor.name%>"><%=vendor.name%></option>
                     <% }) %>
                 </select>
+                <label class="form_label" for="expense_category">Category<span class="form_astrick">*</span></label>
+                <select id="expense_category" class="form_input" name="expense_category" id="expense_category">
+                    <option value=""></option>
+                    <% categories.forEach(category => { %>
+                        <option value="<%=category.name%>"><%=category.name%></option>
+                    <% }) %>
+                </select>    
                 <label class="form_label" for="expense_description">Description<span class="form_astrick">*</span></label>
                 <input id="expense_description" class="form_input" type="text" name="expense_description">
                 <label class="form_label" for="expense_cost">Cost<span class="form_astrick">*</span></label>
@@ -297,12 +297,10 @@
                                     <input type="checkbox" class="expense_delete_checkbox" onclick="toggleExpenseDeleteButton(this)">
                                 </td>
                                 <td class="save_expense_container">
-                                    <button type="submit" id=<%=expense._id%> onclick="updateExpense(this, '<%= invoice._id %>', '<%=expense._id%>')">
+                                    <button class="flex_center_align" type="submit" id=<%=expense._id%> onclick="updateExpense(this, '<%= invoice._id %>', '<%=expense._id%>')">
                                         <i class="fa-solid fa-floppy-disk"></i>
-                                    </button>
-                                    <div id="<%=expense._id + 'loading_container'%>" class="loading_icon_container">
                                         <div id="<%=expense._id + 'loading_icon'%>" class="small_loading_icon"></div>
-                                    </div>
+                                    </button>
                                 </td>
 
                             </form>
@@ -384,7 +382,12 @@
         let url
 
         //displaying our loading icon
-        form.displayLoader(e, loadingIcon, loadingContainer)
+        toggle.oneWay('block', {
+            loadingIcon: e.children[1]
+        })
+        toggle.oneWay('none', {
+            saveIcon: e.children[0]
+        })
 
         //getting our url for fetch
         url = `/expense/updateExpense/${invoiceID}/${expenseID}/`

@@ -7,7 +7,7 @@ const Vendor = require('../models/vendorModel')
 const vendorPage = async (req, res, next) => {
     try {
         //pulling in all vendors associated with our user
-        const vendors = await Vendor.find({user:req.user._id})
+        const vendors = await Vendor.find({user:req.user._id}).sort({'name':'asc'})
         //loading vendor.ejs with all our data
         res.render('vendor.ejs', {
             user: req.user,
