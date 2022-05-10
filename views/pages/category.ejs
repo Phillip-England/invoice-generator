@@ -75,8 +75,9 @@
 <script>
 
 const addCategory = async (e) => {
-    const addCategoryForm = document.getElementById('add_category_form')
+    
     let url
+    const addCategoryForm = document.getElementById('add_category_form')
     let uncompletedFields = form.getEmptyFields(addCategoryForm)
     let loadingIcon = document.getElementsByClassName('loading_icon')
 
@@ -86,11 +87,9 @@ const addCategory = async (e) => {
     } else {
         form.displayLoader(e, loadingIcon[0])
     }
-    
-    //getting our url for our request
-    url = getURL('/category/addCategory')
 
     //calling our fetch request
+    url = '/category/addCategory/'
     const response = await fetch(url, {
         method: "POST",
         body: form.getData(addCategoryForm),
@@ -111,7 +110,6 @@ const toggleDeleteButton = () => {
 
 const deleteCategory = async (e) => {
 
-    //setting up our variables
     let url
     const categoryTable = document.getElementById('category_table')
     const categoryInfoRows = document.getElementsByClassName('category_info_row') //this row contains all category data
@@ -129,20 +127,10 @@ const deleteCategory = async (e) => {
 
     //looping through our rows (each representing a category) to call fetch requests for deletion
     for (x = 0; x < checkedRows.length; x++) {
-            
-            //getting our url based off our NODE_ENV
-            url = getURL('/category/deleteCategory', {
-                user: checkedRows[x].getAttribute('user'),
-                category: checkedRows[x].getAttribute('category')
-            })
-
-            //calling our fetch request to delete the invoice/invoices
+            url = `/category/deleteCategory/${checkedRows[x].getAttribute('user')}/${checkedRows[x].getAttribute('category')}`
             const response = await fetch(url, {
                 method:'DELETE'
             })
-            const data = await response.json()
-
-            console.log(data)
         }
 
 

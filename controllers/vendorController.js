@@ -42,7 +42,6 @@ const addVendor = async (req, res, next) => {
             user: req.user._id,
             name: vendor_name
         })
-        console.log(newVendor)
         //ending the request and reloading the page
         res.status(200).redirect('/vendor')
     } catch (error) {

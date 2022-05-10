@@ -8,7 +8,7 @@
     <%- include('../partials/styles.ejs') %>
 
 </head>
-<body id="invoice" NODE_ENV="<%=NODE_ENV%>" onload="printInvoice(this, '<%=NODE_ENV%>', '<%=invoice._id%>')">
+<body id="invoice" NODE_ENV="<%=NODE_ENV%>" onload="printInvoice('<%=invoice._id%>')">
 
 
 
@@ -106,13 +106,11 @@
 <script src="../../public/service/URLFunctions.js"></script>
 
 <script>
-    const printInvoice = (e, env, invoiceID) => {
+    const printInvoice = (invoiceID) => {
         //setting up our url
-        let url
-
-        url = getURL('/invoice', {
+        let url = `/invoice/${invoiceID}/`
+        url = getURL(url, {
             invoiceID: invoiceID
         })
-
     }
 </script>

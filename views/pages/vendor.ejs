@@ -90,7 +90,7 @@
         }
 
         //getting our url for our request
-        url = getURL('/vendor/addVendor')
+        url = '/vendor/addVendor/'
 
         //calling our fetch request
         const response = await fetch(url, {
@@ -128,27 +128,13 @@
 
         //looping through our checked vendor rows to delete
         for (x = 0; x < checkedRows.length; x++) {
-
             //getting the url
-            url = getURL('/vendor/deleteVendor', {
-                vendor: checkedRows[x].getAttribute('vendor') //vendor _id stashed here
-            })
-
+            url = `/vendor/deleteVendor/${checkedRows[x].getAttribute('vendor')}/`
             //calling the fetch request
             const response = await fetch(url, {
                 method:'DELETE'
             })
-
-            //getting the data
-            const data = await response.json()
-
-            //logging the data
-            console.log(data)
-
         }
-
-
-
     }
 
 

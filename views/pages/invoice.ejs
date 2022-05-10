@@ -90,8 +90,8 @@
     const addInvoice = async (e) => {
 
         //setting up our variables
-        const dateInput = document.getElementById('invoice_date')
         let url
+        const dateInput = document.getElementById('invoice_date')
         let addInvoiceForm = document.getElementById('add_invoice_form')
         form.hiddenDate(dateInput) //adding our date before we check for uncompleted fields
         let uncompletedFields = form.getEmptyFields(addInvoiceForm)
@@ -104,12 +104,10 @@
         } else {
             form.displayLoader(e, loadingIcon[0])
         }
-        
-        //getting our url for our request
-        url = getURL('/invoice/addInvoice')
 
         //calling our fetch request
-        const response = await fetch('/invoice/addInvoice', {
+        url = '/invoice/addInvoice/'
+        const response = await fetch(url, {
             method: "POST",
             body: form.getData(addInvoiceForm),
         })
@@ -148,20 +146,11 @@
 
         //looping through our rows (each representing an invoice) to call fetch requests for deletion
         for (x = 0; x < checkedRows.length; x++) {
-            
-            //getting our url based off our NODE_ENV
-            url = getURL('/invoice/deleteInvoice', {
-                user: checkedRows[x].getAttribute('invoice')
-            })
-
-            //calling our fetch request to delete the invoice/invoices
+            url = `/invoice/deleteInvoice/${checkedRows[x].getAttribute('invoice')}`
             const response = await fetch(url, {
                 method:'DELETE'
             })
-            const data = await response.json()
-
         }
-
     }
 
 </script>

@@ -4,7 +4,6 @@ const Invoice = require('../models/invoiceModel')
 
 const addExpense = async (req, res, next) => {
     try {
-        console.log(req.body)
         //grabbing data from the client form
         const {
             expense_date,

@@ -188,7 +188,7 @@
 
                                 <tr id="<%=expense._id + 'mobile_expense_save_button'%>" class="hover_white" style="display:none;">
                                     <td colspan="4" class="mobile_save_button_cell">
-                                        <button type="submit" class="mobile_save_button" onclick="updateMobileExpense(this, '<%=invoice._id%>', '<%=expense._id%>'), backgroundColorClick(e, 'white')">
+                                        <button type="submit" class="mobile_save_button" onclick="updateMobileExpense('<%=invoice._id%>', '<%=expense._id%>')">
                                             <i class="fa-solid fa-floppy-disk hover_green"></i>
                                         </button>
                                         <div id="<%= expense._id + 'loading_container' %>" class="loading_icon_container base_padding">
@@ -201,7 +201,7 @@
 
                             <tr id="<%=expense._id + 'mobile_expense_delete_button'%>" class="hover_white" style="display:none;">
                                 <td colspan="4">
-                                    <button type="button" class="mobile_delete_button " onclick="deleteMobileExpense(this, '<%=expense._id%>'), backgroundColorClick(e, 'white')">
+                                    <button type="button" class="mobile_delete_button " onclick="deleteMobileExpense(this, '<%=expense._id%>')">
                                         <i class="fa-solid fa-trash-can hover_red"></i>
                                     </button>
                                 </td>
@@ -362,10 +362,7 @@
         }
         
         //getting our url for our request
-        url = getURL('/expense/addExpense', {
-                userID: userID,
-                invoiceID: invoiceID,
-        })
+        url = `/expense/addExpense/${userID}/${invoiceID}/`
 
         //calling our fetch request
         const response = await fetch(url, {
@@ -390,10 +387,7 @@
         form.displayLoader(e, loadingIcon, loadingContainer)
 
         //getting our url for fetch
-        url = getURL('/expense/updateExpense', {
-            invoiceID: invoiceID,
-            expenseID: expenseID,
-        })
+        url = `/expense/updateExpense/${invoiceID}/${expenseID}/`
 
         //calling our fetch request
         const response = await fetch(url, {
@@ -406,7 +400,7 @@
 
     }
 
-    const updateMobileExpense = async (e, invoiceID, expenseID) => {
+    const updateMobileExpense = async (invoiceID, expenseID) => {
 
         //setting up our variables
         const updateMobileExpenseForm = document.getElementById(expenseID + 'mobile_expense_form')
@@ -418,10 +412,7 @@
         form.displayLoader(e, loadingIcon, loadingContainer)
 
         //getting our url
-        url = getURL('/expense/updateExpense', {
-            invoiceID: invoiceID,
-            expenseID: expenseID,
-        })
+        url = `/expense/updateExpense/${invoiceID}/${expenseID}/`
 
         //calling our fetch request
         const response = await fetch(url, {
@@ -515,9 +506,7 @@
         mobileExpenseTable.remove()
 
         //getting our url for our fetch request
-        url = getURL('/expense/deleteExpense', {
-                expenseID: expenseID
-        })
+        url = `/expense/deleteExpense/${expenseID}/`
 
         //calling our fetch request to delete the expense/expenses
         const response = await fetch(url, {
@@ -569,10 +558,7 @@
         let url
 
         //defining our url based off of the NODE_ENV
-        url = getURL('/expense/completeExpense', {
-            invoiceID: invoiceID,
-            expenseID: expenseID,
-        })
+        url = `/expense/completeExpense/${invoiceID}/${expenseID}/`
 
         //calling our fetch statement to complete the expense
         try {
@@ -588,21 +574,11 @@
 
     }
 
-    const printInvoice = async (e, env, invoice) => {
-
-        let url
-
-        //getting our url based off of the NODE_ENV
-        if (env == 'development'){
-            url = 'http://localhost:5000/invoice/generateInvoicePdf/' + invoice
-        } else {
-            // enter production url here
-        }
-
+    const printInvoice = async (invoiceID) => {
+        let url = `/invoice/generateInvoicePdf/${invoiceID}`
         const response = await fetch(url, {
             method: 'get'
         })
-  
     }
 
     const toggleExpenseDeleteButton = async (e) => {
@@ -631,23 +607,14 @@
 
         // looping through our rows (each representing an expense to call fetch requests for deletion
         for (x = 0; x < checkedRows.length; x++) {
-            
-            //getting our url based off our NODE_ENV
-            url = getURL('/expense/deleteExpense', {
-                expense: checkedRows[x].getAttribute('expense')
-            })
-
-            //calling our fetch request to delete the expense/expenses
+            url = `/expense/deleteExpense/${checkedRows[x].getAttribute('expense')}/`
             const response = await fetch(url, {
                 method:'DELETE'
             })
-
             //getting the data back (the new cost of the invoice)
             const data = await response.json()
-
             //if it is the last loop, get the cost and render it to the screen
             if (x == checkedRows.length-1) {
-                console.log('hit')
                 document.getElementById('invoice_cost').innerText = "$" + data.cost
             }
 
