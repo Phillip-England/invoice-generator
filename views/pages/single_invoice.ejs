@@ -225,8 +225,8 @@
                     <tr>
                         <th>Date</th>
                         <th>Invoice</th>
-                        <th>Category</th>
                         <th>Vendor</th>
+                        <th>Category</th>
                         <th>Description</th>
                         <th>Cost</th>
                         <th id="complete_column">Complete</th>
@@ -254,24 +254,24 @@
                                 </td>
 
                                 <td>
-                                    <select name="expense_category">
-                                        <option value="<%=expense.category%>"><%=expense.category%></option>
-                                        <% categories.forEach(category => { %>
-                                            <!-- omit the current category from the lisitng -->
-                                            <%if (expense.category != category.name) { %>
-                                                <option value="<%=category.name%>"><%=category.name%></option>
-                                            <% } %>
-                                        <% }) %>
-                                    </select>
-                                </td>
-
-                                <td>
                                     <select name="expense_vendor">
                                         <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
                                         <% vendors.forEach(vendor => { %>
                                             <!-- omit the current category from the lisitng -->
                                             <%if (expense.vendor != vendor.name) { %>
                                                 <option value="<%=vendor.name%>"><%=vendor.name%></option>
+                                            <% } %>
+                                        <% }) %>
+                                    </select>
+                                </td>
+
+                                <td>
+                                    <select name="expense_category">
+                                        <option value="<%=expense.category%>"><%=expense.category%></option>
+                                        <% categories.forEach(category => { %>
+                                            <!-- omit the current category from the lisitng -->
+                                            <%if (expense.category != category.name) { %>
+                                                <option value="<%=category.name%>"><%=category.name%></option>
                                             <% } %>
                                         <% }) %>
                                     </select>
