@@ -1,7 +1,5 @@
 const jsForm = {
 
-<<<<<<< HEAD
-=======
     /*
 
     IMPORTANT NOTES
@@ -44,15 +42,12 @@ const jsForm = {
         }
     },
 
->>>>>>> jsform
     //returns all the data from a given form
     getData: (formElement) => {
         let formData = new FormData(formElement)
         return new URLSearchParams(formData)
     },
 
-<<<<<<< HEAD
-=======
     //returns an object containing all listed fields inside a form
     getAllFields: (formElement) => {
         return {
@@ -87,62 +82,11 @@ const jsForm = {
         loadingIcon.style.display = 'block'
     },
 
->>>>>>> jsform
     //if any form fields are empty, it will return the empty fields in an array
     //will dig 2 generations deep into all form children
     getEmptyFields: (formElement) => {
         //setting up variables
         let emptyFields = []
-<<<<<<< HEAD
-        let elements = []
-        let tagNames = [
-            'INPUT',
-            'TEXTAREA',
-            'SELECT'
-        ]
-        //running a loop on all 1st gen children
-        for (x = 0; x < formElement.children.length; x++){
-            //pushing all the 1st gen children into an array
-            elements.push(formElement.children[x])
-            //running a loop on the 1st generation children
-            for (y = 0; y < formElement.children[x].children.length; y++){
-                //pushing all 2nd gen children into an array
-                elements.push(formElement.children[x].children[y])
-            }
-        }
-        //running a loop on all our elements
-        for (x = 0; x < elements.length; x++){
-            //running a loop on our tag names for each element
-            for (y = 0; y < tagNames.length; y++){
-                if (elements[x].tagName == tagNames[y] && elements[x].value == ''){
-                    emptyFields.push(elements[x])
-                }
-            }
-        }
-        return emptyFields
-    },
-
-    //takes in a form element and POSTS it via fetch
-    postForm: async (e, url) => {
-        //setting up variables
-        let astrick
-        let emptyFields = jsForm.getEmptyFields(e)
-        //toggling the astricks of the empty fields
-        if (emptyFields.length > 0){
-            for (x = 0; x < emptyFields.length; x++){
-                astrick = emptyFields[x].previousElementSibling.firstElementChild
-                console.log(astrick)
-                toggle.oneWay('inline', astrick)
-            }
-        }
-        //making our fetch request
-        const response = await fetch(url, {
-            method: 'post',
-            body: jsForm.getData(e)
-        })
-    },
-
-=======
         let fields = jsForm.getAllFields(formElement)
         //looping through our object and its sub arrays
         //each array contains a different type of HTML field
@@ -168,7 +112,6 @@ const jsForm = {
     },
 
 
->>>>>>> jsform
     //========================================================//
     //VALIDATION METHODS
     //========================================================//
@@ -199,8 +142,6 @@ const jsForm = {
         return isLegal
     },
 
-<<<<<<< HEAD
-=======
     checkForEmptyFields: (formElement) => {
         let emptyFields = jsForm.getEmptyFields(formElement)
         //if we have empty fields, we need to didplay our astrick and showcase an error message
@@ -212,7 +153,6 @@ const jsForm = {
         }
     },
 
->>>>>>> jsform
     validateUsername: (e) => {
         //setting as invalid until certain criteria is met
         e.validity.valid = false
