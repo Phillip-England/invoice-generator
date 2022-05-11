@@ -81,7 +81,7 @@ const loginUser = async (req, res, next) => {
             const token = jwt.sign({_id: user._id}, process.env.JWT_SECRET)
             //creating a cookie with our token in it
             res.cookie('token', token, {
-                maxAge: 1000*60*15,
+                maxAge: 1000*60*30,
                 httpOnly: true,
                 signed: true
             })
