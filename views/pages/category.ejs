@@ -15,17 +15,17 @@
         <%- include('../partials/navbar.ejs') %>
 
         <div id="category_form_container">
-            <form id="add_category_form" class="form_styles_general" onsubmit="event.preventDefault()">
+            <form id="add_category_form" class="form_styles_general" onsubmit="event.preventDefault(), jsForm.postForm(this, '/category/addCategory')">
                 <h2 class="form_header">Add an Expense Category</h2>
                 <label class="form_label" for="category_name">Category Name<span class="form_astrick">*</span></label>
                 <input class="form_input" type="text" name="category_name">
                 <input type="hidden" name="_csrf" value=<%=csrfToken%>>
                 <div class="form_button_container">
-                    <button class="form_button" type="submit" onclick="addCategory(this)">
+                    <button class="form_button" type="submit">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-boxes-stacked"></i>
                     </button>
-                    <div class="loading_icon"></div>
+                    <div name='loading-icon' class="loading_icon"></div>
                 </div>
             </form>
         </div>
@@ -61,16 +61,7 @@
 </body>
 </html>
 
-
-
-
-<!-- contains functions to work with tables -->
-<script src="../../public/service/tableFunctions.js"></script>
-<!-- contains functions to work with URLS -->
-<script src="../../public/service/URLFunctions.js"></script>
-<!-- contains functions to work with forms -->
-<script src="../../public/service/forms.js"></script>
-    
+<%- include('../partials/scripts.ejs') %>
 
 <script>
 
@@ -81,22 +72,22 @@ const addCategory = async (e) => {
     let uncompletedFields = form.getEmptyFields(addCategoryForm)
     let loadingIcon = document.getElementsByClassName('loading_icon')
 
-    if (uncompletedFields.length > 0) {
-        form.showAstricks(uncompletedFields)
-        return
-    } else {
-        form.displayLoader(e, loadingIcon[0])
-    }
+    // if (uncompletedFields.length > 0) {
+    //     form.showAstricks(uncompletedFields)
+    //     return
+    // } else {
+    //     form.displayLoader(e, loadingIcon[0])
+    // }
 
     //calling our fetch request
-    url = '/category/addCategory/'
-    const response = await fetch(url, {
-        method: "POST",
-        body: form.getData(addCategoryForm),
-    })
+    // url = '/category/addCategory/'
+    // const response = await fetch(url, {
+    //     method: "POST",
+    //     body: form.getData(addCategoryForm),
+    // })
 
-    //reloading the page
-    window.location.reload()
+    // //reloading the page
+    // window.location.reload()
 
 }
 
