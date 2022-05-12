@@ -1,5 +1,79 @@
 
 
+
+const jsTable = {
+
+
+    //=====================================
+    //getting table elements
+    //=====================================
+
+    //returns an array of all the rows with checked boxes of a given classname
+    getRowsWithCheckedBoxes: (checkboxClassName) => {
+        let checkboxes = document.getElementsByClassName(checkboxClassName)
+        let nextParentElement
+        let rowsWithCheckedBoxes = []
+        //looping through our checkboxes
+        for (x = 0; x < checkboxes.length; x++){
+            if (checkboxes[x].checked == true){
+                //climb up the dom to get the table row of a checked checkbox
+                while (true) {
+                    //on our first iteration, nextParentElement is undefined
+                    //so we set it to the parent element of our current checkbox
+                    if (nextParentElement == undefined){
+                        nextParentElement = checkboxes[x].parentElement
+                    }
+                    //now we check if the nextParentElement is a TR
+                    //if it is not, climb up the tree
+                    if (nextParentElement.tagName == 'TR'){
+                        rowsWithCheckedBoxes.push(nextParentElement)
+                        //reset nextParentElements to undefined
+                        //this allows us to avoid pushing the same row in multiple times
+                        nextParentElement = undefined
+                        //break the loop if we find the first TR up the tree
+                        break
+                    } else {
+                        //climbing up the tree
+                        nextParentElement = nextParentElement.parentElement
+                    }
+                } 
+            }
+        }
+        return rowsWithCheckedBoxes
+    },
+
+    //=====================================
+    //conditions
+    //=====================================
+
+    //will return true if any checkboxes of a given class are checked
+    hasCheckedCheckboxes: (checkboxClassName) => {
+        let checkboxes = document.getElementsByClassName(checkboxClassName)
+        let checkboxAreChecked = false
+        for (x = 0; x < checkboxes.length; x++){
+            if (checkboxes[x].checked == true){
+                checkboxAreChecked = true
+                //if we find one checked box, break the loop
+                break
+            }
+        }
+        return checkboxAreChecked
+    },
+
+    //will remove a table if only 1 row remains
+    removeTableWithoutRows: (tableElement) => {
+        if (tableElement.rows.length <= 1){
+            tableElement.remove()
+        }
+    }
+
+
+}
+
+
+
+
+
 //this function will loop through a set of given checkboxes
 //it will check to see if any of the checkboxes are checked
 //if any are checked it will toggle the given buttons style

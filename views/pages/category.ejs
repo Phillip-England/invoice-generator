@@ -31,7 +31,11 @@
         </div>
 
         <div id="wrapper_delete_category_button">
-            <button id='delete_category_button' style='display:none;' onclick="deleteCategory(this)">
+            <button id='delete_category_button' style='display:none;' onclick="toggle.removeElements(this, {
+                elements: jsTable.getRowsWithCheckedBoxes('category_delete_checkbox'),
+                fetch: true,
+                tableElement: document.getElementById('category_table')
+            })">
                 <i class="fa-solid fa-trash-can fa-2x"></i>
             </button>
         </div>
@@ -44,10 +48,14 @@
                         <th>Delete</th>
                     </tr>
                     <% categories.forEach(category => { %>
-                        <tr class="category_info_row" user=<%= user._id %> category=<%= category._id %>  >
+                        <tr class="category_info_row" url=<%=`/category/deleteCategory/${user._id}/${category._id}`%> >
                             <td><%=category.name%></td>
                             <td>
-                                <input class='category_delete_checkbox' type="checkbox" onclick="toggleDeleteButton(this)">
+                                <input class='category_delete_checkbox' type="checkbox" onclick="toggle.condition({
+                                    display: 'flex',
+                                    element: document.getElementById('delete_category_button'),
+                                    condition: jsTable.hasCheckedCheckboxes(this.className)
+                                })">
                             </td>
                         </tr>
                     <% }) %>
@@ -64,40 +72,6 @@
 <%- include('../partials/scripts.ejs') %>
 
 <script>
-
-const addCategory = async (e) => {
-    
-    let url
-    const addCategoryForm = document.getElementById('add_category_form')
-    let uncompletedFields = form.getEmptyFields(addCategoryForm)
-    let loadingIcon = document.getElementsByClassName('loading_icon')
-
-    // if (uncompletedFields.length > 0) {
-    //     form.showAstricks(uncompletedFields)
-    //     return
-    // } else {
-    //     form.displayLoader(e, loadingIcon[0])
-    // }
-
-    //calling our fetch request
-    // url = '/category/addCategory/'
-    // const response = await fetch(url, {
-    //     method: "POST",
-    //     body: form.getData(addCategoryForm),
-    // })
-
-    // //reloading the page
-    // window.location.reload()
-
-}
-
-//toggles a delete button to remove specific invoices
-const toggleDeleteButton = () => {
-        const deleteButton = document.getElementById('delete_category_button')
-        const deleteCheckboxes = document.getElementsByClassName('category_delete_checkbox') //grabbing all our checkboxes as an array
-        //looping through the checkboxes to see if any are checked
-        toggleCheckboxButton(deleteCheckboxes, deleteButton, 'flex')
-    }
 
 const deleteCategory = async (e) => {
 
