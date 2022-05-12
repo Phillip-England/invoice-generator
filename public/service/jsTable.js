@@ -60,13 +60,6 @@ const jsTable = {
         return checkboxAreChecked
     },
 
-    //will remove a table if only 1 row remains
-    removeTableWithoutRows: (tableElement) => {
-        if (tableElement.rows.length <= 1){
-            tableElement.remove()
-        }
-    }
-
 
 }
 
