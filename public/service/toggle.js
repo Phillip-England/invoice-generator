@@ -18,6 +18,15 @@ const toggle = {
         }) 
     },
 
+    //takes in a display style and a condition (boolean returned from a function)
+    //if the condition is met, will toggle the element to a given style
+    conditiion: (display, element, condition) => {
+        console.log('hit')
+        if (condition == true){
+            element.style.display = display
+        }
+    },
+
     //toggles a single element from the given display and back
     pickStyle: (element, display) => {
         if (element.style.display != display){
@@ -38,6 +47,7 @@ const toggle = {
         }
     },
 
+    //toggles a given object of elements background color
     backgroundColor: (firstColor, secondColor, elements) => {
         Object.values(elements).forEach(val => {
             if (val.style.backgroundColor == firstColor){
