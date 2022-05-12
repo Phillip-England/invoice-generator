@@ -36,7 +36,7 @@ const jsForm = {
                 body: jsForm.getData(e)
             })
             //reloading page
-            window.location.reload()
+            // window.location.reload()
         }
     },
 
@@ -93,7 +93,8 @@ const jsForm = {
                 //if the value is empty ('') then we push into our empty fields
                 //buttons show a value of '', but other HTML tags show undefined
                 //so we have to avoid grabbing buttons in the criteria
-                if (field[x].value == '' && field[x].tagName != 'BUTTON'){
+                //this will also avoid any hidden fields in our forms
+                if (field[x].value == '' && field[x].tagName != 'BUTTON' && field[x].getAttribute('type') != 'hidden'){
                     emptyFields.push(field[x])
                 }
             }

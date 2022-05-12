@@ -70,35 +70,3 @@
 </html>
 
 <%- include('../partials/scripts.ejs') %>
-
-<script>
-
-const deleteCategory = async (e) => {
-
-    let url
-    const categoryTable = document.getElementById('category_table')
-    const categoryInfoRows = document.getElementsByClassName('category_info_row') //this row contains all category data
-
-    //this function loops through the table and returns an array
-    //the array will contain any rows which contain a checkbox matching the given classname
-    const checkedRows = getCheckedRows(categoryInfoRows, 'category_delete_checkbox')
-
-    //this function takes in an array of speicific rows and removes them
-    //if the last row is removed, the given table is also removed
-    removeRowsAndTable(checkedRows, categoryTable)
-
-    //removing our delete button
-    e.style.display = 'none'
-
-    //looping through our rows (each representing a category) to call fetch requests for deletion
-    for (x = 0; x < checkedRows.length; x++) {
-            url = `/category/deleteCategory/${checkedRows[x].getAttribute('user')}/${checkedRows[x].getAttribute('category')}`
-            const response = await fetch(url, {
-                method:'DELETE'
-            })
-        }
-
-
-    
-}
-</script>

@@ -21,6 +21,7 @@ const invoicePage = async (req, res) => {
 const addInvoice = async (req, res, next) => {  
     try {
         const {invoice_name, invoice_description, invoice_date} = req.body //grabbing data from the request body
+        console.log(req.body)
         //checking if all form fields were filled out
         if(!invoice_name || !invoice_description || !invoice_date){
             throw new Error('Please fill out all the form fields')
@@ -47,6 +48,7 @@ const addInvoice = async (req, res, next) => {
         res.status(200)
         res.redirect('/invoice')
     } catch (error) {
+        console.log(error.message)
         next(error)
     }
 }

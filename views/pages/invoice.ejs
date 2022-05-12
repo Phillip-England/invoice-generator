@@ -14,7 +14,7 @@
         <%- include('../partials/navbar.ejs') %>
 
         <div id="invoice_form_container">
-            <form id='add_invoice_form' class="form_styles_general" onsubmit="event.preventDefault()">
+            <form id='add_invoice_form' class="form_styles_general" onsubmit="event.preventDefault(), jsForm.postForm(this, '/invoice/addInvoice')">
                 <h2 class="form_header">Add a New Invoice</h2>
                 <label class="form_label" for="invoice_name">Invoice Name<span class="form_astrick">*</span></label>
                 <input class="form_input" type="text" name="invoice_name">
@@ -23,11 +23,11 @@
                 <input type="hidden" name="invoice_date" id="invoice_date">
                 <input type="hidden" name="_csrf" value=<%=csrfToken%>>
                 <div class="form_button_container">
-                    <button type='submit' class="form_button" onclick="addInvoice(this)">
+                    <button type='submit' class="form_button">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-file-invoice-dollar"></i>
                     </button>
-                    <div class="loading_icon"></div>
+                    <div name="loading-icon" class="loading_icon"></div>
                 </div>
             </form>
         </div>
