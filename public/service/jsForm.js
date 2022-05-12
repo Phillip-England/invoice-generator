@@ -1,7 +1,5 @@
 const jsForm = {
-
-    /*
-
+/*
     IMPORTANT NOTES
 
         1. Buttons must have type=submit on them. When displaying the loading icon, buttons are located by their tagName and type.
