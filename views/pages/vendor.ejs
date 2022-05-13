@@ -14,23 +14,27 @@
         <%- include('../partials/navbar.ejs') %>
 
         <div id="vendor_form_container">
-            <form id="add_vendor_form" class="form_styles_general" onsubmit="event.preventDefault()">
+            <form id="add_vendor_form" class="form_styles_general" onsubmit="event.preventDefault(), jsForm.postForm(this, `/vendor/addVendor`)">
                 <h2 class="form_header" >Add a Vendor</h2>
                 <label class="form_label" for="vendor_name">Vendor Name<span class="form_astrick">*</span></label>
                 <input class="form_input" type="text" name="vendor_name">
                 <input type="hidden" name="_csrf" value=<%=csrfToken%>>
                 <div class="form_button_container">
-                    <button class="form_button" type="submit" onclick="addVendor(this)">
+                    <button class="form_button" type="submit">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-store"></i>
                     </button>
-                    <div class="loading_icon"></div>
+                    <div name="loading-icon" class="loading_icon"></div>
                 </div>
             </form>
         </div>
 
         <div id="wrapper_delete_vendor_button">
-            <button id='vendor_delete_button' style='display:none;' onclick="deleteVendor(this, '<%=NODE_ENV%>')" >
+            <button id='vendor_delete_button' style='display:none;' onclick="toggle.removeElements(this, {
+                elements: jsTable.getRowsWithCheckedBoxes('vendor_delete_checkbox'),
+                fetch: true,
+                tableElement: document.getElementById('vendor_table')
+            })" >
                 <i class="fa-solid fa-trash-can fa-2x hover_red"></i>
             </button>
         </div>
@@ -43,10 +47,14 @@
                         <th>Delete</th>
                     </tr>
                     <% vendors.forEach(vendor => { %>
-                        <tr class="vendor_info_row" user=<%= user._id %> vendor=<%= vendor._id %>  >
+                        <tr class="vendor_info_row" url=<%=`/vendor/deleteVendor/${vendor._id}`%> >
                             <td><%=vendor.name%></td>
                             <td>
-                                <input class='vendor_delete_checkbox' type="checkbox" onclick="toggleDeleteButton(this)">
+                                <input class='vendor_delete_checkbox' type="checkbox" onclick="toggle.condition({
+                                    display: 'flex',
+                                    element: document.getElementById('vendor_delete_button'),
+                                    condition: jsTable.hasCheckedCheckboxes(this.className)
+                                })">
                             </td>
                         </tr>
                     <% }) %>
@@ -65,74 +73,3 @@
 
 
 <%- include('../partials/scripts.ejs') %>
-
-<script>
-
-    const addVendor = async (e) => {
-
-        //setting up variables
-        let url
-        let addVendorForm = document.getElementById('add_vendor_form')
-        let uncompletedFields = form.getEmptyFields(addVendorForm)
-        let loadingIcon = document.getElementsByClassName('loading_icon')
-
-        //checking if we have empty fields
-        if (uncompletedFields.length > 0){
-            form.showAstricks(uncompletedFields)
-            return
-        } else {
-            form.displayLoader(e, loadingIcon[0])
-        }
-
-        //getting our url for our request
-        url = '/vendor/addVendor/'
-
-        //calling our fetch request
-        const response = await fetch(url, {
-            method: "POST",
-            body: form.getData(addVendorForm),
-        })
-
-        //reloading the page
-        window.location.reload()
-
-    }
-
-    const toggleDeleteButton = (e) => {
-        const deleteButton = document.getElementById('vendor_delete_button') //getting our delete button
-        const deleteCheckboxes = document.getElementsByClassName('vendor_delete_checkbox') //getting our checkboxes
-        //looping through the checkboxes to see if any are checked
-        toggleCheckboxButton(deleteCheckboxes, deleteButton, 'flex')
-    }
-
-    const deleteVendor = async (e) => {
-
-        //setting up our variables
-        let url
-        const vendorTable = document.getElementById('vendor_table')
-        const vendorInfoRows = document.getElementsByClassName('vendor_info_row')
-
-        //looping through table rows and returning all rows with a checked box
-        const checkedRows = getCheckedRows(vendorInfoRows, 'vendor_delete_checkbox')
-
-        //remove rows here
-        removeRowsAndTable(checkedRows, vendorTable)
-
-        //remove delete button here
-        e.style.display = 'none'
-
-        //looping through our checked vendor rows to delete
-        for (x = 0; x < checkedRows.length; x++) {
-            //getting the url
-            url = `/vendor/deleteVendor/${checkedRows[x].getAttribute('vendor')}/`
-            //calling the fetch request
-            const response = await fetch(url, {
-                method:'DELETE'
-            })
-        }
-
-    }
-
-
-
-</script>

@@ -30,7 +30,7 @@
         </section>
 
         <section id="add_expense_container">
-            <form id="add_expense_form" class="form_styles_general" onsubmit="event.preventDefault()">
+            <form id="add_expense_form" class="form_styles_general" onsubmit="event.preventDefault(), jsForm.postForm(this, '<%=`/expense/addExpense/${user._id}/${invoice._id}`%>')">
                 <h2 class="form_header">Add an Expense</h2>
                 <label class="form_label" for="expense_date">Date<span class="form_astrick">*</span></label>
                 <input id="expense_date" class="form_input" type="text" name="expense_date" placeholder="01/01/2022">
@@ -53,13 +53,11 @@
                 <label class="form_label" for="expense_cost">Cost<span class="form_astrick">*</span></label>
                 <input id="expense_cost" class="form_input" type="text" name="expense_cost">
                 <div class="form_button_container">
-                    <button type="submit" onclick="addExpense(this, '<%= user._id %>', '<%= invoice._id %>')" class="form_button">
+                    <button type="submit" class="form_button">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-money-check"></i>
                     </button>
-                    <div class="loading_icon_container" id="<%=invoice._id + 'loading_icon_container'%>">
-                        <div id="<%=invoice._id + 'loading_icon'%>" class="loading_icon"></div>
-                    </div>
+                    <div id="<%=invoice._id + 'loading_icon'%>" name="loading-icon" class="loading_icon"></div>
                 </div>
             </form>
         </section>
@@ -317,10 +315,6 @@
 <%- include('../partials/scripts.ejs') %>
 
 <script>
-
-    const backgroundColorClick = (e, color) => {
-        e.style.backgroundColor = color
-    }
 
     const addExpense = async (e, userID, invoiceID) => {
 

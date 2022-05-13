@@ -32,8 +32,8 @@ const addVendor = async (req, res, next) => {
         if (!vendor_name){
             throw new Error('Please fill out all the form data')
         }
-        //checking to see if the vendor already exists
-        const vendorExists = await Vendor.find({name:vendor_name})
+        //checking to see if the vendor already exists for this current user
+        const vendorExists = await Vendor.find({user:req.user._id, name:vendor_name})
         if (vendorExists.length > 0){
             throw new Error('Vendor already exists')
         }
@@ -46,6 +46,7 @@ const addVendor = async (req, res, next) => {
         res.status(200).redirect('/vendor')
     } catch (error) {
         next(error)
+        console.log(error.message)
     }
 }
 
