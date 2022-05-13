@@ -14,8 +14,7 @@ const jsForm = {
 
 
     AVAILABLE OPTIONS{
-        options will be added when edge cases arrise in current code-base
-        these options will allow us to take different paths based on different circumstances
+        
     }
     
     */
@@ -36,7 +35,7 @@ const jsForm = {
                 body: jsForm.getData(e)
             })
             //reloading page
-            // window.location.reload()
+            window.location.reload()
         }
     },
 

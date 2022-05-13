@@ -20,12 +20,13 @@ const invoicePage = async (req, res) => {
 
 const addInvoice = async (req, res, next) => {  
     try {
-        const {invoice_name, invoice_description, invoice_date} = req.body //grabbing data from the request body
-        console.log(req.body)
+        const {invoice_name, invoice_description} = req.body //grabbing data from the request body
         //checking if all form fields were filled out
-        if(!invoice_name || !invoice_description || !invoice_date){
+        if(!invoice_name || !invoice_description){
             throw new Error('Please fill out all the form fields')
         }
+        //creating a date object to set todays date on the created invoice
+        let date = new Date()
         //checking if this invoice name is already used
         const invoiceExists =  await Invoice.find({user:req.user._id, name:invoice_name})
         //if no items are found, invoiceExists will be an empty array
@@ -35,7 +36,7 @@ const addInvoice = async (req, res, next) => {
         //creating the new invoice
         const invoice = await Invoice.create({
             user: req.user._id,
-            date: invoice_date,
+            date: String( Number(date.getMonth()+1) + "/" + date.getDate() + "/" + date.getFullYear()),
             name: invoice_name,
             description: invoice_description,
             cost: 0

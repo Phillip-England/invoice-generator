@@ -28,6 +28,7 @@ const toggle = {
         condition: Boolean (can be boolean returned from function)
     */
     condition: (options) => {
+        console.log(options)
         if (options.condition == true){
             options.element.style.display = options.display
         } else {
@@ -51,13 +52,14 @@ const toggle = {
         //initializing our variables
         let url
         let response
-        //checking to see if we need to remove the button click
-        //we will remove it by default
+        //checking to see if we need to hide the button clicked
+        //we will hide it by default
         if (options.removeEventElement == undefined){
-            e.remove()
+            e.style.display = 'none'
         } else {
             //do nothing
         }
+        console.log(options.elements)
         //looping through out elements
         if (options.fetch == true){
             for (x = 0; x < options.elements.length; x++){

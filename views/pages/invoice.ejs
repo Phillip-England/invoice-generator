@@ -34,7 +34,11 @@
         
 
         <div id="wrapper_delete_invoice_button">
-            <button style=display:none; id="delete_invoice_button"  onclick="deleteInvoices(this)">
+            <button style=display:none; id="delete_invoice_button"  onclick="toggle.removeElements(this, {
+                elements: jsTable.getRowsWithCheckedBoxes('invoice_delete_checkbox'),
+                fetch: true,
+                tableElement: document.getElementById('invoice_table')
+            })">
                 <i class="fa-solid fa-trash-can fa-2x hover_red"></i>
             </button>
         </div>
@@ -51,16 +55,16 @@
                         <th>Delete</th>
                     </tr>
                     <% invoices.forEach(invoice => { %>
-                        <tr class="invoice_info_row" invoice=<%= invoice._id %> >
+                        <tr class="invoice_info_row" url=<%=`/invoice/deleteInvoice/${invoice._id}`%>>
                             <td><%=invoice.date%></td>
-                            <% if (NODE_ENV == 'development') { %>
-                                <td><a href=<%= 'http://localhost:5000/invoice/' + String(invoice._id) %>><%= invoice.name %> </a></td>
-                            <% } else { %>
-                                <td><a href=<%= "https://generator-invoices.herokuapp.com/invoice/" + String(invoice._id) %>><%= invoice.name %> </a></td>
-                            <% } %>
+                            <td><a href=<%= `/invoice/${invoice._id}` %>><%= invoice.name %> </a></td>
                             <td>$<%=invoice.cost %> </td>
                             <td class="table_checkbox">
-                                <input class='invoice_delete_checkbox' onclick="toggledDeleteButton()" type="checkbox">
+                                <input class='invoice_delete_checkbox' type="checkbox" onclick="toggle.condition({
+                                    display: 'flex',
+                                    element: document.getElementById('delete_invoice_button'),
+                                    condition: jsTable.hasCheckedCheckboxes(this.className)
+                                })">
                             </td>
                         </tr>
                     <% }) %>
@@ -76,73 +80,3 @@
 </html>
 
 <%- include('../partials/scripts.ejs') %>
-
-<script>
-
-    const addInvoice = async (e) => {
-
-        //setting up our variables
-        let url
-        const dateInput = document.getElementById('invoice_date')
-        let addInvoiceForm = document.getElementById('add_invoice_form')
-        form.hiddenDate(dateInput) //adding our date before we check for uncompleted fields
-        let uncompletedFields = form.getEmptyFields(addInvoiceForm)
-        let loadingIcon = document.getElementsByClassName('loading_icon')
-
-        //checking if we have empty fields
-        if (uncompletedFields.length > 0) {
-            form.showAstricks(uncompletedFields)
-            return
-        } else {
-            form.displayLoader(e, loadingIcon[0])
-        }
-
-        //calling our fetch request
-        url = '/invoice/addInvoice/'
-        const response = await fetch(url, {
-            method: "POST",
-            body: form.getData(addInvoiceForm),
-        })
-
-        //reloading the page
-        window.location.reload()
-
-    }
-    
-
-    //toggles a delete button to remove specific invoices
-    const toggledDeleteButton = () => {
-        const deleteButton = document.getElementById('delete_invoice_button')
-        const deleteCheckboxes = document.getElementsByClassName('invoice_delete_checkbox') //grabbing all our checkboxes as an array
-        //looping through the checkboxes to see if any are checked
-        toggleCheckboxButton(deleteCheckboxes, deleteButton, 'flex')
-    }
-
-    //deletes the checked invoice
-    const deleteInvoices = async (e) => {
-
-        let url //will hold the url to delete invoices
-        const invoiceTable = document.getElementById('invoice_table')
-        const invoiceInfoRows = document.getElementsByClassName('invoice_info_row') //this row contains all invoice data
-
-        //this function loops through the table and returns an array
-        //the array will contain any rows which contain a checkbox matching the given classname
-        const checkedRows = getCheckedRows(invoiceInfoRows, 'invoice_delete_checkbox')
-
-        //this function takes in an array of speicific rows and removes them
-        //if the last row is removed, the given table is also removed
-        removeRowsAndTable(checkedRows, invoiceTable)
-
-        //removing our delete button
-        e.style.display = 'none'
-
-        //looping through our rows (each representing an invoice) to call fetch requests for deletion
-        for (x = 0; x < checkedRows.length; x++) {
-            url = `/invoice/deleteInvoice/${checkedRows[x].getAttribute('invoice')}`
-            const response = await fetch(url, {
-                method:'DELETE'
-            })
-        }
-    }
-
-</script>
