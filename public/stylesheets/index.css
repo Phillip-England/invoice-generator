@@ -14,19 +14,33 @@
 /* variables */
 
 :root {
+    /* colors */
     --first-color:steelblue;
+    --main-color:steelblue;
+    --dark-color:black;
+    --light-color:white;
     --second-color:rgb(255, 255, 255);
     --third-color:rgb(0, 0, 0);
     --fourth-color:rgb(230, 230, 230);
     --fifth-color:rgb(0, 174, 255);
     --sixth-color:rgb(255, 71, 72);
+    /* text appearance */
     --main-font: 'EB Garamond', serif;
     --secondary-font: 'Roboto', sans-serif;
+    --font-size-xl: 1.5rem;
+    --font-size-md: 1rem;
+    --font-size-lg: 1.25rem;
     --light-font-weight:100;
     --medium-font-weight:300;
     --heavy-font-weight:500;
+    /* container appearance */
     --shadow-card:1px 1px 10px gray;
     --top-border:solid var(--first-color) 3px;
+    --phone-size:425px; 
+    --padding-sm:0.8rem;
+    --gap-md:1rem;
+    --radius-md:0.2rem;
+    --input-height-md:2rem;
 }
 
 /* colors */

@@ -9,299 +9,113 @@
 </head>
 <body NODE_ENV="<%=NODE_ENV%>" page="single_invoice_page">
     
-    <div id="single_invoice_page_container">
+    <div id="grid-main-single-invoice">
 
         <%- include('../partials/navbar.ejs') %>
 
-        <section id="single_invoice_header_container">
-            <div id="single_invoice_header">
-                <h2 class="header_invoice_name"><%=invoice.name%></h2>
-                <h3 class="header_invoice_date"><%=invoice.date%></h3>
-                <p class="header_invoice_description"><%=invoice.description%></p>
-                <h4 class="header_invoice_cost" id="invoice_cost">$<%=invoice.cost%></h4>
-                <a class="invoice_print_link" href=<%=`/invoice/generateInvoicePdf/${invoice._id}`%>>
-                    <i class="fa-solid fa-print fa-lg hover_green"></i>
-                </a>
+        <section id="wrapper-header-single-invoice">
+            <div id="grid-header-single-invoice">
+                <h1 class="header-title header-xl"><%=invoice.name%></h1>
+                <p class="header-invoice-date text-lg"><%=invoice.date%></p>
+                <p class="header-invoice-description text-lg"><%=invoice.description%></p>
+                <div class="header-invoice-cost">
+                    <h1 class="header-lg">$<%=invoice.cost%></h1>
+                </div>
+                <div class="header-invoice-print-button">
+                    <a href=<%=`/invoice/generateInvoicePdf/${invoice._id}`%>>
+                        <i class="fa-solid fa-print fa-lg hover-main-color"></i>
+                    </a>
+                </div>   
                 <button id="expense_delete_button" style="display:none;" onclick="deleteExpenses(this, '<%=NODE_ENV%>')">
                     <i class="fa-solid fa-trash-can fa-xl hover_red"></i>    
-                </button>
-                
+                </button>   
             </div>
+             
         </section>
 
-        <section id="add_expense_container">
-            <form id="add_expense_form" class="form_styles_general" onsubmit="event.preventDefault(), jsForm.postForm(this, '<%=`/expense/addExpense/${user._id}/${invoice._id}`%>')">
-                <h2 class="form_header">Add an Expense</h2>
-                <label class="form_label" for="expense_date">Date<span class="form_astrick">*</span></label>
-                <input id="expense_date" class="form_input" type="text" name="expense_date" placeholder="01/01/2022">
-                <label class="form_label" for="expense_vendor">Vendor<span class="form_astrick">*</span></label>
-                <select id="expense_vendor" class="form_input" name="expense_vendor" id="expense_vendor">
+        <section id="wrapper-form-add-expense-single-invoice">
+            <form id="grid-form-add-expense-single-invoice" onsubmit="event.preventDefault(), jsForm.postForm(this, '<%=`/expense/addExpense/${user._id}/${invoice._id}`%>')">
+                <h1 class="header-xl">Add an Expense</h1>
+                <label class="text-lg" for="expense_date">Date<span>*</span></label>
+                <input class="input-main" type="text" name="expense_date" placeholder="01/01/2022">
+                <label class="text-lg" for="expense_vendor">Vendor<span>*</span></label>
+                <select class="input-main" name="expense_vendor" id="expense_vendor">
                     <option value=""></option>
                     <% vendors.forEach(vendor => { %>
                         <option value="<%=vendor.name%>"><%=vendor.name%></option>
                     <% }) %>
                 </select>
-                <label class="form_label" for="expense_category">Category<span class="form_astrick">*</span></label>
-                <select id="expense_category" class="form_input" name="expense_category" id="expense_category">
+                <label class="text-lg" for="expense_category">Category<span>*</span></label>
+                <select class="input-main" name="expense_category" id="expense_category">
                     <option value=""></option>
                     <% categories.forEach(category => { %>
                         <option value="<%=category.name%>"><%=category.name%></option>
                     <% }) %>
                 </select>    
-                <label class="form_label" for="expense_description">Description<span class="form_astrick">*</span></label>
-                <input id="expense_description" class="form_input" type="text" name="expense_description">
-                <label class="form_label" for="expense_cost">Cost<span class="form_astrick">*</span></label>
-                <input id="expense_cost" class="form_input" type="text" name="expense_cost">
-                <div class="form_button_container">
-                    <button type="submit" class="form_button">
+                <label class="text-lg" for="expense_description">Description<span>*</span></label>
+                <input class="input-main" type="text" name="expense_description">
+                <label class="text-lg" for="expense_cost">Cost<span>*</span></label>
+                <input class="input-main" type="text" name="expense_cost">
+                <div>
+                    <button type="submit">
                         <p class="form_button_text">Add</p>
                         <i class="fa-solid fa-money-check"></i>
                     </button>
-                    <div id="<%=invoice._id + 'loading_icon'%>" name="loading-icon" class="loading_icon"></div>
+                    <div name="loading-icon" class="loading_icon"></div>
                 </div>
             </form>
         </section>
 
-        <section id="mobile_expense_table_container">
 
-            <% if (expenses.length > 0) { %>
-
-
+        <% if (expenses.length > 0) { %>
+            <section id="grid-expenses-single-invoice">
+                <div id="wrapper-expense-grid-header">
+                    <h3 class="header-expense-date">Date</h3>
+                    <h3 class="header-expense-invoice">Invoice</h3>
+                    <h3 class="header-expense-vendor">Vendor</h3>
+                    <h3 class="header-expense-category">Category</h3>
+                    <h3 class="header-expense-description">Description</h3>
+                    <h3 class="header-expense-cost">Cost</h3>
+                </div>
                 <% expenses.forEach(expense => { %>
-
-                    <table class="mobile_expense_table shadow_card" id="<%=expense._id + 'mobile_expense_table'%>">
+                    <form class="form-expense-item">
+                        <input class="input-expense-date" value="<%=expense.date%>"></input>
+                        <select class="input-expense-invoice" name="expense_invoice">
+                            <option value="<%=invoice.name%>"><%=invoice.name%></option>
+                            <% invoices.forEach(inv => { %>
+                                <!-- omit the current category from the lisitng -->
+                                <%if (inv.name != invoice.name) { %>
+                                    <option value="<%=inv.name%>"><%=inv.name%></option>
+                                <% } %>
+                            <% }) %>
+                        </select>
+                        <select class="input-expense-vendor" name="expense_vendor">
+                            <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
+                            <% vendors.forEach(vendor => { %>
+                                <!-- omit the current category from the lisitng -->
+                                <%if (expense.vendor != vendor.name) { %>
+                                    <option value="<%=vendor.name%>"><%=vendor.name%></option>
+                                <% } %>
+                            <% }) %>
+                        </select>
+                        <select class="input-expense-category" name="expense_category">
+                            <option value="<%=expense.category%>"><%=expense.category%></option>
+                            <% categories.forEach(category => { %>
+                                <!-- omit the current category from the lisitng -->
+                                <%if (expense.category != category.name) { %>
+                                    <option value="<%=category.name%>"><%=category.name%></option>
+                                <% } %>
+                            <% }) %>
+                        </select>
+                        <input class="input-expense-description" value="<%=expense.description%>"></innput>
+                        <input class="input-expense-cost" value="<%=expense.cost%>"></input>
+                    </form>
+                <% }) %>
+            </section>
+        <% } %>
                     
 
-                        <tbody>
-
-                            <form id="<%=expense._id + 'mobile_expense_form'%>" onsubmit='event.preventDefault()'>
-
-                                <tr class="mobile_expense_main_row" onclick="toggleMobileTable(this, '<%=expense._id%>')">
-                                    <th>
-                                        <%= expense.date %>
-                                    </th>
-                                    <th>
-                                        <%= expense.vendor %>
-                                    </th>
-                                    <th>
-                                        $<%= expense.cost %>
-                                    </th>
-                                    <th>
-                                        <i class="fa-solid fa-angle-up" style="display:none;"></i>
-                                        <i class="fa-solid fa-angle-down"></i>
-                                    </th>
-                                </tr>
-
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td>Date</td>
-                                    <td colspan="3">
-                                        <input class='expense_input' onclick="toggleMobileSaveButton('<%=expense._id%>')" type="text" name="expense_date" value="<%=expense.date%>">
-                                    </td>
-                                </tr>
-
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td>Invoice</td>
-                                    <td colspan="3">
-                                        <select onclick="toggleMobileSaveButton('<%=expense._id%>')" name="expense_invoice">
-                                            <option value="<%=invoice.name%>"><%=invoice.name%></option>
-                                            <% invoices.forEach(inv => { %>
-                                                <!-- omit the current category from the lisitng -->
-                                                <%if (inv.name != invoice.name) { %>
-                                                    <option value="<%=inv.name%>"><%=inv.name%></option>
-                                                <% } %>
-                                            <% }) %>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td>Category</td>
-                                    <td colspan="3">
-                                        <select onclick="toggleMobileSaveButton('<%=expense._id%>')" name="expense_category">
-                                            <option value="<%=expense.category%>"><%=expense.category%></option>
-                                            <% categories.forEach(category => { %>
-                                                <!-- omit the current category from the lisitng -->
-                                                <%if (expense.category != category.name) { %>
-                                                    <option value="<%=category.name%>"><%=category.name%></option>
-                                                <% } %>
-                                            <% }) %>
-                                        </select>
-                                    </td>
-                                </tr> 
-
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td>Vendor</td>
-                                    <td colspan="3">
-                                        <select onclick="toggleMobileSaveButton('<%=expense._id%>')" name="expense_vendor">
-                                            <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
-                                            <% vendors.forEach(vendor => { %>
-                                                <!-- omit the current category from the lisitng -->
-                                                <%if (expense.vendor != vendor.name) { %>
-                                                    <option value="<%=vendor.name%>"><%=vendor.name%></option>
-                                                <% } %>
-                                            <% }) %>
-                                        </select>
-                                    </td>
-                                </tr>
-
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td>Description</td>
-                                    <td colspan="3">
-                                        <input onclick="toggleMobileSaveButton('<%=expense._id%>')" class='expense_input_description' type="text" name="expense_description" value="<%=expense.description%>">
-                                    </td>
-                                </tr>
-
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td>Cost</td>
-                                    <td colspan="3">
-                                        <input onclick="toggleMobileSaveButton('<%=expense._id%>')" class='expense_input_cost' type="text" name="expense_cost" value="<%=expense.cost%>">
-                                    </td>
-                                    
-                                </tr>
-
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td>Complete</td>
-                                    <td colspan="3">
-                                        <% if (expense.completed == true) { %>
-                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>'), completeExpense('<%=expense._id%>', '<%=invoice._id%>')" type="checkbox" name="expense_completed" class='expense_complete_checkbox' checked>
-                                        <% } else { %>
-                                            <input onclick="toggleMobileSaveButton('<%=expense._id%>'), completeExpense('<%=expense._id%>', '<%=invoice._id%>')" type="checkbox" name="expense_completed" class="expense_complete_checkbox">
-                                        <% } %>
-                                    </td>
-                                </tr>
-
-                                <tr class="<%=expense._id + 'more_info'%>" style="display:none;">
-                                    <td>Delete</td>
-                                    <td colspan="3">
-                                        <input type="checkbox" class="expense_delete_checkbox" id="<%=expense._id + 'mobile_expense_delete_checkbox'%>" onclick="toggleMobileExpenseDeleteButton(this, '<%= expense._id%>')">
-                                    </td>
-                                </tr>
-
-                                <tr id="<%=expense._id + 'mobile_expense_save_button'%>" class="hover_white" style="display:none;">
-                                    <td colspan="4" class="mobile_save_button_cell">
-                                        <button type="submit" class="mobile_save_button" onclick="updateMobileExpense('<%=invoice._id%>', '<%=expense._id%>')">
-                                            <i class="fa-solid fa-floppy-disk hover_green"></i>
-                                        </button>
-                                        <div id="<%= expense._id + 'loading_container' %>" class="loading_icon_container base_padding">
-                                            <div id="<%= expense._id + 'loading_icon'%>" class="loading_icon"></div>
-                                        </div>
-                                    </td>
-                                </tr>
-
-                            </form>
-
-                            <tr id="<%=expense._id + 'mobile_expense_delete_button'%>" class="hover_white" style="display:none;">
-                                <td colspan="4">
-                                    <button type="button" class="mobile_delete_button " onclick="deleteMobileExpense(this, '<%=expense._id%>')">
-                                        <i class="fa-solid fa-trash-can hover_red"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        
-                        </tbody>
-
-                    </table>
-
-                <% }) %>
-                
-            <% } %>
-
-        </section> 
-
-
-        <section id="expense_table_container">
-
-            <% if (expenses.length > 0) { %>
-                <table id="expense_table" class="shadow_card">
-                    <tr>
-                        <th>Date</th>
-                        <th>Invoice</th>
-                        <th>Vendor</th>
-                        <th>Category</th>
-                        <th>Description</th>
-                        <th>Cost</th>
-                        <th id="complete_column">Complete</th>
-                        <th id="delete_column">Delete</th>
-                        <th>Save</th>
-                    </tr>
-                    <% expenses.forEach(expense => { %>
-                        <tr class="expense_info_row" expense="<%=expense._id%>">
-                            <form id="<%=expense._id + 'form'%>" onsubmit="event.preventDefault(), jsForm.postForm(this, '<%=`/expense/updateExpense/${invoice._id}/${expense._id}`%>')">
-
-                                <td>
-                                    <input class='expense_input' type="text" name="expense_date" value="<%=expense.date%>">
-                                </td>
-
-                                <td>
-                                    <select name="expense_invoice">
-                                        <option value="<%=invoice.name%>"><%=invoice.name%></option>
-                                        <% invoices.forEach(inv => { %>
-                                            <!-- omit the current category from the lisitng -->
-                                            <%if (inv.name != invoice.name) { %>
-                                                <option value="<%=inv.name%>"><%=inv.name%></option>
-                                            <% } %>
-                                        <% }) %>
-                                    </select>
-                                </td>
-
-                                <td>
-                                    <select name="expense_vendor">
-                                        <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
-                                        <% vendors.forEach(vendor => { %>
-                                            <!-- omit the current category from the lisitng -->
-                                            <%if (expense.vendor != vendor.name) { %>
-                                                <option value="<%=vendor.name%>"><%=vendor.name%></option>
-                                            <% } %>
-                                        <% }) %>
-                                    </select>
-                                </td>
-
-                                <td>
-                                    <select name="expense_category">
-                                        <option value="<%=expense.category%>"><%=expense.category%></option>
-                                        <% categories.forEach(category => { %>
-                                            <!-- omit the current category from the lisitng -->
-                                            <%if (expense.category != category.name) { %>
-                                                <option value="<%=category.name%>"><%=category.name%></option>
-                                            <% } %>
-                                        <% }) %>
-                                    </select>
-                                </td>
-
-                                <td>
-                                    <input class='expense_input_description' type="text" name="expense_description" value="<%=expense.description%>">
-                                </td>
-
-                                <td class="expense_cost">
-                                    <input class='expense_input_cost' type="text" name="expense_cost" value="<%=expense.cost%>">
-                                </td>
-
-                                <td>
-                                    <% if (expense.completed == true) { %>
-                                        <input type="checkbox" name="expense_completed" class='expense_complete_checkbox' onclick="completeExpense('<%=expense._id%>', '<%=invoice._id%>')" checked>
-                                    <% } else { %>
-                                        <input type="checkbox" name="expense_completed" class="expense_complete_checkbox" onclick="completeExpense('<%=expense._id%>', '<%=invoice._id%>')">
-                                    <% } %>
-                                </td>
-
-                                <td>
-                                    <input type="checkbox" class="expense_delete_checkbox" onclick="toggleExpenseDeleteButton(this)">
-                                </td>
-
-                                <td class="save_expense_container">
-                                    <button class="flex_center_align" type="submit" id=<%=expense._id%>>
-                                        <i class="fa-solid fa-floppy-disk"></i>
-                                        <div id="<%=expense._id + 'loading_icon'%>" class="small_loading_icon" name="loading-icon"></div>
-                                    </button>
-                                </td>
-
-                            </form>
-                        </tr>
-                    <% }) %>
-                </table>
-            <% } %>
-
-        </section>
+               
 
         <footer id="single_invoice_footer">
 

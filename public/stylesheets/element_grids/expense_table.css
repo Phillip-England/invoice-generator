@@ -10,65 +10,6 @@
     }   
 }
 
-#expense_table_container button{
-    /* background-color: var(--first-color); */
-    padding: 0.25em;
-    width:100%;
-    /* border: solid var(--third-color) 1px; */
-    font-family: var(--secondary-font);
-}
 
-#expense_table_container button:hover{
-    background-color: var(--third-color);
-    color:var(--first-color);
-}
-
-#expense_table_container tr:nth-child(odd) button{
-    background-color: var(--fourth-color);
-}
-
-#expense_table_container tr:nth-child(even) button{
-    background-color: var(--second-color);
-}
-
-#expense_table_container th{
-    padding: 0.5em;
-}
-
-#expense_table_container input{
-    font-size: 0.8rem;
-    padding: 0.25em;
-    text-align: center;
-    font-family: var(--secondary-font);
-}
-
-#expense_table_container input:focus{
-    outline:var(--first-color);
-    border:solid var(--first-color) 2px;
-}
-
-#expense_table_container tr:nth-child(odd) input{
-    background-color: var(--fourth-color);
-}
-
-#expense_table_container tr:nth-child(odd){
-    background-color: var(--fourth-color);
-}
-
-#expense_table_container select{
-    padding: 0.25em;
-    font-size: 0.8rem;
-    text-align: center;
-    font-family: var(--secondary-font);
-}
-
-#expense_table_container select:focus{
-    outline:var(--first-color);
-    border:solid var(--first-color) 2px;
-}
-
-#expense_table_container tr:nth-child(odd) select{
-    background-color: var(--fourth-color);
-}
 
 

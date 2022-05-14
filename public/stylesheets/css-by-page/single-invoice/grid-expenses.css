@@ -1,0 +1,72 @@
+#grid-expenses-single-invoice{
+    display:grid;
+    grid-area:grid-expenses-single-invoice;
+    grid-template-areas: 
+        'expense-grid-header'
+    ;
+}
+
+#wrapper-expense-grid-header{
+    display:grid;
+    grid-area: expense-grid-header;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+        'header-expense-date header-expense-invoice header-expense-vendor header-expense-category header-expense-description header-expense-cost'
+    ;
+}
+
+.header-expense-date{
+    grid-area: header-expense-date;
+}
+
+.header-expense-invoice{
+    grid-area: header-expense-invoice;
+}
+
+.header-expense-vendor{
+    grid-area: header-expense-vendor;
+}
+
+.header-expense-category{
+    grid-area: header-expense-category;
+}
+
+.header-expense-description{
+    grid-area: header-expense-description;
+}
+
+.header-expense-cost{
+    grid-area: header-expense-cost;
+}
+
+.form-expense-item{
+    display:grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+        'input-expense-header input-expense-invoice input-expense-vendor input-expense-category input-expense-description input-expense-cost'
+    ;
+}
+
+.input-expense-header{
+    grid-area: input-expense-header;
+}
+
+.input-expense-invoice{
+    grid-area: input-expense-invoice;
+}
+
+.input-expense-vendor{
+    grid-area: input-expense-vendor;
+}
+
+.input-expense-category{
+    grid-area: input-expense-category;
+}
+
+.input-expense-description{
+    grid-area: input-expense-description;
+}
+
+.input-expense-cost{
+    grid-area: input-expense-cost;
+}

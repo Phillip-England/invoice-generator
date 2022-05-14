@@ -1,0 +1,5 @@
+.input-main{
+    border:solid black 1px;
+    border-radius: var(--radius-md);
+    height:var(--input-height-md);
+}

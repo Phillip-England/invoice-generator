@@ -1,0 +1,12 @@
+#grid-main-single-invoice{
+    display:grid;
+    grid-template-columns: 1fr;
+    gap:var(--gap-md);
+    grid-template-areas: 
+        "navbar"
+        "wrapper-header-single-invoice"
+        "wrapper-form-add-expense-single-invoice"
+        "grid-expenses-single-invoice"
+        "footer"
+    ;
+}

@@ -1,0 +1,19 @@
+.header-xl{
+    font-size: var(--font-size-xl);
+    font-family: var(--secondary-font);
+}
+
+.header-lg{
+    font-size: var(--font-size-lg);
+    font-family: var(--secondary-font);
+}
+
+.text-md{
+    font-size: var(--font-size-md);
+    font-family: var(--main-font);
+}
+
+.text-lg{
+    font-size: var(--font-size-lg);
+    font-family: var(--main-font);
+}
