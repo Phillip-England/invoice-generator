@@ -226,7 +226,7 @@
                     </tr>
                     <% expenses.forEach(expense => { %>
                         <tr class="expense_info_row" expense="<%=expense._id%>">
-                            <form id="<%=expense._id + 'form'%>" onsubmit='event.preventDefault()'>
+                            <form id="<%=expense._id + 'form'%>" onsubmit="event.preventDefault(), jsForm.postForm(this, '<%=`/expense/updateExpense/${invoice._id}/${expense._id}`%>')">
 
                                 <td>
                                     <input class='expense_input' type="text" name="expense_date" value="<%=expense.date%>">
@@ -289,9 +289,9 @@
                                 </td>
 
                                 <td class="save_expense_container">
-                                    <button class="flex_center_align" type="submit" id=<%=expense._id%> onclick="updateExpense(this, '<%= invoice._id %>', '<%=expense._id%>')">
+                                    <button class="flex_center_align" type="submit" id=<%=expense._id%>>
                                         <i class="fa-solid fa-floppy-disk"></i>
-                                        <div id="<%=expense._id + 'loading_icon'%>" class="small_loading_icon"></div>
+                                        <div id="<%=expense._id + 'loading_icon'%>" class="small_loading_icon" name="loading-icon"></div>
                                     </button>
                                 </td>
 
@@ -315,36 +315,6 @@
 <%- include('../partials/scripts.ejs') %>
 
 <script>
-
-    const addExpense = async (e, userID, invoiceID) => {
-
-        //setting up our variables
-        let addExpenseForm = document.getElementById('add_expense_form')
-        let url
-        let uncompletedFields = form.getEmptyFields(addExpenseForm)
-        let loadingIcon = document.getElementById(invoiceID + 'loading_icon')
-        let loadingIconContainer = document.getElementById(invoiceID + 'loading_icon_container')
-
-        if (uncompletedFields.length > 0) {
-            form.showAstricks(uncompletedFields)
-            return
-        } else {
-            form.displayLoader(e, loadingIcon, loadingIconContainer)
-        }
-        
-        //getting our url for our request
-        url = `/expense/addExpense/${userID}/${invoiceID}/`
-
-        //calling our fetch request
-        const response = await fetch(url, {
-            method: "POST",
-            body: form.getData(addExpenseForm),
-        })
-
-        //reloading the page
-        window.location.reload()
-
-    }
 
     const updateExpense = async (e, invoiceID, expenseID) => {
 

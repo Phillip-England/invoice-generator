@@ -1,4 +1,5 @@
 const jsForm = {
+
 /*
     IMPORTANT NOTES
 
@@ -18,15 +19,18 @@ const jsForm = {
     }
     
     */
+
+    testingMode: true,
+
     postForm: async (e, url, options) => {
         //what to do if we have empty form fields
+        console.log(e.children)
         if (jsForm.checkForEmptyFields(e) == true){
             //astrick will be displayed and an error message will be populated
             //this is all handled on the validation section of this document
             return
-        }
-        //what to do if the form is completed
-        if (jsForm.checkForEmptyFields(e) == false){
+        //what to do if we do not have empty fields
+        } else {
             //showing our loading icon
             jsForm.displayLoadingIcon(e)
             //making our fetch request
