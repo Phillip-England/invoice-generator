@@ -1,0 +1,23 @@
+.font-size-md{
+    font-size:var(--rem-md);
+}
+
+.font-size-lg{
+    font-size:var(--rem-lg);
+}
+
+.font-size-xl{
+    font-size:var(--rem-xl);
+}
+
+.font-family-primary{
+    font-family:var(--primary-font);
+}
+
+.font-family-secondary{
+    font-family:var(--secondary-font);
+}
+
+.font-weight-medium{
+    font-weight:500;
+}

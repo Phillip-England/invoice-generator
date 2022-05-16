@@ -1,0 +1,16 @@
+.padding-sm{
+    padding:var(--rem-xs);
+}
+
+.padding-sides-80{
+    padding-left:10%;
+    padding-right:10%;
+}
+
+.padding-left-md{
+    padding-left:var(--rem-sm);
+}
+
+.padding-left-sm{
+    padding-left:var(--rem-xs);
+}

@@ -37,6 +37,93 @@ const toggle = {
     },
 
     /*
+        CURRENT OPTIONS
+        display: String
+        element1: HTML Element
+        element2: HTML Element
+        test: boolean
+    */
+    swap: (options) => {
+        //testing incoming options
+        if (options.test == true){
+            console.log(options.element1)
+            console.log(options.element2)
+        }
+        //what do to on first run
+        if (options.element1.style.display == undefined && options.element2.style.display == undefined){
+            options.element1.style.display = 'none'
+            options.element2.style.display = options.display
+            //testing styles of both elements
+            if (options.test == true){
+                console.log('Display undefined: swapping element 2 to none')
+                console.log(options.element1.style.display)
+                console.log(options.element2.style.display)
+            }
+            return
+        }
+        //every run after the first run
+        if (options.element1.style.display == 'none'){
+            options.element1.style.display = options.display
+            options.element2.style.display = 'none'
+            //testing styles of both elements
+            if (options.test == true){
+                console.log('swapping element 2 to none')
+                console.log(options.element1.style.display)
+                console.log(options.element2.style.display)
+            }
+        } else {
+            options.element1.style.display = 'none'
+            options.element2.style.display = options.display
+            //testing styles of both elements
+            if (options.test == true){
+                console.log('Swapping element1 to none')
+                console.log(options.element1.style.display)
+                console.log(options.element2.style.display)
+            }
+        }
+    },
+
+    /* 
+        CURRENT OPTIONS
+        group: OBJECT {
+            style: String,
+            elements: {
+                elementName: HTML Element
+            }
+        }
+    */
+
+    swapGroups: (options) => {
+        //looping through all the groups provided
+        Object.values(options).forEach(group => {
+            
+            //looping through each individual group provided
+            Object.values(group).forEach(property => {
+                console.log(property)
+            })
+
+        })
+    },
+
+    /*
+        CURRENT OPTIONS
+        style: String
+        showClassName: HTML Class Name
+        hideClassName: HTML Class Name
+    */
+
+    hideAndShowByClassName: (options) => {
+        let showElements = document.getElementsByClassName(options.showClassName)
+        let hideElements = document.getElementsByClassName(options.hideClassName)
+        for (x = 0; x < showElements.length; x++){
+            showElements[x].style.display = options.style
+        }
+        for (x = 0; x < hideElements.length; x++){
+            hideElements[x].style.display = 'none'
+        }
+    },
+    
+    /*
         IMPORTANT USAGE NOTES
             - the fetch request urls are pulled from the passed in element
               these elements must have a attribute of 'url'

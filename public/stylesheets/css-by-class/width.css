@@ -1,0 +1,23 @@
+.width-33{
+    width:33%;
+}
+
+.width-100{
+    width:100%;
+}
+
+.width-50{
+    width:50%;
+}
+
+.width-80{
+    width:80%;
+}
+
+.max-width-phone-size{
+    max-width: var(--phone-size);
+}
+
+.max-width-laptop-size{
+    max-width: var(--laptop-size);
+}

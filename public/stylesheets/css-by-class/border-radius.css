@@ -1,0 +1,7 @@
+.border-radius-dull{
+    border-radius: var(--rem-xs);
+}
+
+.border-radius-sharp{
+    border-radius:var(--rem-xxs);
+}

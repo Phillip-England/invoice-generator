@@ -1,0 +1,12 @@
+.border-black-sm{
+    border:solid black 1px;
+}
+
+.border-top-main-color{
+    border-top:solid var(--main-color) 3px;
+}
+
+.border-focus-main-color:focus{
+    outline:none;
+    border: solid var(--main-color) 2px;
+}

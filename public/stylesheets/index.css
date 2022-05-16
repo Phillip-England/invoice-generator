@@ -14,9 +14,11 @@
 /* variables */
 
 :root {
+
     /* colors */
     --first-color:steelblue;
     --main-color:steelblue;
+    --red-color:#CC585E;
     --dark-color:black;
     --light-color:white;
     --second-color:rgb(255, 255, 255);
@@ -24,23 +26,25 @@
     --fourth-color:rgb(230, 230, 230);
     --fifth-color:rgb(0, 174, 255);
     --sixth-color:rgb(255, 71, 72);
-    /* text appearance */
-    --main-font: 'EB Garamond', serif;
-    --secondary-font: 'Roboto', sans-serif;
-    --font-size-xl: 1.5rem;
-    --font-size-md: 1rem;
-    --font-size-lg: 1.25rem;
-    --light-font-weight:100;
-    --medium-font-weight:300;
-    --heavy-font-weight:500;
-    /* container appearance */
-    --shadow-card:1px 1px 10px gray;
-    --top-border:solid var(--first-color) 3px;
+
+    /* rem */
+    --rem-xxs:0.25rem;
+    --rem-xs:0.5rem;
+    --rem-sm:0.75rem;
+    --rem-md:1rem;
+    --rem-lg:1.25rem;
+    --rem-xl:1.5rem;
+    --rem-xxl:1.75rem;
+
+    /* fonts */
+    --primary-font: 'Roboto', sans-serif;
+    --secondary-font: 'EB Garamond', serif;
+ 
+    
+    /* breakpoints */
     --phone-size:425px; 
-    --padding-sm:0.8rem;
-    --gap-md:1rem;
-    --radius-md:0.2rem;
-    --input-height-md:2rem;
+    --laptop-size:900px;
+
 }
 
 /* colors */

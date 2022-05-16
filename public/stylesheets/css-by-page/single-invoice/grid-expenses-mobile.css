@@ -1,0 +1,125 @@
+#wrapper-expenses-mobile-single-invoice{
+    grid-area: wrapper-expenses-mobile-single-invoice;
+}
+
+@media only screen and (min-width: 950px) {
+    #wrapper-expenses-mobile-single-invoice{
+        display:none;
+    }
+}
+
+.grid-expense-mobile-information{
+    display:grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: 
+        'expense-mobile-date expense-mobile-icon'
+        'expense-mobile-vendor expense-mobile-complete'
+        'expense-mobile-cost expense-mobile-delete'
+    ;
+}
+
+.expense-mobile-date{
+    grid-area: expense-mobile-date;
+}
+
+.expense-mobile-icon{
+    grid-area: expense-mobile-icon;
+}
+
+.expense-mobile-vendor{
+    grid-area: expense-mobile-vendor;
+}
+
+.expense-mobile-delete{
+    grid-area:expense-mobile-delete;
+}
+
+.expense-mobile-cost{
+    grid-area: expense-mobile-cost;
+}
+
+.expense-mobile-complete{
+    grid-area:expense-mobile-complete;
+}
+
+.grid-expense-mobile-update-form{
+    display:grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-areas: 
+        'expense-mobile-title expense-mobile-close'
+        'expense-mobile-label-date expense-mobile-label-date'
+        'expense-mobile-input-date expense-mobile-input-date'
+        'expense-mobile-label-invoice expense-mobile-label-invoice'
+        'expense-mobile-input-invoice expense-mobile-input-invoice'
+        'expense-mobile-label-vendor expense-mobile-label-vendor'
+        'expense-mobile-input-vendor expense-mobile-input-vendor'
+        'expense-mobile-label-category expense-mobile-label-category'
+        'expense-mobile-input-category expense-mobile-input-category'
+        'expense-mobile-label-description expense-mobile-label-description'
+        'expense-mobile-input-description expense-mobile-input-description'
+        'expense-mobile-label-cost expense-mobile-label-cost'
+        'expense-mobile-input-cost expense-mobile-input-cost'
+        'expense-mobile-submit-button expense-mobile-submit-button'
+    ;
+}
+
+.expense-mobile-title{
+    grid-area: expense-mobile-title;
+}
+
+.expense-mobile-label-date{
+    grid-area:expense-mobile-label-date;
+}
+
+.expense-mobile-input-date{
+    grid-area: expense-mobile-input-date;
+}
+
+.expense-mobile-label-invoice{
+    grid-area:expense-mobile-label-invoice;
+}
+
+.expense-mobile-input-invoice{
+    grid-area: expense-mobile-input-invoice;
+}
+
+.expense-mobile-label-vendor{
+    grid-area:expense-mobile-label-vendor;
+}
+
+.expense-mobile-input-vendor{
+    grid-area: expense-mobile-input-vendor;
+}
+
+.expense-mobile-label-category{
+    grid-area:expense-mobile-label-category;
+}
+
+.expense-mobile-input-category{
+    grid-area: expense-mobile-input-category;
+}
+
+.expense-mobile-label-description{
+    grid-area:expense-mobile-label-description;
+}
+
+.expense-mobile-input-description{
+    grid-area: expense-mobile-input-description;
+}
+
+.expense-mobile-label-cost{
+    grid-area:expense-mobile-label-cost;
+}
+
+.expense-mobile-input-cost{
+    grid-area: expense-mobile-input-cost;
+}
+
+.expense-mobile-submit-button{
+    grid-area:expense-mobile-submit-button;
+}
+
+.expense-mobile-close{
+    grid-area:expense-mobile-close;
+}
+

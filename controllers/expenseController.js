@@ -98,7 +98,7 @@ const updateExpense = async (req, res, next) => {
             }
             //updating the cost of the invoice the expense is associated with
             const newUpdatedInvoice = await Invoice.findByIdAndUpdate(newInvoice._id, {
-                cost: Math.round(100*cost)/100
+                cost: '$' + String(Math.round(100*cost)/100)
             })
         }
 
@@ -133,7 +133,7 @@ const deleteExpense = async (req, res, next) => {
 
          //ending the request and returning the total cost to front-end to update page
          res.status(200).json({
-             cost: Math.round(100*cost)/100
+             cost: '$' + String(Math.round(100*cost)/100)
          })
 
     } catch (error) {
@@ -169,6 +169,7 @@ const completeExpense = async (req, res, next) => {
             cost = cost + invoiceExpenses[x].cost
         }
 
+
         //updating the invoice with the new total cost
         const updatedInvoice = await Invoice.findByIdAndUpdate(expense.invoice, {
             cost: Math.round(100*cost)/100
@@ -176,7 +177,7 @@ const completeExpense = async (req, res, next) => {
 
         //ending the request and returning the total cost to front-end to update page
         res.status(200).json({
-            cost: Math.round(100*cost)/100
+            cost: '$' + String(Math.round(100*cost)/100)
         })
 
     } catch (error) {

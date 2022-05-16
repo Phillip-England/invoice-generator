@@ -24,7 +24,6 @@ const jsForm = {
 
     postForm: async (e, url, options) => {
         //what to do if we have empty form fields
-        console.log(e.children)
         if (jsForm.checkForEmptyFields(e) == true){
             //astrick will be displayed and an error message will be populated
             //this is all handled on the validation section of this document

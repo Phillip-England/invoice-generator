@@ -1,3 +1,29 @@
-.hover-main-color:hover{
+.hover-color-main:hover{
     color:var(--main-color);
 }
+
+.hover-color-red:hover{
+    color:var(--red-color);
+}
+
+
+.hover-bg-color-main:hover{
+    background-color: var(--main-color);
+}
+
+.hover-bg-color-red:hover{
+    background-color: var(--red-color);
+}
+
+.hover-bg-color-black:hover{
+    background-color: black;
+}
+
+.hover-border-main:hover{
+    border:solid var(--main-color) 1px;
+}
+
+.hover-border-red:hover{
+    border:solid var(--red-color) 1px;
+}
+

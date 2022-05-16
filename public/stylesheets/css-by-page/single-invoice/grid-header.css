@@ -1,17 +1,8 @@
 #wrapper-header-single-invoice{
-    display: flex;
-    align-items: center;
-    justify-content: center;
     grid-area: wrapper-header-single-invoice;
 }
 
 #grid-header-single-invoice{
-    box-shadow: var(--shadow-card);
-    border-top: var(--top-border);
-    max-width: var(--phone-size);
-    padding: var(--padding-sm);
-    width:100%;
-    border-radius: 0.5rem;
     display: grid;
     grid-template-columns: 5fr 1fr;
     grid-template-areas: 
@@ -35,18 +26,10 @@
 
 .header-invoice-cost{
     grid-area:header-invoice-cost;
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: end;
 }
 
 .header-invoice-print-button{
     grid-area:header-invoice-print-button;
-    display:flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: end;
 }
 
 .header-invoice-print-button a i {

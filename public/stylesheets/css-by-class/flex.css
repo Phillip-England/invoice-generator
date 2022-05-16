@@ -1,0 +1,30 @@
+.flex-row-center-align{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-column-center-align{
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.flex-row-end-align{
+    display:flex;
+    align-items: center;
+    justify-content: end;
+}
+
+.flex-row-space-evenly{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.flex-row-start-align{
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}

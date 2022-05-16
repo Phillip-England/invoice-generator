@@ -1,0 +1,27 @@
+.margin-bottom-xs{
+    margin-bottom:var(--rem-xs);
+}
+
+.margin-bottom-sm{
+    margin-bottom:var(--rem-sm);
+}
+
+.margin-bottom-md{
+    margin-bottom:var(--rem-md);
+}
+
+.margin-bottom-xxs{
+    margin-bottom: var(--rem-xxs);
+}
+
+.margin-left-xs{
+    margin-left: var(--rem-xs);
+}
+
+.margin-right-xs{
+    margin-right: var(--rem-xs);
+}
+
+.margin-left-sm{
+    margin-left: var(--rem-sm);
+}

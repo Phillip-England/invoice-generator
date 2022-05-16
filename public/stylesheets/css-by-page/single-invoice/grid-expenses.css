@@ -1,17 +1,26 @@
+#wrapper-expenses-single-invoice{
+    grid-area:wrapper-expenses-single-invoice;
+}
+
 #grid-expenses-single-invoice{
     display:grid;
-    grid-area:grid-expenses-single-invoice;
     grid-template-areas: 
         'expense-grid-header'
     ;
 }
 
-#wrapper-expense-grid-header{
+@media only screen and (max-width: 950px) {
+    #wrapper-expenses-single-invoice{
+        display:none;
+    }
+}
+
+#grid-expenses-header{
     display:grid;
     grid-area: expense-grid-header;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas: 
-        'header-expense-date header-expense-invoice header-expense-vendor header-expense-category header-expense-description header-expense-cost'
+        'header-expense-date header-expense-invoice header-expense-vendor header-expense-category header-expense-description header-expense-cost header-expense-submit'
     ;
 }
 
@@ -39,11 +48,15 @@
     grid-area: header-expense-cost;
 }
 
+.header-expense-submit{
+    grid-area: header-expense-submit;
+}
+
 .form-expense-item{
     display:grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-areas: 
-        'input-expense-header input-expense-invoice input-expense-vendor input-expense-category input-expense-description input-expense-cost'
+        'input-expense-header input-expense-invoice input-expense-vendor input-expense-category input-expense-description input-expense-cost input-expense-submit'
     ;
 }
 
@@ -70,3 +83,8 @@
 .input-expense-cost{
     grid-area: input-expense-cost;
 }
+
+.input-expense-submit{
+    grid-area:input-expense-submit;
+}
+

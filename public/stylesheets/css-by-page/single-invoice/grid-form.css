@@ -1,16 +1,7 @@
 #wrapper-form-add-expense-single-invoice{
     grid-area: wrapper-form-add-expense-single-invoice;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 #grid-form-add-expense-single-invoice{
-    box-shadow: var(--shadow-card);
-    border-top: var(--top-border);
-    max-width: var(--phone-size);
-    padding: var(--padding-sm);
-    width:100%;
-    border-radius: 0.5rem;
     display: grid;
 }
