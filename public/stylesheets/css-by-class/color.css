@@ -2,10 +2,20 @@
     background-color: var(--main-color);
 }
 
+.color-main{
+    color:var(--main-color);
+}
+
 .bg-color-red{
     background-color: var(--red-color);
 }
 
-.color-main{
-    color:var(--main-color);
+.bg-color-white{
+    background-color: white;
 }
+
+.color-white{
+    color:white;
+}
+
+

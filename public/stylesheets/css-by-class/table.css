@@ -1,0 +1,8 @@
+.color-odd-rows-white:nth-child(odd){
+    background-color: white;
+}
+
+.color-even-rows-gray tr:nth-child(even) input, tr:nth-child(even) select, tr:nth-child(even) td{
+    background-color: var(--gray-color);
+    color: var(--main-color);
+}

@@ -18,10 +18,19 @@
     margin-left: var(--rem-xs);
 }
 
+.margin-left-xxs{
+    margin-left:var(--rem-xxs);
+}
+
 .margin-right-xs{
     margin-right: var(--rem-xs);
 }
 
 .margin-left-sm{
     margin-left: var(--rem-sm);
+}
+
+.margin-sides-sm{
+    margin-left: var(--rem-sm);
+    margin-right: var(--rem-sm);
 }

@@ -1,4 +1,8 @@
 .padding-sm{
+    padding:var(--rem-sm);
+}
+
+.padding-xs{
     padding:var(--rem-xs);
 }
 
@@ -8,9 +12,14 @@
 }
 
 .padding-left-md{
-    padding-left:var(--rem-sm);
+    padding-left:var(--rem-md);
 }
 
 .padding-left-sm{
-    padding-left:var(--rem-xs);
+    padding-left:var(--rem-sm);
+}
+
+.padding-sides-sm{
+    padding-left: var(--rem-sm);
+    padding-right: var(--rem-sm);
 }

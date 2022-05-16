@@ -1,3 +1,7 @@
 .box-shadow-main{
     box-shadow: 1px 1px 10px gray;
 }
+
+.box-shadow-table-row{
+    box-shadow: 0px 2px 5px gray;
+}

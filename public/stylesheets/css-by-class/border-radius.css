@@ -5,3 +5,16 @@
 .border-radius-sharp{
     border-radius:var(--rem-xxs);
 }
+
+.border-radius-top-dull{
+    border-top-left-radius: var(--rem-xs);
+    border-top-right-radius: var(--rem-xs);
+}
+
+.border-radius-top-left-dull{
+    border-top-left-radius: var(--rem-xs);
+}
+
+.border-radius-top-right-dull{
+    border-top-right-radius: var(--rem-xs);
+}

@@ -10,3 +10,19 @@
     outline:none;
     border: solid var(--main-color) 2px;
 }
+
+.border-bottom-gray{
+    border-bottom:solid var(--gray-color) 1px;
+}
+
+.border-collapse{
+    border-collapse: collapse;
+}
+
+.border-seperate{
+    border-collapse: separate;
+}
+
+.border-spacing-0{
+    border-spacing:0;
+}

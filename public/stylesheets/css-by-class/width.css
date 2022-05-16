@@ -21,3 +21,7 @@
 .max-width-laptop-size{
     max-width: var(--laptop-size);
 }
+
+.width-fit-content{
+    width:fit-content;
+}
