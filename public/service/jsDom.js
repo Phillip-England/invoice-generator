@@ -22,7 +22,7 @@ const jsDom = {
             //looping through to set all elements width to the largest width
             for (x = 0; x < classOfElements.length; x++){
                 //if we get an input, we have to set the size, not width
-                if (classOfElements[x].tagName == 'INPUT'){
+                if (classOfElements[x].tagName == 'INPUT' || classOfElements[x].tagName == 'SELECT'){
                     classOfElements[x].style.width = String(Number(largestWidth+buffer)) + 'px'
                     continue
                 }

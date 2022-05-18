@@ -83,25 +83,38 @@ const toggle = {
         }
     },
 
-    /* 
-        CURRENT OPTIONS
-        group: OBJECT {
-            style: String,
-            elements: {
-                elementName: HTML Element
+   
+    //can be used to hide and show menu elements based on a given display
+    dropDownMenu: (menuElement, display) => {
+        let menu = document.getElementById(menuElement)
+        menu.style.display = display
+    },
+
+    //will apply css styles if a given condition is true
+    cssStyle: (condition, options) => {
+        let finalStyle = ''
+        //looping through each element Object
+        Object.values(options).forEach(element => {
+            if (condition == true){
+                //using a for loop to combine all our styles
+                for (x = 0; x < element.style.length; x++){
+                    finalStyle = finalStyle + `${element.style[x]}:${element.value[x]};`
+                }
+                //looping through each target element provided
+                for (x = 0; x < element.target.length; x++){
+                    element.target[x].setAttribute(element.attribute, finalStyle)
+                }
+
+            } else {
+                //using a for loop to combine all our values
+                for (x = 0; x < element.style.length; x++){
+                    finalStyle = finalStyle + `${element.style[x]}:${element.defaultValue[x]};`
+                }
+                //looping through each target element provided
+                for (x = 0; x < element.target.length; x++){
+                    element.target[x].setAttribute(element.attribute, finalStyle)
+                }
             }
-        }
-    */
-
-    swapGroups: (options) => {
-        //looping through all the groups provided
-        Object.values(options).forEach(group => {
-            
-            //looping through each individual group provided
-            Object.values(group).forEach(property => {
-                console.log(property)
-            })
-
         })
     },
 

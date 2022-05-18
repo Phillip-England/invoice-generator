@@ -4,39 +4,21 @@
 
 #grid-header-single-invoice{
     display: grid;
-    grid-template-columns: 5fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-auto-rows:fit-content;
     grid-template-areas: 
-        'header-invoice-title header-invoice-cost'
-        'header-invoice-date header-invoice-date'
-        'header-invoice-description header-invoice-print-button'
+        "header-title header-date header-button"
     ;
 }
 
-.header-invoice-title{
-    grid-area:header-invoice-title;
+.header-title{
+    grid-area: header-title;
 }
 
-.header-invoice-date{
-    grid-area:header-invoice-date;
+.header-date{
+    grid-area: header-date;
 }
 
-.header-invoice-description{
-    grid-area:header-invoice-description;
+.header-button{
+    grid-area:header-button;
 }
-
-.header-invoice-cost{
-    grid-area:header-invoice-cost;
-}
-
-.header-invoice-print-button{
-    grid-area:header-invoice-print-button;
-}
-
-.header-invoice-print-button a i {
-    color:var(--dark-color);
-}
-
-.header-invoice-print-button :hover{
-    color:var(--main-color);
-}
-

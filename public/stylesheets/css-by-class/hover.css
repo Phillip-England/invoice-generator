@@ -1,3 +1,5 @@
+/* text colors */
+
 .hover-color-main:hover{
     color:var(--main-color);
 }
@@ -6,6 +8,11 @@
     color:var(--red-color);
 }
 
+.hover-color-white:hover{
+    color:white;
+}
+
+/* background colors */
 
 .hover-bg-color-main:hover{
     background-color: var(--main-color);
@@ -19,11 +26,21 @@
     background-color: black;
 }
 
+.hover-bg-color-gray:hover{
+    background-color: var(--gray-color);
+}
+
+/* borders */
+
 .hover-border-main:hover{
     border:solid var(--main-color) 1px;
 }
 
 .hover-border-red:hover{
     border:solid var(--red-color) 1px;
+}
+
+.hover-border-bottom-main:hover{
+    border-bottom:solid var(--main-color) 1px;
 }
 

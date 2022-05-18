@@ -34,3 +34,12 @@
     margin-left: var(--rem-sm);
     margin-right: var(--rem-sm);
 }
+
+.margin-sides-md{
+    margin-left: var(--rem-md);
+    margin-right: var(--rem-md);
+}
+
+.margin-top-xs{
+    margin-top: var(--rem-xs);
+}

@@ -17,3 +17,8 @@
     font-size: var(--font-size-lg);
     font-family: var(--main-font);
 }
+
+.text-align-center{
+    text-align: center;
+    text-align:-webkit-center;
+}

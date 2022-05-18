@@ -25,3 +25,15 @@
 .width-fit-content{
     width:fit-content;
 }
+
+.width-rem-sm{
+    width:var(--rem-sm);
+}
+
+.width-rem-md{
+    width:var(--rem-md);
+}
+
+.width-50-px{
+    width:50px;
+}

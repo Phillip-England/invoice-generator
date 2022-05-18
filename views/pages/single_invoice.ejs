@@ -13,15 +13,36 @@
 
         <%- include('../partials/navbar.ejs') %>
 
-        <section id="wrapper-header-single-invoice" class="flex-row-center-align margin-bottom-md">
-            <div id="grid-header-single-invoice" class="padding-sm border-radius-dull max-width-phone-size width-100 border-top-main-color box-shadow-main">
-                <h1 class="header-title font-size-xl font-family-primary"><%=invoice.name%></h1>
-                <p class="header-invoice-date font-size-lg font-family-secondary"><%=invoice.date%></p>
-                <p class="header-invoice-description font-size-lg font-family-secondary"><%=invoice.description%></p>
-                <div class="header-invoice-cost flex-row-end-align">
+        <section id="wrapper-header-single-invoice" class="margin-bottom-md position-relative">
+            <div id="grid-header-single-invoice" class="position-relative bg-color-gray box-shadow-bottom">
+                <div class="flex-row-center-align padding-sm">
+                    <h1 class="header-title font-family-primary font-size-lg color-main"><%=invoice.name%></h1>
+                </div>
+                <div class="flex-row-center-align padding-sm">
+                    <h1 class="header-date font-family-primary font-size-lg color-main"><%=invoice.date%></h1>
+                </div>
+                <div class="flex-column-center-align padding-sm">
+                    <button id="menu-main-button" class="header-button border-main-color border-radius-sharp padding-xxs position-relative flex-row-center-align" onmouseenter="toggle.dropDownMenu('menu-main', 'block')" onmouseleave="toggle.dropDownMenu('menu-main', 'none')">
+                        <h1 id="menu-main-text" class="font-family-primary font-size-lg color-main">Actions</h1>
+                        <i id="menu-main-icon" class="fa-solid fa-caret-down padding-left-xs color-main"></i>
+                        <div id="menu-main" class="position-absolute position-top-105 width-100 bg-color-white border-radius-sharp box-shadow-main display-none">
+                            <p class="font-family-secondary font-size-lg border-bottom-gray text-align-left border-radius-sharp padding-left-xs color-main hover-bg-color-gray">Save</p>
+                            <p class="font-family-secondary font-size-lg border-bottom-gray text-align-left border-radius-sharp padding-left-xs color-main hover-bg-color-gray">Delete</p>
+                        </div>   
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section id="wrapper-header-mobile-single-invoice" class="flex-row-center-align margin-bottom-md margin-sides-md">
+            <div id="grid-header-mobile-single-invoice" class="padding-sm border-radius-dull max-width-phone-size width-100 border-top-main-color box-shadow-main">
+                <h1 class="header-mobile-title font-size-xl font-family-primary"><%=invoice.name%></h1>
+                <p class="header-mobile-invoice-date font-size-lg font-family-secondary"><%=invoice.date%></p>
+                <p class="header-mobile-invoice-description font-size-lg font-family-secondary"><%=invoice.description%></p>
+                <div class="header-mobile-invoice-cost flex-row-end-align">
                     <h1 id="invoice-cost" class="font-size-lg font-family-primary">$<%=invoice.cost%></h1>
                 </div>
-                <div class="header-invoice-print-button flex-row-end-align">
+                <div class="header-mobile-invoice-print-button flex-row-end-align">
                     <a href=<%=`/invoice/generateInvoicePdf/${invoice._id}`%>>
                         <i class="fa-solid fa-print fa-lg hover-color-main"></i>
                     </a>
@@ -33,7 +54,7 @@
              
         </section>
 
-        <section id="wrapper-form-add-expense-single-invoice" class="flex-row-center-align margin-bottom-md">
+        <section id="wrapper-form-add-expense-single-invoice" class="flex-row-center-align margin-bottom-md margin-sides-md">
             <form id="grid-form-add-expense-single-invoice" class="padding-sm border-radius-dull max-width-phone-size width-100 border-top-main-color box-shadow-main" onsubmit="event.preventDefault(), jsForm.postForm(this, '<%=`/expense/addExpense/${user._id}/${invoice._id}`%>')">
                 <h1 class="font-size-xl font-family-primary margin-bottom-xs">Add an Expense</h1>
                 <label class="font-size-md font-family-primary" for="expense_date">Date<span>*</span></label>
@@ -75,11 +96,11 @@
                     <table class="border-collapse border-spacing-0 box-shadow-main border-radius-top-dull color-even-rows-gray">
                         <thead class="bg-color-main">
                             <tr>
-                                <th class="column-date text-align-left font-family-primary font-size-md border-radius-top-left-dull padding-xs color-white"></th>
+                                <th class="text-align-left font-family-primary font-size-md border-radius-top-left-dull padding-xs color-white width-50-px"></th>
                                 <th class="column-date text-align-left font-family-primary font-size-md padding-xs color-white">Date</th>
-                                <th class="text-align-left font-family-primary font-size-md padding-xs color-white">Invoice</th>
-                                <th class="text-align-left font-family-primary font-size-md padding-xs color-white">Vendor</th>
-                                <th class="text-align-left font-family-primary font-size-md padding-xs color-white">Category</th>
+                                <th class="column-invoice text-align-left font-family-primary font-size-md padding-xs color-white">Invoice</th>
+                                <th class="column-vendor text-align-left font-family-primary font-size-md padding-xs color-white">Vendor</th>
+                                <th class="column-category text-align-left font-family-primary font-size-md padding-xs color-white">Category</th>
                                 <th class="column-description text-align-left font-family-primary font-size-md padding-xs color-white">Description</th>
                                 <th class="column-cost text-align-left font-family-primary font-size-md border-radius-top-right-dull padding-xs color-white">Cost</th>
                             </tr>    
@@ -88,14 +109,29 @@
                             <tr>
                                 <td>
                                     <div class="flex-row-center-align">
-                                        <input type="checkbox">
+                                        <input type="checkbox" class="checkbox-expense-item" onclick="toggle.cssStyle(jsTable.hasCheckedCheckboxes('checkbox-expense-item'), {
+                                            element1: {
+                                                target: [document.getElementById('menu-main-button')],
+                                                attribute: 'style',
+                                                style: ['background-color', 'border'],
+                                                value: ['var(--main-color)', 'solid white 1px'],
+                                                defaultValue: ['white', 'solid var(--main-color), 1px'],
+                                            },
+                                            element2: {
+                                                target: [document.getElementById('menu-main-text'), document.getElementById('menu-main-icon')],
+                                                attribute: 'style',
+                                                style: ['color'],
+                                                value: ['white'],
+                                                defaultValue: ['var(--main-color)'],
+                                            }
+                                        })">
                                     </div>
                                 </td>
                                 <td>
                                     <input class="input-shrink column-date font-family-secondary font-size-md" value="<%=expense.date%>"></input>
                                 </td>
                                 <td>
-                                    <select class="font-family-secondary font-size-md" name="expense_invoice">
+                                    <select class="input-shrink column-invoice font-family-secondary font-size-md" name="expense_invoice">
                                         <option value="<%=invoice.name%>"><%=invoice.name%></option>
                                         <% invoices.forEach(inv => { %>
                                             <!-- omit the current category from the lisitng -->
@@ -106,7 +142,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="font-family-secondary font-size-md" name="expense_vendor">
+                                    <select class="input-shrink column-vendor font-family-secondary font-size-md" name="expense_vendor">
                                         <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
                                         <% vendors.forEach(vendor => { %>
                                             <!-- omit the current category from the lisitng -->
@@ -117,7 +153,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="font-family-secondary font-size-md" name="expense_category">
+                                    <select class="input-shrink column-category font-family-secondary font-size-md" name="expense_category">
                                         <option value="<%=expense.category%>"><%=expense.category%></option>
                                         <% categories.forEach(category => { %>
                                             <!-- omit the current category from the lisitng -->
@@ -128,7 +164,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input class="input-shrink column-description font-family-secondary font-size-md" value="<%=expense.description%>"></innput>
+                                    <input class="input-shrink column-description font-family-secondary font-size-md" value="<%=expense.description%>"></input>
                                 </td>
                                 <td>
                                     <input class="input-shrink column-cost font-family-secondary font-size-md" value="<%=expense.cost%>"></input>
@@ -141,7 +177,7 @@
         <% } %>
 
         
-        <section id="wrapper-expenses-mobile-single-invoice" class="flex-column-center-align margin-bottom-md">
+        <section id="wrapper-expenses-mobile-single-invoice" class="flex-column-center-align margin-bottom-md margin-sides-md">
             <% expenses.forEach(expense => { %>
                 <div class="grid-expense-mobile-information max-width-phone-size width-100 padding-sm border-radius-dull border-top-main-color box-shadow-main margin-bottom-md">
                     <h1 class="expense-mobile-date font-size-xl font-family-primary"><%=expense.date%></h1>
@@ -262,12 +298,26 @@
 
 <script>
 
-    jsDom.shrinkInputsInCell('input-shrink', 0)
-    jsDom.resizeColumnToLargest(10, {
-        date: document.getElementsByClassName('column-date'),
-        description: document.getElementsByClassName('column-description'),
-        cost: document.getElementsByClassName('column-cost'),
-    })
+    const resizeDom = () => {
+
+        jsDom.shrinkInputsInCell('input-shrink', 2)
+
+        jsDom.resizeColumnToLargest(10, {
+            date: document.getElementsByClassName('column-date'),
+            invoice: document.getElementsByClassName('column-invoice'),
+            vendor: document.getElementsByClassName('column-vendor'),
+            category: document.getElementsByClassName('column-category'),
+            description: document.getElementsByClassName('column-description'),
+            cost: document.getElementsByClassName('column-cost'),
+        })
+
+    }
+
+    resizeDom()
+
+
+
+    
 
 
 

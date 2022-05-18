@@ -6,6 +6,10 @@
     padding:var(--rem-xs);
 }
 
+.padding-xxs{
+    padding:var(--rem-xxs);
+}
+
 .padding-sides-80{
     padding-left:10%;
     padding-right:10%;
@@ -17,6 +21,10 @@
 
 .padding-left-sm{
     padding-left:var(--rem-sm);
+}
+
+.padding-left-xs{
+    padding-left:var(--rem-xs);
 }
 
 .padding-sides-sm{

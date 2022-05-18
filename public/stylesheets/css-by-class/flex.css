@@ -23,8 +23,34 @@
     justify-content: space-evenly;
 }
 
+.flex-align-start{
+    align-items: flex-start;
+}
+
 .flex-row-start-align{
     display: flex;
     align-items: center;
     justify-content: start;
+}
+
+.flex-align-self-start{
+    align-self: start;
+}
+
+.flex-align-self-center{
+    align-self: center;
+}
+
+.flex-justify-self-center{
+    justify-self: center;
+}
+
+.flex-align-self-center{
+    align-self:center;
+    justify-content: center;
+}
+
+.flex-align-self-end{
+    align-self: center;
+    justify-content: end;
 }

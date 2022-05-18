@@ -6,6 +6,10 @@
     border-top:solid var(--main-color) 3px;
 }
 
+.border-main-color{
+    border:solid var(--main-color) 1px;
+}
+
 .border-focus-main-color:focus{
     outline:none;
     border: solid var(--main-color) 2px;
@@ -26,3 +30,5 @@
 .border-spacing-0{
     border-spacing:0;
 }
+
+

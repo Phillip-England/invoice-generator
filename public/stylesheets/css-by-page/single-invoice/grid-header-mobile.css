@@ -1,0 +1,48 @@
+#wrapper-header-mobile-single-invoice{
+    grid-area: wrapper-header-mobile-single-invoice;
+}
+
+@media only screen and (min-width: 950px) {
+    #wrapper-header-mobile-single-invoice{
+        display:none;
+    }
+}
+
+#grid-header-mobile-single-invoice{
+    display: grid;
+    grid-template-columns: 5fr 1fr;
+    grid-template-areas: 
+        'header-mobile-invoice-title header-mobile-invoice-cost'
+        'header-mobile-invoice-date header-mobile-invoice-date'
+        'header-mobile-invoice-description header-mobile-invoice-print-button'
+    ;
+}
+
+.header-mobile-invoice-title{
+    grid-area:header-mobile-invoice-title;
+}
+
+.header-mobile-invoice-date{
+    grid-area:header-mobile-invoice-date;
+}
+
+.header-mobile-invoice-description{
+    grid-area:header-mobile-invoice-description;
+}
+
+.header-mobile-invoice-cost{
+    grid-area:header-mobile-invoice-cost;
+}
+
+.header-mobile-invoice-print-button{
+    grid-area:header-mobile-invoice-print-button;
+}
+
+.header-mobile-invoice-print-button a i {
+    color:var(--dark-color);
+}
+
+.header-mobile-invoice-print-button :hover{
+    color:var(--main-color);
+}
+
