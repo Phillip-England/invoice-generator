@@ -90,12 +90,23 @@ const toggle = {
         menu.style.display = display
     },
 
+    /*
+        CURRENT OPTIONS
+        target: [HTML ELEMENTS],
+        attribute: HTML Attribute (string),
+        style: [CSS Styles] (string),
+        value: [CSS values] (string),
+        defaultValue: [CSS default values] (string),
+    */
+
     //will apply css styles if a given condition is true
+    //if the condition is false, will return the element to the default value
     cssStyle: (condition, options) => {
         let finalStyle = ''
         //looping through each element Object
         Object.values(options).forEach(element => {
             if (condition == true){
+                finalStyle = ''
                 //using a for loop to combine all our styles
                 for (x = 0; x < element.style.length; x++){
                     finalStyle = finalStyle + `${element.style[x]}:${element.value[x]};`
@@ -104,8 +115,8 @@ const toggle = {
                 for (x = 0; x < element.target.length; x++){
                     element.target[x].setAttribute(element.attribute, finalStyle)
                 }
-
             } else {
+                finalStyle = ''
                 //using a for loop to combine all our values
                 for (x = 0; x < element.style.length; x++){
                     finalStyle = finalStyle + `${element.style[x]}:${element.defaultValue[x]};`

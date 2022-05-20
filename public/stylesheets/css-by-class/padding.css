@@ -31,3 +31,8 @@
     padding-left: var(--rem-sm);
     padding-right: var(--rem-sm);
 }
+
+.padding-sides-xs{
+    padding-left: var(--rem-sm);
+    padding-right: var(--rem-sm);
+}

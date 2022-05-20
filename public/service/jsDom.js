@@ -8,6 +8,8 @@ const jsDom = {
         }
     },
 
+    //will take in a class of input / select elements
+    //it will then resize them to fit their value so they do not stretch
     resizeColumnToLargest: (buffer, classesOfElements) => {
         let largestWidth
         //looping through all each of our passed in class names
@@ -29,6 +31,15 @@ const jsDom = {
                 classOfElements[x].style.width = String(largestWidth+'px')
             }
         }) 
+    },
+
+    //will check a given checkbox upon click
+    checkCheckbox: (checkboxElement) => {
+        if (checkboxElement.checked){
+            return
+        } else {
+            checkboxElement.click()
+        }
     }
 
     

@@ -62,10 +62,6 @@ const jsTable = {
 
 }
 
-
-
-
-
 //this function will loop through a set of given checkboxes
 //it will check to see if any of the checkboxes are checked
 //if any are checked it will toggle the given buttons style

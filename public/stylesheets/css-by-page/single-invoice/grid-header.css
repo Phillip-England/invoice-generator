@@ -4,10 +4,10 @@
 
 #grid-header-single-invoice{
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     grid-auto-rows:fit-content;
     grid-template-areas: 
-        "header-title header-date header-button"
+        "header-title header-date header-cost header-button"
     ;
 }
 

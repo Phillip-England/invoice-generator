@@ -16,7 +16,7 @@ router.post('/updateExpense/:invoice/:expense', updateExpense) //updates an expe
 
 router.delete('/deleteExpense/:expense', deleteExpense) //deletes an expense
 
-router.put('/completeExpense/:invoice/:expense', completeExpense) //deletes an expense
+router.put('/completeExpense/:invoice/:expense', completeExpense) //completes an expense
 
 
 

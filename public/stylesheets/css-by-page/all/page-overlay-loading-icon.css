@@ -1,0 +1,10 @@
+#page-overlay-loading-icon{
+    height:100px;
+    width:100px;
+    display: block;
+    border-radius: 50%;
+    border:solid var(--main-color) 10px;
+    border-top:solid var(--fourth-color) 10px;
+    animation: loading 1s linear infinite;
+    font-size: 0px;
+}

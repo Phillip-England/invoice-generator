@@ -129,7 +129,6 @@ const deleteExpense = async (req, res, next) => {
          const updatedInvoice = await Invoice.findByIdAndUpdate(deletedExpense.invoice, {
              cost: Math.round(100*cost)/100
          })
- 
 
          //ending the request and returning the total cost to front-end to update page
          res.status(200).json({
@@ -138,6 +137,7 @@ const deleteExpense = async (req, res, next) => {
 
     } catch (error) {
         next(error)
+        console.log(error.message)
     }
 }
 

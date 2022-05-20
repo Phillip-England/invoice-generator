@@ -8,6 +8,10 @@
     <%- include('../partials/styles.ejs') %>
 </head>
 <body NODE_ENV="<%=NODE_ENV%>" page="single_invoice_page" >
+
+    <div id="page-overlay">
+        <div id="page-overlay-loading-icon"></div>
+    </div>
     
     <div id="grid-main-single-invoice">
 
@@ -21,13 +25,30 @@
                 <div class="flex-row-center-align padding-sm">
                     <h1 class="header-date font-family-primary font-size-lg color-main"><%=invoice.date%></h1>
                 </div>
+                <div class="flex-row-center-align padding-sm">
+                    <h1 id="invoice-cost" class="header-cost font-family-primary font-size-lg color-main">$<%=invoice.cost%></h1>
+                </div>
                 <div class="flex-column-center-align padding-sm">
                     <button id="menu-main-button" class="header-button border-main-color border-radius-sharp padding-xxs position-relative flex-row-center-align" onmouseenter="toggle.dropDownMenu('menu-main', 'block')" onmouseleave="toggle.dropDownMenu('menu-main', 'none')">
                         <h1 id="menu-main-text" class="font-family-primary font-size-lg color-main">Actions</h1>
                         <i id="menu-main-icon" class="fa-solid fa-caret-down padding-left-xs color-main"></i>
                         <div id="menu-main" class="position-absolute position-top-105 width-100 bg-color-white border-radius-sharp box-shadow-main display-none">
-                            <p class="font-family-secondary font-size-lg border-bottom-gray text-align-left border-radius-sharp padding-left-xs color-main hover-bg-color-gray">Save</p>
-                            <p class="font-family-secondary font-size-lg border-bottom-gray text-align-left border-radius-sharp padding-left-xs color-main hover-bg-color-gray">Delete</p>
+                            <p class="font-family-secondary font-size-lg border-bottom-gray text-align-left border-radius-sharp padding-left-xs color-main hover-bg-color-gray" onclick="jsFetch.multiple({
+                                method: 'UPDATE',
+                                jsonExtension: 'cost',
+                                loadingIcon: document.getElementById('page-overlay'),
+                                elements: jsTable.getRowsWithCheckedBoxes('checkbox-expense-item'),
+                                renderTarget: document.getElementById('invoice-cost')
+                            })">Save</p>
+                            <p class="font-family-secondary font-size-lg border-bottom-gray text-align-left border-radius-sharp padding-left-xs color-main hover-bg-color-gray" onclick="jsFetch.multiple({
+                                method: 'DELETE',
+                                jsonExtension: 'cost',
+                                loadingIcon: document.getElementById('page-overlay'),
+                                elements: jsTable.getRowsWithCheckedBoxes('checkbox-expense-item'),
+                                container: document.getElementById('wrapper-expenses-single-invoice'),
+                                containerElements: 'expense-table-row',
+                                renderTarget: document.getElementById('invoice-cost')
+                            })">Delete</p>
                         </div>   
                     </button>
                 </div>
@@ -40,7 +61,7 @@
                 <p class="header-mobile-invoice-date font-size-lg font-family-secondary"><%=invoice.date%></p>
                 <p class="header-mobile-invoice-description font-size-lg font-family-secondary"><%=invoice.description%></p>
                 <div class="header-mobile-invoice-cost flex-row-end-align">
-                    <h1 id="invoice-cost" class="font-size-lg font-family-primary">$<%=invoice.cost%></h1>
+                    <h1 id="invoice-cost-mobile" class="font-size-lg font-family-primary">$<%=invoice.cost%></h1>
                 </div>
                 <div class="header-mobile-invoice-print-button flex-row-end-align">
                     <a href=<%=`/invoice/generateInvoicePdf/${invoice._id}`%>>
@@ -78,10 +99,10 @@
                 <label class="font-size-md font-family-primary" for="expense_cost">Cost<span>*</span></label>
                 <input class="font-size-lg font-family-secondary margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color" type="text" name="expense_cost">
                 <div class="flex-row-center-align">
-                    <button class="bg-color-main flex-row-center-align width-33 border-radius-sharp border-black-sm hover-bg-color-black hover-color-main hover-border-main" type="submit">
-                        <h1 class="font-size-lg font-family-primary width-100">
+                    <button class="bg-color-white flex-row-center-align width-33 border-radius-sharp border-main-color" type="submit">
+                        <h1 class="font-size-lg color-main font-family-primary width-100">
                             Add
-                            <i class="fa-solid fa-money-check padding-left-sm"></i>
+                            <i class="fa-solid color-main fa-money-check padding-left-sm"></i>
                         </h1>
                     </button>
                     <div name="loading-icon" class="loading_icon"></div>
@@ -102,20 +123,21 @@
                                 <th class="column-vendor text-align-left font-family-primary font-size-md padding-xs color-white">Vendor</th>
                                 <th class="column-category text-align-left font-family-primary font-size-md padding-xs color-white">Category</th>
                                 <th class="column-description text-align-left font-family-primary font-size-md padding-xs color-white">Description</th>
-                                <th class="column-cost text-align-left font-family-primary font-size-md border-radius-top-right-dull padding-xs color-white">Cost</th>
+                                <th class="column-cost text-align-left font-family-primary font-size-md  padding-xs color-white">Cost</th>
+                                <th class="text-align-left font-family-primary font-size-md padding-xs border-radius-top-right-dull color-white">Complete</th>
                             </tr>    
                         </thead>
                         <% expenses.forEach(expense => { %>
-                            <tr>
+                            <tr class="expense-table-row" url-delete="<%=`/expense/deleteExpense/${expense._id}`%>" url-update="<%=`/expense/updateExpense/${invoice._id}/${expense._id}`%>" url-complete="<%=`/expense/Expense/${invoice._id}/${expense._id}`%>">
                                 <td>
                                     <div class="flex-row-center-align">
                                         <input type="checkbox" class="checkbox-expense-item" onclick="toggle.cssStyle(jsTable.hasCheckedCheckboxes('checkbox-expense-item'), {
                                             element1: {
                                                 target: [document.getElementById('menu-main-button')],
                                                 attribute: 'style',
-                                                style: ['background-color', 'border'],
-                                                value: ['var(--main-color)', 'solid white 1px'],
-                                                defaultValue: ['white', 'solid var(--main-color), 1px'],
+                                                style: ['background-color', 'box-shadow'],
+                                                value: ['var(--main-color)', '1px 1px 10px var(--main-color)'],
+                                                defaultValue: ['white', 'none'],
                                             },
                                             element2: {
                                                 target: [document.getElementById('menu-main-text'), document.getElementById('menu-main-icon')],
@@ -128,10 +150,10 @@
                                     </div>
                                 </td>
                                 <td>
-                                    <input class="input-shrink column-date font-family-secondary font-size-md" value="<%=expense.date%>"></input>
+                                    <input name="expense_date" class="form-control input-shrink column-date font-family-secondary font-size-md" value="<%=expense.date%>" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])"></input>
                                 </td>
                                 <td>
-                                    <select class="input-shrink column-invoice font-family-secondary font-size-md" name="expense_invoice">
+                                    <select name="expense_invoice" class="form-control input-shrink column-invoice font-family-secondary font-size-md" name="expense_invoice" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])">
                                         <option value="<%=invoice.name%>"><%=invoice.name%></option>
                                         <% invoices.forEach(inv => { %>
                                             <!-- omit the current category from the lisitng -->
@@ -142,7 +164,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="input-shrink column-vendor font-family-secondary font-size-md" name="expense_vendor">
+                                    <select name="expense_vendor" class="form-control input-shrink column-vendor font-family-secondary font-size-md" name="expense_vendor" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])">
                                         <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
                                         <% vendors.forEach(vendor => { %>
                                             <!-- omit the current category from the lisitng -->
@@ -153,7 +175,7 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <select class="input-shrink column-category font-family-secondary font-size-md" name="expense_category">
+                                    <select name="expense_category" class="form-control input-shrink column-category font-family-secondary font-size-md" name="expense_category" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])">
                                         <option value="<%=expense.category%>"><%=expense.category%></option>
                                         <% categories.forEach(category => { %>
                                             <!-- omit the current category from the lisitng -->
@@ -164,10 +186,29 @@
                                     </select>
                                 </td>
                                 <td>
-                                    <input class="input-shrink column-description font-family-secondary font-size-md" value="<%=expense.description%>"></input>
+                                    <input name="expense_description" class="form-control input-shrink column-description font-family-secondary font-size-md" value="<%=expense.description%>" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])"></input>
                                 </td>
                                 <td>
-                                    <input class="input-shrink column-cost font-family-secondary font-size-md" value="<%=expense.cost%>"></input>
+                                    <input name="expense_cost" class="form-control input-shrink column-cost font-family-secondary font-size-md" value="<%=expense.cost%>" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])"></input>
+                                </td>
+                                <td>
+                                    <div class="flex-row-center-align">
+                                        <% if (expense.completed ) { %>
+                                            <input type="checkbox" checked onclick="jsFetch.simple({
+                                                url: `/expense/completeExpense/${'<%=invoice._id%>'}/${'<%=expense._id%>'}`,
+                                                method: 'PUT',
+                                                jsonExtension: 'cost',
+                                                renderTarget: document.getElementById('invoice-cost')
+                                            })">
+                                        <% } else { %>
+                                            <input type="checkbox" onclick="jsFetch.simple({
+                                                url: `/expense/completeExpense/${'<%=invoice._id%>'}/${'<%=expense._id%>'}`,
+                                                method: 'PUT',
+                                                jsonExtension: 'cost',
+                                                renderTarget: document.getElementById('invoice-cost')
+                                            })">
+                                        <% } %>
+                                    </div>
                                 </td>
                             </tr>
                         <% }) %>
@@ -193,13 +234,13 @@
                         })"></i>
                     </div>
                     <div class="expense-mobile-icon flex-row-end-align display-none">
-                        <i class="fa-solid fa-trash-can hover-color-red" onclick="jsFetch.deleteAndRemove({
-                            url: '<%=`/expense/deleteExpense/${expense._id}`%>',
-                            elements: {
+                        <i class="fa-solid fa-trash-can hover-color-red" onclick="jsFetch.multiple({
+                            removeElements: {
                                 element1: this.parentElement.parentElement,
                                 element2: this.parentElement.parentElement.nextElementSibling
                             },
-                            parent: this.parentElement.parentElement.parentElement,
+                            removeParent: this.parentElement.parentElement.parentElement,
+                            fetch: jsFetch.simple('<%=`/expense/deleteExpense/${expense._id}`%>', 'DELETE'),
                         })"></i>
                     </div>
                     <p class="expense-mobile-vendor font-size-md font-family-primary"><%=expense.vendor%></p>
@@ -217,12 +258,12 @@
                         <% if (expense.completed == true) { %>
                             <input class="margin-left-xxs" type="checkbox" checked onclick="jsFetch.putAndRender({
                                 url: '<%=`/expense/completeExpense/${invoice._id}/${expense._id}`%>',
-                                renderTarget: document.getElementById('invoice-cost'),
+                                renderTarget: document.getElementById('invoice-cost-mobile'),
                             })">
                         <% } else { %>
                             <input class="margin-left-xxs" type="checkbox" onclick="jsFetch.putAndRender({
                                 url: '<%=`/expense/completeExpense/${invoice._id}/${expense._id}`%>',
-                                renderTarget: document.getElementById('invoice-cost'),
+                                renderTarget: document.getElementById('invoice-cost-mobile'),
                             })">
                         <% } %>
                     </div>
