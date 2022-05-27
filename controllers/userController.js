@@ -85,13 +85,19 @@ const loginUser = async (req, res, next) => {
                 httpOnly: true,
                 signed: true
             })
-            res.redirect('/invoice')
+            res.status(200).json({
+                url: '/invoice'
+            })
+            // res.redirect('/invoice')
         } else {
             res.status(400)
             throw new Error('Invalid credentials')
         }
     } catch (error) {
-        next(error)
+        res.status(400).json({
+            error: error.message
+        })
+        // next(error)
     }
 }
 

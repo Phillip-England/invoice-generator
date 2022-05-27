@@ -10,36 +10,58 @@
 </head>
 <body NODE_ENV="<%=NODE_ENV%>">
 
-    <div id='login_page_grid'>
+    <main>
 
         <%- include('../partials/navbar.ejs') %>
 
-        <div id="login_form_container">
-            <form action="/" method="POST" id="login_form" class="form_styles_general">
-                <h2 class="form_header">Login</h2>
-                <label class="form_label" for="username">Username</label>
-                <input class="form_input" type="text" name="username">
-                <label class="form_label" for="password">Password</label>
-                <input class="form_input" type="password" for="password" name="password">
+        <section class="flx-r-c mar-b-md">
+            <form action="/" method="POST" id="form-login" url-post="/" class="grid pad-sm mx-wth-phn wth-100 brd-t-main-dull shdw-main">
+                <h1 class="font-p-xl mar-b-xs">Login</h1>
+                <p class="error-message bg-red clr-wht font-s-md pad-xs mar-b-xs hide">error</p>
+                <label class="font-p-md" for="username">Username</label>
+                <input class="form-control form-required font-s-lg mar-b-xs brd-blk-sm-sharp brd-r-d fcs-input" type="text" name="username">
+                <label class="font-p-md" for="password">Password</label>
+                <input class="form-control form-required font-s-lg mar-b-xs brd-blk-sm-sharp brd-r-d fcs-input" type="password" for="password" name="password">
                 <div class="remember_me">
                     <p class="form_button_text">Remember Me?</p>
                     <input type="checkbox">
                 </div>
-                <div class="form_button_container">
-                    <button class="form_button">
-                        <p class="form_button_text">Login</p>
-                        <i class="fa-solid fa-right-to-bracket"></i>
+                <div class="flx-r-c">
+                    <button class="submit-button flx-r-c brd-main-sm-sharp pad-rl-sm clr-main bg-wht">
+                        <h1 class="font-p-lg">Login</h1>
+                        <i class="fa-solid fa-arrow-right-to-bracket fa-lg pad-l-sm"></i>
                     </button>
+                    <div class="loading-icon hide"></div>
                 </div>
             </form>
-        </div>
+        </section>
 
         
-    </div>
+    </main>
 
     
 
 </body>
 </html>
+
+<%- include('../partials/scripts.ejs') %>
+
+<script>
+
+window.addEventListener('load', () => {
+    
+    const formLogin = document.getElementById('form-login')
+    const formLoginSubmit = formLogin.getElementsByClassName('submit-button')[0]
+    const formLoginInputs = formLogin.getElementsByClassName('form-control')
+
+    //allows us to post our form
+    formLogin.addEventListener('submit', function(event){
+        event.preventDefault()
+        submitForm(formLogin, "POST", formLogin.getAttribute('url-post'))
+    })
+    
+})
+
+</script>
 
 

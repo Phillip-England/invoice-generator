@@ -37,7 +37,12 @@ const submitForm = async (formElement, method, url) => {
             for (x = 0; x < astricks.length; x++){
                 astricks[x].style.display = ''
             }
-            location.reload()
+            console.log(data)
+            if (data.url){
+                window.location.pathname = data.url
+            } else {
+                location.reload()
+            }
         }
     } else {
         //hiding all astricks
