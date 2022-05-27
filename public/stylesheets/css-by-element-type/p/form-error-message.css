@@ -1,0 +1,8 @@
+.form-error-message{
+    background-color: var(--red-color);
+    padding: var(--padding-xs);
+    margin:var(--margin-bottom-xs);
+    color:white;
+    font-family: var(--font-family-secondary);
+    font-size:var(--font-size-md);
+}

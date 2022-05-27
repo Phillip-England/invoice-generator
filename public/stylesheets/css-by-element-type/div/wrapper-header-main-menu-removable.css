@@ -1,0 +1,13 @@
+.wrapper-header-main-menu-removable{
+    padding:var(--padding-sm);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 950px) {
+    .wrapper-header-main-menu-removable{
+        display:none;
+        padding:0;
+    }
+}

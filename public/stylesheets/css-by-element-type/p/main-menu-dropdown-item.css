@@ -1,0 +1,13 @@
+.main-menu-dropdown-item{
+    font-family: var(--font-family-secondary);
+    font-size:var(--font-size-lg);
+    border-bottom: var(--border-bottom-gray);
+    text-align: left;
+    border-radius: var(--border-radius-sharp);
+    padding:var(--padding-left-xs); 
+    color:var(--main-color);
+}
+
+.main-menu-dropdown-item:hover{
+    background-color: var(--gray-color);
+}

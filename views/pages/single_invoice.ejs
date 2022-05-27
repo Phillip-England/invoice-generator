@@ -7,206 +7,163 @@
     <title><%=invoice.name%></title>
     <%- include('../partials/styles.ejs') %>
 </head>
-<body NODE_ENV="<%=NODE_ENV%>" page="single_invoice_page" >
+<body NODE_ENV="<%=NODE_ENV%>" page="single_invoice_page" id="body-single-invoice">
 
-    <div id="page-overlay">
+    <div id="page-overlay" class="visibility-hidden">
         <div id="page-overlay-loading-icon"></div>
     </div>
     
-    <div id="grid-main-single-invoice">
+    <main id="page-single-invoice">
 
         <%- include('../partials/navbar.ejs') %>
 
-        <section id="wrapper-header-single-invoice" class="margin-bottom-md position-relative">
-            <div id="grid-header-single-invoice" class="position-relative bg-color-gray box-shadow-bottom">
-                <div class="flex-row-center-align padding-sm">
-                    <h1 class="header-title font-family-primary font-size-lg color-main"><%=invoice.name%></h1>
+        <section id="section-header" class="section-general">
+            <div id="main-menu-single-invoice">
+                <div class="wrapper-header-main-menu">
+                    <h1 id="header-title" class="h1-main-menu"><%=invoice.name%></h1>
                 </div>
-                <div class="flex-row-center-align padding-sm">
-                    <h1 class="header-date font-family-primary font-size-lg color-main"><%=invoice.date%></h1>
+                <div class="wrapper-header-main-menu">
+                    <h1 id="header-date" class="h1-main-menu"><%=invoice.date%></h1>
                 </div>
-                <div class="flex-row-center-align padding-sm">
-                    <h1 id="invoice-cost" class="header-cost font-family-primary font-size-lg color-main">$<%=invoice.cost%></h1>
+                <div class="wrapper-header-main-menu">
+                    <h1 id="header-cost" class="header-cost h1-main-menu">$<%=invoice.cost%></h1>
                 </div>
-                <div class="flex-column-center-align padding-sm">
-                    <button id="menu-main-button" class="header-button border-main-color border-radius-sharp padding-xxs position-relative flex-row-center-align" onmouseenter="toggle.dropDownMenu('menu-main', 'block')" onmouseleave="toggle.dropDownMenu('menu-main', 'none')">
-                        <h1 id="menu-main-text" class="font-family-primary font-size-lg color-main">Actions</h1>
-                        <i id="menu-main-icon" class="fa-solid fa-caret-down padding-left-xs color-main"></i>
-                        <div id="menu-main" class="position-absolute position-top-105 width-100 bg-color-white border-radius-sharp box-shadow-main display-none">
-                            <p class="font-family-secondary font-size-lg border-bottom-gray text-align-left border-radius-sharp padding-left-xs color-main hover-bg-color-gray" onclick="jsFetch.multiple({
-                                method: 'UPDATE',
-                                jsonExtension: 'cost',
-                                loadingIcon: document.getElementById('page-overlay'),
-                                elements: jsTable.getRowsWithCheckedBoxes('checkbox-expense-item'),
-                                renderTarget: document.getElementById('invoice-cost')
-                            })">Save</p>
-                            <p class="font-family-secondary font-size-lg border-bottom-gray text-align-left border-radius-sharp padding-left-xs color-main hover-bg-color-gray" onclick="jsFetch.multiple({
-                                method: 'DELETE',
-                                jsonExtension: 'cost',
-                                loadingIcon: document.getElementById('page-overlay'),
-                                elements: jsTable.getRowsWithCheckedBoxes('checkbox-expense-item'),
-                                container: document.getElementById('wrapper-expenses-single-invoice'),
-                                containerElements: 'expense-table-row',
-                                renderTarget: document.getElementById('invoice-cost')
-                            })">Delete</p>
+                <div class="wrapper-header-main-menu">
+                    <a id="header-print" class="h1-main-menu clr-main hvr-clr-blk" href="<%=`generateInvoicePDF/${invoice._id}`%>">
+                        <i class="fa-solid fa-print"></i>
+                    </a>
+                </div>
+                <div class="wrapper-header-main-menu-removable">
+                    <button id="button-main-menu" class="button-main-menu button-dormant">
+                        <h1 id="menu-main-text" class="h1-main-menu">Actions</h1>
+                        <i id="menu-main-icon" class="fa-solid fa-caret-down icon-in-button"></i>
+                        <div id="main-menu-dropdown" class="main-menu-dropdown display-none">
+                            <p id="button-main-menu-update" class="main-menu-dropdown-item display-none">Save</p>
+                            <p id="button-main-menu-delete" class="main-menu-dropdown-item display-none">Delete</p>
                         </div>   
                     </button>
                 </div>
             </div>
         </section>
 
-        <section id="wrapper-header-mobile-single-invoice" class="flex-row-center-align margin-bottom-md margin-sides-md">
-            <div id="grid-header-mobile-single-invoice" class="padding-sm border-radius-dull max-width-phone-size width-100 border-top-main-color box-shadow-main">
-                <h1 class="header-mobile-title font-size-xl font-family-primary"><%=invoice.name%></h1>
-                <p class="header-mobile-invoice-date font-size-lg font-family-secondary"><%=invoice.date%></p>
-                <p class="header-mobile-invoice-description font-size-lg font-family-secondary"><%=invoice.description%></p>
-                <div class="header-mobile-invoice-cost flex-row-end-align">
-                    <h1 id="invoice-cost-mobile" class="font-size-lg font-family-primary">$<%=invoice.cost%></h1>
-                </div>
-                <div class="header-mobile-invoice-print-button flex-row-end-align">
-                    <a href=<%=`/invoice/generateInvoicePdf/${invoice._id}`%>>
-                        <i class="fa-solid fa-print fa-lg hover-color-main"></i>
-                    </a>
-                </div>   
-                <button id="expense_delete_button" style="display:none;" onclick="deleteExpenses(this, '<%=NODE_ENV%>')">
-                    <i class="fa-solid fa-trash-can fa-xl hover-color-red"></i>    
-                </button>   
-            </div>
-             
-        </section>
-
-        <section id="wrapper-form-add-expense-single-invoice" class="flex-row-center-align margin-bottom-md margin-sides-md">
-            <form id="grid-form-add-expense-single-invoice" class="padding-sm border-radius-dull max-width-phone-size width-100 border-top-main-color box-shadow-main" onsubmit="event.preventDefault(), jsForm.postForm(this, '<%=`/expense/addExpense/${user._id}/${invoice._id}`%>')">
-                <h1 class="font-size-xl font-family-primary margin-bottom-xs">Add an Expense</h1>
-                <label class="font-size-md font-family-primary" for="expense_date">Date<span>*</span></label>
-                <input class="font-size-lg font-family-secondary margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color" type="text" name="expense_date" placeholder="01/01/2022">
-                <label class="font-size-md font-family-primary" for="expense_vendor">Vendor<span>*</span></label>
-                <select class="font-size-lg font-family-secondary margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color" name="expense_vendor" id="expense_vendor">
+        <section id="section-add-expense" class="flex-row-center-align section-general section-squash-sides">
+            <form id="form-add-expense" class="form-general" url-post="<%=`/expense/addExpense/${user._id}/${invoice._id}`%>">
+                <h1 class="h1-form-header">Add an Expense</h1>
+                <p class="error-message bg-red clr-wht font-s-md pad-xs mar-b-xs hide"></p>
+                <label class="label-general" for="expense_date">Date<span class="astrick hide">*</span></label>
+                <input class="form-control input-required input-general" type="date" name="expense_date" label="Date">
+                <label class="label-general" for="expense_vendor">Vendor<span class="astrick hide">*</span></label>
+                <select class="form-control input-required input-general bg-wht" name="expense_vendor" type="text" label="Vendor">
                     <option value=""></option>
                     <% vendors.forEach(vendor => { %>
                         <option value="<%=vendor.name%>"><%=vendor.name%></option>
                     <% }) %>
                 </select>
-                <label class="font-size-md font-family-primary" for="expense_category">Category<span>*</span></label>
-                <select class="font-size-lg font-family-secondary margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color" name="expense_category" id="expense_category">
+                <label class="label-general" for="expense_category">Category<span class="astrick hide">*</span></label>
+                <select class="form-control input-required input-general bg-wht" name="expense_category" type="text" label="Category">
                     <option value=""></option>
                     <% categories.forEach(category => { %>
                         <option value="<%=category.name%>"><%=category.name%></option>
                     <% }) %>
                 </select>    
-                <label class="font-size-md font-family-primary" for="expense_description">Description<span>*</span></label>
-                <input class="font-size-lg font-family-secondary margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color" type="text" name="expense_description">
-                <label class="font-size-md font-family-primary" for="expense_cost">Cost<span>*</span></label>
-                <input class="font-size-lg font-family-secondary margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color" type="text" name="expense_cost">
+                <label class="label-general" for="expense_description">Description<span class="astrick hide">*</span></label>
+                <input class="form-control input-required input-general" type="text" name="expense_description" label="Description">
+                <label class="label-general" for="expense_cost">Cost<span class="astrick hide">*</span></label>
+                <input class="form-control input-required input-general" type="number" name="expense_cost" label="Cost">
                 <div class="flex-row-center-align">
-                    <button class="bg-color-white flex-row-center-align width-33 border-radius-sharp border-main-color" type="submit">
-                        <h1 class="font-size-lg color-main font-family-primary width-100">
+                    <button id="button-submit-expense" class="submit-button button-submit button-dormant" type="submit">
                             Add
-                            <i class="fa-solid color-main fa-money-check padding-left-sm"></i>
-                        </h1>
+                            <i class="fa-solid fa-money-check icon-in-button"></i>
                     </button>
-                    <div name="loading-icon" class="loading_icon"></div>
+                    <div class="loading-icon hide"></div>
                 </div>
             </form>
         </section>
 
 
         <% if (expenses.length > 0) { %>
-            <section id="wrapper-expenses-single-invoice" class="flex-column-center-align">
-                <form action="">
-                    <table class="border-collapse border-spacing-0 box-shadow-main border-radius-top-dull color-even-rows-gray">
+            <section id="wrapper-expenses-single-invoice" class="flex-column-center-align section-general">
+                <form>
+                    <table id="table-expenses" class="table-expenses nth-tr-bg-gry nth-tr-inpt-gry nth-tr-slct-wht nth-tr-inpt-clr-main">
                         <thead class="bg-color-main">
                             <tr>
-                                <th class="text-align-left font-family-primary font-size-md border-radius-top-left-dull padding-xs color-white width-50-px"></th>
-                                <th class="column-date text-align-left font-family-primary font-size-md padding-xs color-white">Date</th>
-                                <th class="column-invoice text-align-left font-family-primary font-size-md padding-xs color-white">Invoice</th>
-                                <th class="column-vendor text-align-left font-family-primary font-size-md padding-xs color-white">Vendor</th>
-                                <th class="column-category text-align-left font-family-primary font-size-md padding-xs color-white">Category</th>
-                                <th class="column-description text-align-left font-family-primary font-size-md padding-xs color-white">Description</th>
-                                <th class="column-cost text-align-left font-family-primary font-size-md  padding-xs color-white">Cost</th>
-                                <th class="text-align-left font-family-primary font-size-md padding-xs border-radius-top-right-dull color-white">Complete</th>
+                                <th class="font-p-md-l brd-r-tl-d pad-xs clr-wht width-50-px"></th>
+                                <th class="expense-column-date column-date font-p-md-l pad-xs clr-wht">Date</th>
+                                <th class="expense-column-invoice column-invoice font-p-md-l pad-xs clr-wht">Invoice</th>
+                                <th class="expense-column-vendor column-vendor font-p-md-l pad-xs clr-wht">Vendor</th>
+                                <th class="expense-column-category column-category font-p-md-l pad-xs clr-wht">Category</th>
+                                <th class="expense-column-description column-description font-p-md-l pad-xs clr-wht">Description</th>
+                                <th class="expense-column-cost column-cost font-p-md-l pad-xs clr-wht">Cost</th>
+                                <th class="font-p-md-l pad-xs brd-r-tr-d clr-wht">Complete</th>
                             </tr>    
                         </thead>
                         <% expenses.forEach(expense => { %>
-                            <tr class="expense-table-row" url-delete="<%=`/expense/deleteExpense/${expense._id}`%>" url-update="<%=`/expense/updateExpense/${invoice._id}/${expense._id}`%>" url-complete="<%=`/expense/Expense/${invoice._id}/${expense._id}`%>">
+                            <tr class="expense-table-row" url-delete="<%=`/expense/deleteExpense/${expense._id}`%>" url-update="<%=`/expense/updateExpense/${invoice._id}/${expense._id}`%>">
                                 <td>
-                                    <div class="flex-row-center-align">
-                                        <input type="checkbox" class="checkbox-expense-item" onclick="toggle.cssStyle(jsTable.hasCheckedCheckboxes('checkbox-expense-item'), {
-                                            element1: {
-                                                target: [document.getElementById('menu-main-button')],
-                                                attribute: 'style',
-                                                style: ['background-color', 'box-shadow'],
-                                                value: ['var(--main-color)', '1px 1px 10px var(--main-color)'],
-                                                defaultValue: ['white', 'none'],
-                                            },
-                                            element2: {
-                                                target: [document.getElementById('menu-main-text'), document.getElementById('menu-main-icon')],
-                                                attribute: 'style',
-                                                style: ['color'],
-                                                value: ['white'],
-                                                defaultValue: ['var(--main-color)'],
-                                            }
-                                        })">
+                                    <div class="flex-row-center-align pad-xs">
+                                        <input type="checkbox" class="expense-table-main-checkbox font-s-sm">
                                     </div>
                                 </td>
                                 <td>
-                                    <input name="expense_date" class="form-control input-shrink column-date font-family-secondary font-size-md" value="<%=expense.date%>" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])"></input>
+                                    <div>
+                                        <input name="expense_date" class="form-control expense-column-date width-inherit font-s-sm otln-none" size="0" value="<%=expense.date%>"></input>
+                                    </div>
                                 </td>
                                 <td>
-                                    <select name="expense_invoice" class="form-control input-shrink column-invoice font-family-secondary font-size-md" name="expense_invoice" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])">
-                                        <option value="<%=invoice.name%>"><%=invoice.name%></option>
-                                        <% invoices.forEach(inv => { %>
-                                            <!-- omit the current category from the lisitng -->
-                                            <%if (inv.name != invoice.name) { %>
-                                                <option value="<%=inv.name%>"><%=inv.name%></option>
-                                            <% } %>
-                                        <% }) %>
-                                    </select>
+                                    <div>
+                                        <select name="expense_invoice" class="form-control expense-column-invoice width-inherit font-s-sm otln-none" name="expense_invoice">
+                                            <option value="<%=invoice.name%>"><%=invoice.name%></option>
+                                            <% invoices.forEach(inv => { %>
+                                                <!-- omit the current category from the lisitng -->
+                                                <%if (inv.name != invoice.name) { %>
+                                                    <option value="<%=inv.name%>"><%=inv.name%></option>
+                                                <% } %>
+                                            <% }) %>
+                                        </select>
+                                    </div>
                                 </td>
                                 <td>
-                                    <select name="expense_vendor" class="form-control input-shrink column-vendor font-family-secondary font-size-md" name="expense_vendor" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])">
-                                        <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
-                                        <% vendors.forEach(vendor => { %>
-                                            <!-- omit the current category from the lisitng -->
-                                            <%if (expense.vendor != vendor.name) { %>
-                                                <option value="<%=vendor.name%>"><%=vendor.name%></option>
-                                            <% } %>
-                                        <% }) %>
-                                    </select>
+                                    <div>
+                                        <select name="expense_vendor" class="form-control expense-column-vendor width-inherit font-s-sm orln-none" name="expense_vendor">
+                                            <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
+                                            <% vendors.forEach(vendor => { %>
+                                                <!-- omit the current category from the lisitng -->
+                                                <%if (expense.vendor != vendor.name) { %>
+                                                    <option value="<%=vendor.name%>"><%=vendor.name%></option>
+                                                <% } %>
+                                            <% }) %>
+                                        </select>
+                                    </div>
                                 </td>
                                 <td>
-                                    <select name="expense_category" class="form-control input-shrink column-category font-family-secondary font-size-md" name="expense_category" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])">
-                                        <option value="<%=expense.category%>"><%=expense.category%></option>
-                                        <% categories.forEach(category => { %>
-                                            <!-- omit the current category from the lisitng -->
-                                            <%if (expense.category != category.name) { %>
-                                                <option value="<%=category.name%>"><%=category.name%></option>
-                                            <% } %>
-                                        <% }) %>
-                                    </select>
+                                    <div>
+                                        <select name="expense_category" class="form-control expense-column-category width-inherit font-s-sm otln-none" name="expense_category">
+                                            <option value="<%=expense.category%>"><%=expense.category%></option>
+                                            <% categories.forEach(category => { %>
+                                                <!-- omit the current category from the lisitng -->
+                                                <%if (expense.category != category.name) { %>
+                                                    <option value="<%=category.name%>"><%=category.name%></option>
+                                                <% } %>
+                                            <% }) %>
+                                        </select>
+                                    </div>
                                 </td>
                                 <td>
-                                    <input name="expense_description" class="form-control input-shrink column-description font-family-secondary font-size-md" value="<%=expense.description%>" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])"></input>
+                                    <div>
+                                        <input name="expense_description" class="form-control expense-column-description width-inherit font-s-sm otln-none" value="<%=expense.description%>"></input>
+                                    </div>
                                 </td>
                                 <td>
-                                    <input name="expense_cost" class="form-control input-shrink column-cost font-family-secondary font-size-md" value="<%=expense.cost%>" onclick="jsDom.checkCheckbox(this.parentElement.parentElement.children[0].children[0].children[0])"></input>
+                                    <div>
+                                        <input name="expense_cost" class="form-control expense-column-cost width-inherit font-s-sm otln-none" value="<%=expense.cost%>"></input>
+                                    </div>
                                 </td>
                                 <td>
                                     <div class="flex-row-center-align">
                                         <% if (expense.completed ) { %>
-                                            <input type="checkbox" checked onclick="jsFetch.simple({
-                                                url: `/expense/completeExpense/${'<%=invoice._id%>'}/${'<%=expense._id%>'}`,
-                                                method: 'PUT',
-                                                jsonExtension: 'cost',
-                                                renderTarget: document.getElementById('invoice-cost')
-                                            })">
+                                            <input class="checkbox-complete-expense" type="checkbox" checked>
                                         <% } else { %>
-                                            <input type="checkbox" onclick="jsFetch.simple({
-                                                url: `/expense/completeExpense/${'<%=invoice._id%>'}/${'<%=expense._id%>'}`,
-                                                method: 'PUT',
-                                                jsonExtension: 'cost',
-                                                renderTarget: document.getElementById('invoice-cost')
-                                            })">
+                                            <input class="checkbox-complete-expense" type="checkbox" url-complete="<%=`/expense/completeExpense/${invoice._id}/${expense._id}`%>">
                                         <% } %>
                                     </div>
                                 </td>
@@ -218,69 +175,46 @@
         <% } %>
 
         
-        <section id="wrapper-expenses-mobile-single-invoice" class="flex-column-center-align margin-bottom-md margin-sides-md">
+        <section id="section-mobile-expenses" class="flex-column-center-align section-general section-squash-sides">
             <% expenses.forEach(expense => { %>
-                <div class="grid-expense-mobile-information max-width-phone-size width-100 padding-sm border-radius-dull border-top-main-color box-shadow-main margin-bottom-md">
-                    <h1 class="expense-mobile-date font-size-xl font-family-primary"><%=expense.date%></h1>
-                    <div class="expense-mobile-icon flex-row-end-align">
-                        <i class="fa-solid fa-pencil hover-color-main" onclick="toggle.hideAndShowByClassName({
-                            style: 'grid',
-                            showClassName: 'grid-expense-mobile-information',
-                            hideClassName: 'grid-expense-mobile-update-form',
-                        }), toggle.swap({
-                            display: 'grid',
-                            element1: this.parentElement.parentElement,
-                            element2: this.parentElement.parentElement.nextElementSibling,
-                        })"></i>
+                <div class="grid-expense-mobile-information expense-mobile max-width-phone-size width-100 padding-sm border-radius-dull border-top-main-color box-shadow-main margin-bottom-md">
+                    <h1 class="expense-mobile-date font-p-lg"><%=expense.date%></h1>
+                    <div class="expense-icon-edit-container expense-mobile-icon flex-row-end-align display-flex">
+                        <i class="fa-solid fa-pencil hover-color-main icon-show-update-form"></i>
                     </div>
-                    <div class="expense-mobile-icon flex-row-end-align display-none">
-                        <i class="fa-solid fa-trash-can hover-color-red" onclick="jsFetch.multiple({
-                            removeElements: {
-                                element1: this.parentElement.parentElement,
-                                element2: this.parentElement.parentElement.nextElementSibling
-                            },
-                            removeParent: this.parentElement.parentElement.parentElement,
-                            fetch: jsFetch.simple('<%=`/expense/deleteExpense/${expense._id}`%>', 'DELETE'),
-                        })"></i>
+                    <div class="expense-icon-delete-container expense-mobile-icon flex-row-end-align display-none">
+                        <i class="fa-solid fa-trash-can hover-color-red icon-delete-mobile-expense" url-delete='<%=`/expense/deleteExpense/${expense._id}`%>'></i>
                     </div>
-                    <p class="expense-mobile-vendor font-size-md font-family-primary"><%=expense.vendor%></p>
+                    <p class="expense-mobile-vendor font-s-md"><%=expense.vendor%></p>
                     <div class="expense-mobile-delete flex-row-end-align">
-                        <p class="font-size-md font-family-primary">Delete</p>
-                        <input type="checkbox" class="margin-left-xxs" onclick="toggle.swap({
-                            display: 'flex',
-                            element1: this.parentElement.previousElementSibling.previousElementSibling.previousElementSibling,
-                            element2: this.parentElement.previousElementSibling.previousElementSibling,
-                        })">
+                        <p class="font-s-md">Delete</p>
+                        <input type="checkbox" class="margin-left-xxs checkbox-delete-mobile-expense">
                     </div>
-                    <p class="expense-mobile-cost font-size-md font-family-primary">$<%=expense.cost%></p>
+                    <p class="expense-mobile-cost font-s-md">$<%=expense.cost%></p>
                     <div class="expense-mobile-complete flex-row-end-align">
-                        <p class="font-size-md font-family-primary">Complete</p>
+                        <p class="font-s-md">Complete</p>
                         <% if (expense.completed == true) { %>
-                            <input class="margin-left-xxs" type="checkbox" checked onclick="jsFetch.putAndRender({
-                                url: '<%=`/expense/completeExpense/${invoice._id}/${expense._id}`%>',
-                                renderTarget: document.getElementById('invoice-cost-mobile'),
-                            })">
+                            <input class="checkbox-complete-mobile-expense margin-left-xxs" url-complete="<%=`/expense/completeExpense/${invoice._id}/${expense._id}`%>" type="checkbox" checked>
                         <% } else { %>
-                            <input class="margin-left-xxs" type="checkbox" onclick="jsFetch.putAndRender({
-                                url: '<%=`/expense/completeExpense/${invoice._id}/${expense._id}`%>',
-                                renderTarget: document.getElementById('invoice-cost-mobile'),
-                            })">
+                            <input class="checkbox-complete-mobile-expense margin-left-xxs" url-complete="<%=`/expense/completeExpense/${invoice._id}/${expense._id}`%>" type="checkbox">
                         <% } %>
                     </div>
                 </div>
-                <form class="grid-expense-mobile-update-form max-width-phone-size width-100 padding-sm border-radius-dull border-top-main-color box-shadow-main display-none" onsubmit="event.preventDefault(), jsForm.postForm(this, '<%=`/expense/updateExpense/${invoice._id}/${expense._id}`%>')">
-                    <h1 class="font-size-xl font-family-primary margin-bottom-xs">Update Expense</h1>
-                    <div class="expense-mobile-close flex-row-end-align margin-bottom-xs">
-                        <i class="fa-solid fa-x hover-color-red" onclick="toggle.swap({
-                            display: 'grid',
-                            element1: this.parentElement.parentElement,
-                            element2: this.parentElement.parentElement.previousElementSibling
-                        })"></i>
+
+                <form class="form-update-expense form-general margin-bottom-md display-none" url-post='<%=`/expense/updateExpense/${invoice._id}/${expense._id}`%>'>
+                    <div class="flex-row margin-bottom-xs">
+                        <div class="width-100">
+                            <h1 class="font-p-xl">Update Expense</h1>
+                        </div>
+                        <div class="flex-row-end-align width-100">
+                            <i class="fa-solid fa-x hover-color-red icon-close-update-form"></i>
+                        </div>
                     </div>
-                    <label for="expense_date" class="expense-mobile-label-date font-size-md font-family-primary">Date</label>
-                    <input type="text" name="expense_date" class="expense-mobile-input-date margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color width-100 font-size-lg font-family-secondary" value="<%=expense.date%>">
-                    <label for="expense_invoice" class="expense-mobile-label-invoice font-size-md font-family-primary">Invoice</label>
-                    <select name="expense_invoice" class="expense-mobile-input-invoice margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color width-100 font-size-lg font-family-secondary" name="expense_vendor">
+                    <p id="form-add-expense-error-message" class="form-error-message display-none"></p>
+                    <label for="expense_date" class="font-p-md">Date<span class="astrick display-none">*</span></label>
+                    <input type="date" name="expense_date" class="input-general form-control form-required" value="<%=expense.date%>">
+                    <label for="expense_invoice" class="font-p-md">Invoice<span class="astrick display-none">*</span></label>
+                    <select name="expense_invoice" class="input-general form-control form-required" name="expense_vendor">
                         <option value="<%=invoice.name%>"><%=invoice.name%></option>
                         <% invoices.forEach(inv => { %>
                             <!-- omit the current category from the lisitng -->
@@ -289,8 +223,8 @@
                             <% } %>
                         <% }) %>
                     </select>
-                    <label for="expense_vendor" class="expense-mobile-label-vendor font-size-md font-family-primary">Vendor</label>
-                    <select name="expense_vendor" class="expense-mobile-input-vendor margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color width-100 font-size-lg font-family-secondary" name="expense_vendor">
+                    <label for="expense_vendor" class="font-p-md">Vendor<span class="astrick display-none">*</span></label>
+                    <select name="expense_vendor" class="input-general form-control form-required" name="expense_vendor">
                         <option value="<%=expense.vendor%>"><%=expense.vendor%></option>
                         <% vendors.forEach(vendor => { %>
                             <!-- omit the current category from the lisitng -->
@@ -299,8 +233,8 @@
                             <% } %>
                         <% }) %>
                     </select>
-                    <label for="expense_category" class="expense-mobile-label-category font-size-md font-family-primary">Category</label>
-                    <select name="expense_category" class="expense-mobile-input-category margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color width-100 font-size-lg font-family-secondary" name="expense_vendor">
+                    <label for="expense_category" class="font-p-md">Category<span class="astrick display-none">*</span></label>
+                    <select name="expense_category" class="input-general form-control form-required" name="expense_vendor">
                         <option value="<%=expense.category%>"><%=expense.category%></option>
                         <% categories.forEach(category => { %>
                             <!-- omit the current category from the lisitng -->
@@ -309,18 +243,16 @@
                             <% } %>
                         <% }) %>
                     </select>
-                    <label for="expense_description" class="expense-mobile-label-description font-size-md font-family-primary">Description</label>
-                    <input name="expense_description" type="text" class="expense-mobile-input-description margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color width-100 font-size-lg font-family-secondary" value="<%=expense.description%>">
-                    <label for="expense_cost" class="expense-mobile-label-cost font-size-md font-family-primary">Cost</label>
-                    <input name="expense_cost" type="text" class="expense-mobile-input-cost margin-bottom-xs border-radius-sharp border-black-sm border-focus-main-color width-100 font-size-lg font-family-secondary" value="<%=expense.cost%>">
-                    <div class="expense-mobile-submit-button flex-row-center-align">
-                        <button class="bg-color-main flex-row-center-align width-33 border-radius-sharp border-black-sm hover-bg-color-black hover-color-main hover-border-main" type="submit">
-                            <h1 class="font-size-lg font-family-primary width-100">
+                    <label for="expense_description" class="font-p-md">Description<span class="astrick display-none">*</span></label>
+                    <input name="expense_description" type="text" class="input-general form-control form-required" value="<%=expense.description%>">
+                    <label for="expense_cost" class="expense-mobile-label-cost font-p-md">Cost<span class="astrick display-none">*</span></label>
+                    <input name="expense_cost" type="number" class="input-general form-control form-required" value="<%=expense.cost%>">
+                    <div class="flex-row-center-align">
+                        <button class="submit-button button-submit button-active" type="submit">
                                 Update
                                 <i class="fa-solid fa-file-pen padding-left-sm"></i>
-                            </h1>
                         </button>
-                        <div name="loading-icon" class="loading_icon"></div>
+                        <div class="loading-icon display-none"></div>
                     </div>
                 </form>
             <% }) %>
@@ -330,7 +262,7 @@
 
         </footer>
 
-    </div>
+    </main>
 
 </body>
 </html>
@@ -339,23 +271,316 @@
 
 <script>
 
-    const resizeDom = () => {
+const loadPage = () => {
+    
+    //viewport sizes
+    let desktopSize = 950
 
-        jsDom.shrinkInputsInCell('input-shrink', 2)
+    //collecting our HTML Elements
+    let formAddExpense = document.getElementById('form-add-expense')
+    let buttonSubmitExpense = document.getElementById('button-submit-expense')
+    let inputTableCustom = document.getElementsByClassName('input-table-custom')
+    let expenseTableInput = document.getElementsByClassName('expense-table-input')
+    let expenseTableMainCheckbox = document.getElementsByClassName('expense-table-main-checkbox')
+    let buttonMainMenu = document.getElementById('button-main-menu')
+    let mainMenuDropdown = document.getElementById('main-menu-dropdown')
+    let mainMenuDropdownItem = document.getElementsByClassName('main-menu-dropdown-item')
+    let mainMenuUpdate = document.getElementById('button-main-menu-update')
+    let expenseTableRow = document.getElementsByClassName('expense-table-row')
+    let expenseMobile = document.getElementsByClassName('expense-mobile')
+    let tableExpenses = document.getElementById('table-expenses')
+    let invoiceCost = document.getElementById('header-cost')
+    let pageOverlay = document.getElementById('page-overlay')
+    let buttonMainMenuDelete = document.getElementById('button-main-menu-delete')
+    let checkboxCompleteExpense = document.getElementsByClassName('checkbox-complete-expense')
+    let checkboxCompleteMobileExpense = document.getElementsByClassName('checkbox-complete-mobile-expense')
+    let formAddExpenseErrorMessage = document.getElementById('form-add-expense-error-message')
+    let iconShowUpdateForm = document.getElementsByClassName('icon-show-update-form')
+    let iconCloseUpdateForm = document.getElementsByClassName('icon-close-update-form')
+    let formUpdateExpense = document.getElementsByClassName('form-update-expense')
+    let iconDeleteMobileExpense = document.getElementsByClassName('icon-delete-mobile-expense')
+    let checkboxDeleteMobileExpense = document.getElementsByClassName('checkbox-delete-mobile-expense')
+    let expenseIconEditContainer = document.getElementsByClassName('expense-icon-edit-container')
+    let expenseIconDeleteContainer = document.getElementsByClassName('expense-icon-delete-container')
+    let gridExpenseMobileInformation = document.getElementsByClassName('grid-expense-mobile-information')
 
-        jsDom.resizeColumnToLargest(10, {
-            date: document.getElementsByClassName('column-date'),
-            invoice: document.getElementsByClassName('column-invoice'),
-            vendor: document.getElementsByClassName('column-vendor'),
-            category: document.getElementsByClassName('column-category'),
-            description: document.getElementsByClassName('column-description'),
-            cost: document.getElementsByClassName('column-cost'),
+    //will make our inputs in our expense table fit their container
+    window.addEventListener('load', function(){
+        tableResizeInputs({
+            column1: document.getElementsByClassName('expense-column-date'),
+            column2: document.getElementsByClassName('expense-column-invoice'),
+            column3: document.getElementsByClassName('expense-column-vendor'),
+            column4: document.getElementsByClassName('expense-column-category'),
+            column5: document.getElementsByClassName('expense-column-description'),
+            column6: document.getElementsByClassName('expense-column-cost'),
         })
+    })
 
+    //will resize our expense table if we make modifications to the values
+    if (tableExpenses != null){
+        for(x = 0; x < tableExpenses.getElementsByClassName('form-control').length; x++){
+            tableExpenses.getElementsByClassName('form-control')[x].addEventListener('input', function(){
+                tableResizeInputs({
+                column1: document.getElementsByClassName('expense-column-date'),
+                column2: document.getElementsByClassName('expense-column-invoice'),
+                column3: document.getElementsByClassName('expense-column-vendor'),
+                column4: document.getElementsByClassName('expense-column-category'),
+                column5: document.getElementsByClassName('expense-column-description'),
+                column6: document.getElementsByClassName('expense-column-cost'),
+                })
+            })
+        }
     }
 
-    resizeDom()
 
+    //colors our submit button for our add expense form if the form is complete
+    //uses fireOnCondition() which will run true functions if a condition is met
+    //and will run false functions if a condition is not met
+    for (x = 0; x < formAddExpense.getElementsByClassName('form-control').length; x++){
+        formAddExpense.getElementsByClassName('form-control')[x].addEventListener('input', function(e) {
+            fireOnCondition(formIsComplete(formAddExpense.getElementsByClassName('form-control')), {
+                trueFunctions: {
+                    addClass: () => addClass(buttonSubmitExpense, 'button-active'),
+                    removeClass: () => removeClass(buttonSubmitExpense, 'button-dormant')
+                },
+                falseFunctions: {
+                    addClass: () => addClass(buttonSubmitExpense, 'button-dormant'),
+                    removeClass: () => removeClass(buttonSubmitExpense, 'button-active')
+                }
+            })
+        })
+    }
+
+    //submitting our expense form
+    formAddExpense.addEventListener('submit', function(e){
+        e.preventDefault()
+        submitForm(this, 'POST', this.getAttribute('url-post'))
+    })
+
+    //will check a checkbox if a given input is clicked
+    //uses clickCheckboxIfUnchecked which will take in a target and then click the checkbox if it is not checked
+    if (tableExpenses != null){
+        for (x = 0; x < tableExpenses.getElementsByClassName('form-control').length; x++){
+            tableExpenses.getElementsByClassName('form-control')[x].addEventListener('click', function(e) {
+                clickCheckboxIfUnchecked(this.parentElement.parentElement.parentElement.children[0].children[0].children[0])
+            })
+        }
+    }
+
+
+    //will activate our main menu button if any main checkboxes in our expense table are checked
+    for (x = 0; x < expenseTableMainCheckbox.length; x++){
+        expenseTableMainCheckbox[x].addEventListener('click', function(){
+            fireOnCondition(boxesAreChecked(expenseTableMainCheckbox), {
+                trueFunctions: {
+                    //activating our main menu button
+                    func1: () => addClass(buttonMainMenu, 'button-active'),
+                    func2: () => removeClass(buttonMainMenu, 'button-dormant'),
+                    //making our dropdown menu visible
+                    func3: () => addClass(mainMenuDropdown, 'display-block'),
+                    func4: () => removeClass(mainMenuDropdown, 'display-none')
+                },
+                falseFunctions: {
+                    //deactivating our main menu button
+                    func1: () => addClass(buttonMainMenu, 'button-dormant'),
+                    func2: () => removeClass(buttonMainMenu, 'button-active'),
+                    //hiding our dropdown menu
+                    func3: () => addClass(mainMenuDropdown, 'display-none'),
+                    func4: () => removeClass(mainMenuDropdown, 'display-block')
+                }
+            })
+        })
+    }
+
+    //will make our dropdown menu visible if we click our main menu button
+    buttonMainMenu.addEventListener('click', function(){
+        for (x = 0; x < mainMenuDropdownItem.length; x++){
+            swapClasses(mainMenuDropdownItem[x], 'display-block', 'display-none')
+        }
+    })
+
+    //will make our dropdown menu disappear if the mouse leaves the menu
+    buttonMainMenu.addEventListener('mouseleave', function(){
+        removeClassMultiple(mainMenuDropdownItem, 'display-block')
+        addClassMultiple(mainMenuDropdownItem, 'display-none')
+    })
+
+    //allowing our update button to post a PUT request to our server
+    mainMenuUpdate.addEventListener('click', async function(){
+        //showing our loader
+        swapClasses(pageOverlay, 'visibility-hidden', 'visibility-visible')
+        //getting all our rows with checked checkboxes
+        let checkedRows = getCheckedRows(expenseTableRow, expenseTableMainCheckbox)
+        //collecting our urls
+        let urls = collectAttributes(checkedRows, 'url-update')
+        //collecting our form values
+        let formValues = getFormValuesMultiple(checkedRows,'form-control')
+        //pushing all our fetch requests into an array
+        let promises = []
+        for (x = 0; x < urls.length; x++){
+            promises.push(fetchSimple({
+                url: urls[x],
+                method: "POST",
+                body: formValues[x]
+            }))
+        }  
+        // resolving all of our promises
+        Promise.all(promises)
+            .then(function handleData(data){
+                //data will reutrn an as array of objects with our cost
+                //get the last item in the array (which will be the most recently updated cost) and render it
+                renderData(invoiceCost, data[data.length-1].cost)
+            })
+            .catch(function handleError(error){
+                console.log(error)
+            })
+        //reloading the page
+        location.reload()
+    })
+
+    //allowing us to delete our expeneses by using a checkbox
+    buttonMainMenuDelete.addEventListener('click', async function(){
+        //showing our loader
+        swapClasses(pageOverlay, 'visibility-hidden', 'visibility-visible')
+        //getting all our rows with checked checkboxes
+        let checkedRows = getCheckedRows(expenseTableRow, expenseTableMainCheckbox)
+        //collecting our urls
+        let urls = collectAttributes(checkedRows, 'url-delete')
+        //pushing all of our fetch requests into an array of promises
+        let promises = []
+        for (x = 0; x < urls.length; x++){
+            promises.push(fetchSimple({
+                url: urls[x],
+                method: "DELETE",
+            }))
+        }
+        //resolving all of our promises
+        Promise.all(promises)
+            .then(function handleData(data){
+                //data will reutrn an as array of objects with our cost
+                //get the last item in the array (which will be the most recently updated cost) and render it
+                renderData(invoiceCost, data[data.length-1].cost)
+            })
+            .catch(function handleError(error){
+                console.log(error)
+            })
+        //reloading the page
+        location.reload()
+    })
+
+    //lets us complete our expenses and update the current cost of the invoice
+    for (x = 0; x < checkboxCompleteExpense.length; x++){
+        let currentMobileCheckbox = checkboxCompleteMobileExpense[x]
+        checkboxCompleteExpense[x].addEventListener('click', async function(e){
+            //updating our expense via fetch
+            let data = await fetchSimple({
+                url: this.getAttribute('url-complete'),
+                method: 'PUT'
+            })
+            //updating total cost in dom
+            renderData(invoiceCost, data.cost)
+            //checking the equivilent expense in our mobile expenses
+            if (currentMobileCheckbox.checked){
+                currentMobileCheckbox.checked = false
+            } else {
+                currentMobileCheckbox.checked = true
+            }
+        })
+    }
+
+    //lets us complete our expenses and update the current cost of the invoice
+    for (x = 0; x < checkboxCompleteMobileExpense.length; x++){
+        let currentDesktopCheckbox = checkboxCompleteExpense[x]
+        checkboxCompleteMobileExpense[x].addEventListener('click', async function(e){
+            //updating our expense via fetch
+            let data = await fetchSimple({
+                url: this.getAttribute('url-complete'),
+                method: 'PUT'
+            })
+            //updating total cost in dom
+            renderData(invoiceCost, data.cost)
+            //checking the equivilent expense in our mobile expenses
+            if (currentDesktopCheckbox.checked){
+                currentDesktopCheckbox.checked = false
+            } else {
+                currentDesktopCheckbox.checked = true
+            }
+        })
+    }
+
+    //lets us reveal our mobile expense update form
+    for (x = 0; x < iconShowUpdateForm.length; x++){
+        let currentUpdateForm = formUpdateExpense[x]
+        iconShowUpdateForm[x].addEventListener('click', function(){
+            //hiding any open forms
+            for (y = 0; y < formUpdateExpense.length; y++){
+                addClass(formUpdateExpense[y], 'display-none')
+                removeClass(formUpdateExpense[y], 'display-grid')
+            }
+            //hiding the current expense
+            addClass(currentUpdateForm.previousElementSibling, 'display-none')
+            removeClass(currentUpdateForm.previousElementSibling, 'display-grid')
+            //opening the form associated with the current expense
+            addClass(currentUpdateForm, 'display-grid')
+            removeClass(currentUpdateForm, 'display-none')
+        })
+    }
+
+    //closes all mobile expense update forms
+    for (x = 0; x < iconCloseUpdateForm.length; x++){
+        let currentUpdateForm = formUpdateExpense[x]
+        iconCloseUpdateForm[x].addEventListener('click', function(){
+            //closing all forms
+            addClass(currentUpdateForm, 'display-none')
+            removeClass(currentUpdateForm, 'display-grid')
+            //revealing the hidden expense
+            addClass(currentUpdateForm.previousElementSibling, 'display-grid')
+            removeClass(currentUpdateForm.previousElementSibling, 'display-none')
+        })
+    }
+
+
+    //lets us update our mobile expenses
+    for (x = 0; x < formUpdateExpense.length; x++){
+        formUpdateExpense[x].addEventListener('submit', function(event){
+            event.preventDefault()
+            submitForm(this, 'POST', this.getAttribute('url-post'))
+        })
+    }
+
+    //reveals our delete mobile expense button
+    for (x = 0; x < checkboxDeleteMobileExpense.length; x++){
+        let currentUpdateIcon = iconShowUpdateForm[x]
+        let currentEditContainer = expenseIconEditContainer[x]
+        let currentDeleteContainer = expenseIconDeleteContainer[x]
+        checkboxDeleteMobileExpense[x].addEventListener('click', function(){
+            swapClasses(currentEditContainer, 'display-flex', 'display-none')
+            swapClasses(currentDeleteContainer, 'display-flex', 'display-none')
+        })
+    }
+
+    //allows us to delete our mobile expenses
+    for (x = 0; x < iconDeleteMobileExpense.length; x++){
+        let currentMobileInformation = gridExpenseMobileInformation[x]
+        let currentUpdateForm = formUpdateExpense[x]
+        iconDeleteMobileExpense[x].addEventListener('click', function(e){
+            //removing the info section and form from the DOM
+            currentMobileInformation.remove()
+            currentUpdateForm.remove()
+            //performing our DELETE request
+            fetchSimple({
+                url: this.getAttribute('url-delete'),
+                method: 'DELETE'
+            })
+        })
+    }
+
+
+
+
+}
+
+loadPage()
 
 
     

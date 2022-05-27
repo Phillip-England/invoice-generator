@@ -46,11 +46,14 @@ const addInvoice = async (req, res, next) => {
             throw new Error('Failed to create invoice')
         }
         //ending the request and reloading the invoice page
-        res.status(200)
-        res.redirect('/invoice')
+        res.status(200).json({
+            invoice: invoice
+        })
     } catch (error) {
-        console.log(error.message)
-        next(error)
+        res.status(200).json({
+            error: error.message
+        })
+        // next(error)
     }
 }
 

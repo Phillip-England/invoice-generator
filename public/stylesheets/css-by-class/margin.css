@@ -43,3 +43,19 @@
 .margin-top-xs{
     margin-top: var(--rem-xs);
 }
+
+.mar-b-xs{
+    margin:var(--margin-bottom-xs);
+}
+
+.mar-b-md{
+    margin:var(--margin-bottom-md);
+}
+
+.mar-r-xs{
+    margin-right: var(--rem-xs);
+}
+
+.mar-xs{
+    margin:var(--rem-xs);
+}

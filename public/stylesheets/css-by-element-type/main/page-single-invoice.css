@@ -1,0 +1,12 @@
+#page-single-invoice{
+    display:grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: 
+        "navbar"
+        "section-main-menu"
+        "section-add-expense"
+        "wrapper-expenses-single-invoice"
+        "section-mobile-expenses"
+        "footer"
+    ;
+}

@@ -1,0 +1,15 @@
+.button-main-menu{
+    border:var(--border-main-color);
+    border-radius: var(--border-radius-sharp);
+    padding:var(--padding-xxs);
+    position: relative;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}
+
+@media screen and (max-width: 950px) {
+    .button-main-menu{
+        display:none;
+    }
+}

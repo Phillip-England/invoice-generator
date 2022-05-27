@@ -2,6 +2,10 @@
     background-color: var(--main-color);
 }
 
+.bg-main{
+    background-color: var(--main-color);
+}
+
 .color-main{
     color:var(--main-color);
 }
@@ -10,7 +14,15 @@
     background-color: var(--red-color);
 }
 
+.bg-red{
+    background-color: var(--red-color);
+}
+
 .bg-color-white{
+    background-color: white;
+}
+
+.bg-wht{
     background-color: white;
 }
 
@@ -20,6 +32,22 @@
 
 .color-white{
     color:white;
+}
+
+.clr-wht{
+    color:white;
+}
+
+.bg-wht{
+    background-color: white;
+}
+
+.clr-main{
+    color:var(--main-color);
+}
+
+.clr-blk{
+    color:black;
 }
 
 

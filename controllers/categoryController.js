@@ -4,6 +4,7 @@ const Expense = require('../models/expenseModel')
 //create a new expense category
 const addCategory = async (req, res, next) => {
     try {
+        console.log('hit')
         const {category_name} = req.body
         //checking if form fields were completed
         if(!category_name){
@@ -13,7 +14,7 @@ const addCategory = async (req, res, next) => {
         const categoryExists =  await Category.find({user:req.user._id, name:category_name})
         //if no items are found, categoryExists will be an empty array
         if (categoryExists.length > 0) {
-            throw new Error('Category already exists')
+            throw new Error("Category already exists")
         }
         //creating the new category
         const newCategory = Category.create({
@@ -25,10 +26,14 @@ const addCategory = async (req, res, next) => {
             throw new Error('Failed to create new category')
         }
         //ending the request and redirecting back to category page
-        res.status(200)
-        res.redirect('/category')
+        res.status(200).json({
+            newCategory: newCategory,
+        })
     } catch (error) {
-        next(error)
+        res.status(200).json({
+            error: error.message
+        })
+        // next(error)
     }
 }
 

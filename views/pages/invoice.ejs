@@ -7,76 +7,170 @@
     <%- include('../partials/styles.ejs') %>
     <title>Invoices</title>
 </head>
-<body NODE_ENV="<%=NODE_ENV%>">
+<body>
 
-    <div id="invoice_page_grid">
+    <main>
 
         <%- include('../partials/navbar.ejs') %>
 
-        <div id="invoice_form_container">
-            <form id='add_invoice_form' class="form_styles_general" onsubmit="event.preventDefault(), jsForm.postForm(this, '/invoice/addInvoice')">
-                <h2 class="form_header">Add a New Invoice</h2>
-                <label class="form_label" for="invoice_name">Invoice Name<span class="form_astrick">*</span></label>
-                <input class="form_input" type="text" name="invoice_name">
-                <label class="form_label" for="invoice_description">Invoice Description<span class="form_astrick">*</span></label>
-                <input class="form_input" type="text" name="invoice_description">
-                <input type="hidden" name="invoice_date" id="invoice_date">
-                <input type="hidden" name="_csrf" value=<%=csrfToken%>>
-                <div class="form_button_container">
-                    <button type='submit' class="form_button">
-                        <p class="form_button_text">Add</p>
-                        <i class="fa-solid fa-file-invoice-dollar"></i>
+        <section class="flx-r-c mar-b-md">
+            <form id='form-add-invoice' class='grid pad-sm mx-wth-phn wth-100 brd-t-main-dull shdw-main' url-post="/invoice/addInvoice">
+                <h1 class="font-p-xl mar-b-xs">Add a New Invoice</h1>
+                <p class="error-message bg-red clr-wht font-s-md pad-xs mar-b-xs hide">error</p>
+                <label class="font-p-md" for="invoice_date">Date<span class="astrick hide">*</span></label>
+                <input class="form-control form-required font-s-lg mar-b-xs brd-blk-sm-sharp brd-r-d fcs-input" label="Date" type="date" name="invoice_date">
+                <label class="font-p-md" for="invoice_name">Name<span class="astrick hide">*</span></label>
+                <input class="form-control form-required font-s-lg mar-b-xs brd-blk-sm-sharp brd-r-d fcs-input" type="text" label="Name" name="invoice_name">
+                <label class="font-p-md" for="invoice_description">Description<span class="astrick hide">*</span></label>
+                <input class="form-control form-required font-s-lg mar-b-xs brd-blk-sm-sharp brd-r-d fcs-input" type="text" label="Description" name="invoice_description">
+                <input type="hidden" class="form-control form-required" name="_csrf" value=<%=csrfToken%>>
+                <div class="flx-r-c">
+                    <button type='submit' class="submit-button flx-r-c brd-main-sm-sharp pad-rl-sm clr-main bg-wht">
+                        <h1 class="font-p-lg">Add</h1>
+                        <i class="fa-solid fa-file-invoice-dollar fa-lg pad-l-sm"></i>
                     </button>
-                    <div name="loading-icon" class="loading_icon"></div>
+                    <div class="loading-icon hide"></div>
                 </div>
             </form>
-        </div>
+        </section>
         
 
-        <div id="wrapper_delete_invoice_button">
-            <button style=display:none; id="delete_invoice_button"  onclick="toggle.removeElements(this, {
-                elements: jsTable.getRowsWithCheckedBoxes('invoice_delete_checkbox'),
-                fetch: true,
-                tableElement: document.getElementById('invoice_table')
-            })">
-                <i class="fa-solid fa-trash-can fa-2x hover_red"></i>
-            </button>
-        </div>
-        
-
-        <div id="invoice_table_container">
+        <section class="flx-r-c mar-b-md">
             <% if (invoices.length > 0) { %>
-                <table id="invoice_table" class="shadow_card">
-                    <tr>
-                        <th>Date</th>
-                        <th>Name</th>
-                        <th style="display:none;">Description</th>
-                        <th>Cost</th>
-                        <th>Delete</th>
-                    </tr>
+                <table id="invoice-table" class="mx-wth-phn wth-100 shdw-main nth-tr-bg-gry nth-tr-clr-main brd-clps brd-r-tl-d brd-r-tr-d">
+                    <thead>
+                        <tr class="bg-main">
+                            <th class="brd-r-tl-d font-p-md-l pad-xs clr-wht">
+                                <div class="flx-r-c">
+                                    Date
+                                </div>
+                            </th>
+                            <th class="font-p-md-l pad-xs clr-wht">
+                                <div class="flx-r-c">
+                                    Name
+                                </div>
+                            </th>
+                            <th class="font-p-md-l pad-xs clr-wht">
+                                <div class="flx-r-c">
+                                    Cost
+                                </div>
+                            </th>
+                            <th class="brd-r-tr-d font-p-md-l pad-xs clr-wht">
+                                <div class="flx-r-c">
+                                    Delete
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
                     <% invoices.forEach(invoice => { %>
-                        <tr class="invoice_info_row" url=<%=`/invoice/deleteInvoice/${invoice._id}`%>>
-                            <td><%=invoice.date%></td>
-                            <td><a href=<%= `/invoice/${invoice._id}` %>><%= invoice.name %> </a></td>
-                            <td>$<%=invoice.cost %> </td>
-                            <td class="table_checkbox">
-                                <input class='invoice_delete_checkbox' type="checkbox" onclick="toggle.condition({
-                                    display: 'flex',
-                                    element: document.getElementById('delete_invoice_button'),
-                                    condition: jsTable.hasCheckedCheckboxes(this.className)
-                                })">
+                        <tr class="row" url-delete=<%=`/invoice/deleteInvoice/${invoice._id}`%>>
+                            <td>
+                                <div class="flx-r-c">
+                                    <%=invoice.date%>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flx-r-c">
+                                    <a href=<%= `/invoice/${invoice._id}` %>><%= invoice.name %> </a>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="flx-r-c">
+                                    $<%=invoice.cost %>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="wrapper-delete-checkbox flx-r-c pad-xs">
+                                        <input class='delete-checkbox' type="checkbox">
+                                </div>
+                                <div class="wrapper-delete-cancel flx-r-se pad-xs hide">
+                                    <i class="fa-solid fa-arrow-left-long go-back-icon clr-blk hvr-clr-main"></i>
+                                    <i class="fa-solid fa-trash-can delete-icon clr-blk hvr-clr-red"></i>
+                                </div>
                             </td>
                         </tr>
                     <% }) %>
                 </table>
             <% } %>
-        </div>
+            </section>
 
         
 
-    </div>
+    </main>
     
 </body>
 </html>
 
 <%- include('../partials/scripts.ejs') %>
+
+<script>
+
+window.addEventListener('load', function(){
+
+    const formAddInvoice = document.getElementById('form-add-invoice')
+    const formAddInvoiceSubmit = formAddInvoice.getElementsByClassName('submit-button')[0]
+    const formAddInvoiceInputs = formAddInvoice.getElementsByClassName('form-control')
+    const invoiceTable = document.getElementById('invoice-table')
+    const invoiceTableRows = document.getElementsByClassName('row')
+
+    //allows us to post our category form
+    formAddInvoice.addEventListener('submit', function(event){
+        event.preventDefault()
+        submitForm(formAddInvoice, "POST", formAddInvoice.getAttribute('url-post'))
+    })
+
+    //checks if our form is complete, if it is, activate our submit button
+    for (x = 0; x < formAddInvoiceInputs.length; x++){
+        formAddInvoiceInputs[x].addEventListener('input', function(){
+            fireOnCondition(formIsComplete(formAddInvoiceInputs), {
+                trueFunctions: {
+                    func1: () => formAddInvoiceSubmit.style.backgroundColor = 'var(--main-color)',
+                    func2: () => formAddInvoiceSubmit.style.color = 'white',
+                    func3: () => formAddInvoiceSubmit.style.boxShadow = 'var(--box-shadow-main-color)',
+                },
+                falseFunctions: {
+                    func1: () => formAddInvoiceSubmit.style.backgroundColor = '',
+                    func2: () => formAddInvoiceSubmit.style.color = '',
+                    func3: () => formAddInvoiceSubmit.style.boxShadow = '',
+                }
+            })
+        })
+    }
+
+    //will toggle our delete and cancel icons when clicking the toggle delete button
+    for (x = 0; x < invoiceTableRows.length; x++){
+        let currentRow = invoiceTableRows[x]
+        let currentDeleteCheckbox = currentRow.getElementsByClassName('delete-checkbox')[0]
+        let currentWrapperCurrentDeleteCheckbox = currentRow.getElementsByClassName('wrapper-delete-checkbox')[0]
+        let currentWrapperDeleteCancel = currentRow.getElementsByClassName('wrapper-delete-cancel')[0]
+        let currentGoBackIcon = currentWrapperDeleteCancel.getElementsByClassName('go-back-icon')[0]
+        let currentDeleteIcon = currentWrapperDeleteCancel.getElementsByClassName('delete-icon')[0]
+        let deleteUrl = currentRow.getAttribute('url-delete')
+        currentDeleteCheckbox.addEventListener('click', function(){
+            currentWrapperDeleteCancel.style.display = 'flex'
+            currentDeleteCheckbox.style.display = 'none'
+            currentWrapperCurrentDeleteCheckbox.style.display = 'none'
+        })
+        currentGoBackIcon.addEventListener('click', function(){
+            currentDeleteCheckbox.checked = false
+            currentDeleteCheckbox.style.display = ''
+            currentWrapperCurrentDeleteCheckbox.style.display = ''
+            currentWrapperDeleteCancel.style.display = 'none'
+        })
+        currentDeleteIcon.addEventListener('click', function(){
+            currentRow.remove()
+            if (invoiceTable.getElementsByClassName('row').length == 0){
+                invoiceTable.remove()
+            }
+            fetchSimple({
+                url: deleteUrl,
+                method: 'DELETE'
+            })
+
+        })
+    }
+
+
+})
+
+</script>

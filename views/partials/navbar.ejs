@@ -1,13 +1,12 @@
-<nav>
+<nav class='mar-b-md'>
 
     <!-- contains our hamburger icon -->
-    <div id="menu_icon" class="flex_center icon"
-    onclick="toggleNav()">
+    <div id="menu_icon" class="flex_center icon">
         <i class="fa-solid fa-bars fa-lg"></i>
     </div>
 
     <!-- contains the 'X' icon -->
-    <div id='close_icon' style="display:none;" class="flex_center icon" onclick="toggleNav()">
+    <div id='close_icon' style="display:none;" class="flex_center icon">
         <i class="fa-solid fa-xmark fa-lg"></i>
     </div>
 
@@ -35,29 +34,5 @@
 
 </nav>
 
-<!-- font awesome -->
-<script src="https://kit.fontawesome.com/ef0709a418.js" crossorigin="anonymous"></script>
-
-<!-- contains functions to toggle elements -->
-<script src="../../public/service/toggle.js"></script>
-
-<script>
-
-const toggleNav = () => {
-    
-    const menuIcon = document.getElementById('menu_icon')
-    const closeIcon = document.getElementById('close_icon')
-    const navList = document.getElementById('nav_list')
-
-    toggle.simple({
-        menuIcon,
-        closeIcon,
-    })
-
-    toggle.pickStyle(navList, 'flex')
-
-}
-
-</script>
 
 

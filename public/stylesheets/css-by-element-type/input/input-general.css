@@ -1,0 +1,12 @@
+.input-general{
+    font-size:var(--font-size-lg);
+    font-family: var(--font-family-secondary);
+    margin: var(--margin-bottom-xs);
+    border-radius: var(--border-radius-sharp);
+    border:solid black 1px;
+}
+
+.input-general:focus{
+    outline:none;
+    border:var(--border-focus-input-general);
+}

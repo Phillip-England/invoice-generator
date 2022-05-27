@@ -1,3 +1,35 @@
 .display-none{
     display:none;
 }
+
+.hide{
+    display:none;
+}
+
+.display-block{
+    display:block;
+}
+
+.block{
+    display: block;
+}
+
+.display-inline{
+    display:inline;
+}
+
+.inline{
+    display:inline;
+}
+
+.display-grid{
+    display:grid;
+}
+
+.grid{
+    display: grid;
+}
+
+.display-flex{
+    display: flex;
+}

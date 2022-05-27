@@ -1,10 +1,26 @@
 /* text colors */
 
+.hvr-clr-main:hover{
+    color:var(--main-color);
+}
+
+.hvr-clr-blk:hover{
+    color:black;
+}
+
+.hvr-clr-grn:hover{
+    color:var(--green-color);
+}
+
 .hover-color-main:hover{
     color:var(--main-color);
 }
 
 .hover-color-red:hover{
+    color:var(--red-color);
+}
+
+.hvr-clr-red:hover{
     color:var(--red-color);
 }
 
@@ -43,4 +59,6 @@
 .hover-border-bottom-main:hover{
     border-bottom:solid var(--main-color) 1px;
 }
+
+/* box-shadow */
 

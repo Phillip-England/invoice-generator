@@ -1,0 +1,8 @@
+.form-general{
+    padding:var(--padding-sm);
+    border-radius: var(--border-radius-dull);
+    max-width: var(--phone-size);
+    width:100%;
+    border-top:var(--border-top-main-color);
+    box-shadow:var(--box-shadow-default);
+}

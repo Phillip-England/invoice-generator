@@ -1,0 +1,8 @@
+#page-overlay-loading-icon{
+    height:100px;
+    width:100px;
+    display: block;
+    border-radius: 50%;
+    border-top:solid white 10px;
+    animation: loading 1s linear infinite;
+}

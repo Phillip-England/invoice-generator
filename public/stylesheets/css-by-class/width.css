@@ -6,6 +6,10 @@
     width:100%;
 }
 
+.wth-100{
+    width: 100%;
+}
+
 .width-50{
     width:50%;
 }
@@ -18,12 +22,20 @@
     max-width: var(--phone-size);
 }
 
+.mx-wth-phn{
+    max-width: var(--phone-size);
+}
+
 .max-width-laptop-size{
     max-width: var(--laptop-size);
 }
 
 .width-fit-content{
     width:fit-content;
+}
+
+.width-inherit{
+    width:inherit;
 }
 
 .width-rem-sm{

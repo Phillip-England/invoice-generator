@@ -1,0 +1,23 @@
+.nth-tr-bg-gry tr:nth-child(even){
+    background-color:var(--gray-color);
+}
+
+.nth-tr-clr-main tr:nth-child(even){
+    color:var(--main-color);
+}
+
+.nth-tr-inpt-clr-main tr:nth-child(even) input, tr:nth-child(even) select{
+    color:var(--main-color);
+}
+
+.nth-tr-slct-wht tr:nth-child(odd) select{
+    background-color: white;
+}
+
+.nth-tr-inpt-wht tr:nth-child(odd) input{
+    background-color: white;
+}
+
+.nth-tr-inpt-gry tr:nth-child(even) input{
+    background-color: var(--gray-color);
+}

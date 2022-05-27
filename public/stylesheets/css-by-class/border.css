@@ -2,8 +2,23 @@
     border:solid black 1px;
 }
 
+.brd-blk-sm-sharp{
+    border:solid black 1px;
+    border-radius:var(--rem-xxs);
+}
+
+.brd-main-sm-sharp{
+    border: solid var(--main-color) 1px;
+    border-radius:var(--rem-xxs);
+}
+
 .border-top-main-color{
     border-top:solid var(--main-color) 3px;
+}
+
+.brd-t-main-dull{
+    border-top: var(--border-top-main-color);
+    border-radius: var(--border-radius-dull);
 }
 
 .border-main-color{
@@ -23,12 +38,20 @@
     border-collapse: collapse;
 }
 
+.brd-clps{
+    border-collapse: collapse;
+}
+
 .border-seperate{
     border-collapse: separate;
 }
 
 .border-spacing-0{
     border-spacing:0;
+}
+
+.brd-spc-0{
+    border-spacing: 0;
 }
 
 

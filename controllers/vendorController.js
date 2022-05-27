@@ -43,10 +43,14 @@ const addVendor = async (req, res, next) => {
             name: vendor_name
         })
         //ending the request and reloading the page
-        res.status(200).redirect('/vendor')
+        res.status(200).json({
+            newVendor: newVendor,
+        })
     } catch (error) {
-        next(error)
-        console.log(error.message)
+        // next(error)
+        res.status(200).json({
+            error: error.message
+        })
     }
 }
 

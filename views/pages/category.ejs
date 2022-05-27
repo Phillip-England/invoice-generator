@@ -7,66 +7,145 @@
     <title>Categories</title>
     <%- include('../partials/styles.ejs') %>
 </head>
-<body NODE_ENV="<%=NODE_ENV%>">
+<body page="category">
 
-
-    <div id="category_page_container">
+    <main>
 
         <%- include('../partials/navbar.ejs') %>
 
-        <div id="category_form_container">
-            <form id="add_category_form" class="form_styles_general" onsubmit="event.preventDefault(), jsForm.postForm(this, '/category/addCategory')">
-                <h2 class="form_header">Add an Expense Category</h2>
-                <label class="form_label" for="category_name">Category Name<span class="form_astrick">*</span></label>
-                <input class="form_input" type="text" name="category_name">
-                <input type="hidden" name="_csrf" value=<%=csrfToken%>>
-                <div class="form_button_container">
-                    <button class="form_button" type="submit">
-                        <p class="form_button_text">Add</p>
-                        <i class="fa-solid fa-boxes-stacked"></i>
+        <section class="flx-r-c mar-b-md">
+            <form id="form-add-category" class="grid pad-sm mx-wth-phn wth-100 brd-t-main-dull shdw-main" url-post="/category/addCategory">
+                <h1 class="font-p-xl mar-b-xs">Add an Expense Category</h1>
+                <p class="error-message bg-red clr-wht font-s-md pad-xs mar-b-xs hide">error</p>
+                <label class="font-p-md" for="category_name">Category Name<span class="astrick hide">*</span></label>
+                <input class="form-control form-required font-s-lg mar-b-xs brd-blk-sm-sharp brd-r-d fcs-input" type="text" name="category_name">
+                <input type="hidden" class="form-control form-required" name="_csrf" value=<%=csrfToken%>>
+                <div class="flx-r-c">
+                    <button class="submit-button flx-r-c brd-main-sm-sharp pad-rl-sm clr-main bg-wht" type="submit">
+                        <h1 class="font-p-lg">Add</h1>
+                        <i class="fa-solid fa-boxes-stacked fa-lg pad-l-sm"></i>
                     </button>
-                    <div name='loading-icon' class="loading_icon"></div>
+                    <div class="loading-icon hide"></div>
                 </div>
             </form>
-        </div>
+        </section>
 
-        <div id="wrapper_delete_category_button">
-            <button id='delete_category_button' style='display:none;' onclick="toggle.removeElements(this, {
-                elements: jsTable.getRowsWithCheckedBoxes('category_delete_checkbox'),
-                fetch: true,
-                tableElement: document.getElementById('category_table')
-            })">
-                <i class="fa-solid fa-trash-can fa-2x"></i>
-            </button>
-        </div>
-
-        <div id="category_table_container">
+        <section class="flx-r-c mar-b-md">
             <% if (categories.length > 0) { %>
-                <table id="category_table" class="shadow_card">
-                    <tr>
-                        <th>Category</th>
-                        <th>Delete</th>
-                    </tr>
+                <table id="category-table" class="mx-wth-phn wth-100 shdw-main nth-tr-bg-gry nth-tr-clr-main brd-clps brd-r-tl-d brd-r-tr-d">
+                    <thead>
+                        <tr class="bg-main">
+                            <th class="brd-r-tl-d font-p-md-l pad-xs clr-wht">
+                                <div class="flx-r-c">
+                                    Category
+                                </div>
+                            </th>
+                            <th class="brd-r-tr-d font-p-md-l pad-xs clr-wht">
+                                <div class="flx-r-c">
+                                    Delete
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
                     <% categories.forEach(category => { %>
-                        <tr class="category_info_row" url=<%=`/category/deleteCategory/${user._id}/${category._id}`%> >
-                            <td><%=category.name%></td>
+                        <tr class="row-category-table" url-delete=<%=`/category/deleteCategory/${user._id}/${category._id}`%> >
+                            <td class="font-s-sm">
+                                <div class="flx-r-c">
+                                    <%=category.name%>
+                                </div>
+                            </td>
                             <td>
-                                <input class='category_delete_checkbox' type="checkbox" onclick="toggle.condition({
-                                    display: 'flex',
-                                    element: document.getElementById('delete_category_button'),
-                                    condition: jsTable.hasCheckedCheckboxes(this.className)
-                                })">
+                                <div class="wrapper-delete-checkbox flx-r-c pad-xs">
+                                    <input class='delete-checkbox' type="checkbox">
+                                </div>
+                                <div class="wrapper-delete-cancel flx-r-se pad-xs hide">
+                                    <i class="fa-solid fa-arrow-left-long go-back-icon clr-blk hvr-clr-main"></i>
+                                    <i class="fa-solid fa-trash-can delete-icon clr-blk hvr-clr-red"></i>
+                                </div>
                             </td>
                         </tr>
                     <% }) %>
                 </table>
             <% } %>
-        </div>
+            </section>
                 
-    </div>
+    </main>
     
     
 </body>
 </html>
 
 <%- include('../partials/scripts.ejs') %>
+
+<script>
+
+window.addEventListener('load', function(){
+
+    const formAddCategory = document.getElementById('form-add-category')
+    const formAddCategorySubmit = formAddCategory.getElementsByClassName('submit-button')[0]
+    const formAddCategoryInputs = formAddCategory.getElementsByClassName('form-control')
+    const rowCategoryTable = document.getElementsByClassName('row-category-table')
+    const categoryTable = document.getElementById('category-table')
+    
+    //allows us to post our category form
+    formAddCategory.addEventListener('submit', function(event){
+        event.preventDefault()
+        submitForm(formAddCategory, "POST", formAddCategory.getAttribute('url-post'))
+    })
+
+    //checks if our form is complete, if it is, activate our submit button
+    for (x = 0; x < formAddCategoryInputs.length; x++){
+        formAddCategoryInputs[x].addEventListener('input', function(){
+            fireOnCondition(formIsComplete(formAddCategoryInputs), {
+                trueFunctions: {
+                    func1: () => formAddCategorySubmit.style.backgroundColor = 'var(--main-color)',
+                    func2: () => formAddCategorySubmit.style.color = 'white',
+                    func3: () => formAddCategorySubmit.style.boxShadow = 'var(--box-shadow-main-color)',
+                },
+                falseFunctions: {
+                    func1: () => formAddCategorySubmit.style.backgroundColor = '',
+                    func2: () => formAddCategorySubmit.style.color = '',
+                    func3: () => formAddCategorySubmit.style.boxShadow = '',
+                }
+            })
+        })
+    }
+
+    //will toggle our delete and cancel icons when clicking the toggle delete button
+    for (x = 0; x < rowCategoryTable.length; x++){
+        let currentRow = rowCategoryTable[x]
+        let currentDeleteCheckbox = currentRow.getElementsByClassName('delete-checkbox')[0]
+        let currentWrapperCurrentDeleteCheckbox = currentRow.getElementsByClassName('wrapper-delete-checkbox')[0]
+        let currentWrapperDeleteCancel = currentRow.getElementsByClassName('wrapper-delete-cancel')[0]
+        let currentGoBackIcon = currentWrapperDeleteCancel.getElementsByClassName('go-back-icon')[0]
+        let currentDeleteIcon = currentWrapperDeleteCancel.getElementsByClassName('delete-icon')[0]
+        let deleteUrl = currentRow.getAttribute('url-delete')
+        currentDeleteCheckbox.addEventListener('click', function(){
+            currentWrapperDeleteCancel.style.display = 'flex'
+            currentDeleteCheckbox.style.display = 'none'
+            currentWrapperCurrentDeleteCheckbox.style.display = 'none'
+        })
+        currentGoBackIcon.addEventListener('click', function(){
+            currentDeleteCheckbox.checked = false
+            currentDeleteCheckbox.style.display = ''
+            currentWrapperCurrentDeleteCheckbox.style.display = ''
+            currentWrapperDeleteCancel.style.display = 'none'
+        })
+        currentDeleteIcon.addEventListener('click', function(){
+            currentRow.remove()
+            if (categoryTable.getElementsByClassName('row-category-table').length == 0){
+                categoryTable.remove()
+            }
+            fetchSimple({
+                url: deleteUrl,
+                method: 'DELETE'
+            })
+
+        })
+    }
+    
+
+
+})
+
+</script>

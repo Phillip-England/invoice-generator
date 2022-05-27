@@ -23,6 +23,10 @@
     padding-left:var(--rem-sm);
 }
 
+.pad-l-sm{
+    padding-left: var(--rem-sm);
+}
+
 .padding-left-xs{
     padding-left:var(--rem-xs);
 }
@@ -33,6 +37,25 @@
 }
 
 .padding-sides-xs{
+    padding-left: var(--rem-xs);
+    padding-right: var(--rem-xs);
+}
+
+.pad-rl-sm{
     padding-left: var(--rem-sm);
     padding-right: var(--rem-sm);
+}
+
+.pad-trb-xs{
+    padding-top:var(--rem-xs);
+    padding-right: var(--rem-xs);
+    padding-bottom:var(--rem-xs);
+}
+
+.pad-sm{
+    padding: var(--rem-sm);
+}
+
+.pad-xs{
+   padding: var(--rem-xs); 
 }

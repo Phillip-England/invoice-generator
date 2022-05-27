@@ -1,0 +1,8 @@
+.main-menu-dropdown{
+    position:absolute;
+    top:105%;
+    width:100%;
+    background-color: var(--light-color);
+    border-radius: var(--border-radius-sharp);
+    box-shadow: var(--box-shadow-default);
+}

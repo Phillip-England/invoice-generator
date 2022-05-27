@@ -1,0 +1,4 @@
+.fcs-input:focus{
+    outline:none;
+    border:var(--border-focus-input-general);
+}

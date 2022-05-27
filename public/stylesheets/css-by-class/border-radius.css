@@ -6,15 +6,19 @@
     border-radius:var(--rem-xxs);
 }
 
+.brd-r-d{
+    border-radius: var(--rem-xs);
+}
+
 .border-radius-top-dull{
     border-top-left-radius: var(--rem-xs);
     border-top-right-radius: var(--rem-xs);
 }
 
-.border-radius-top-left-dull{
-    border-top-left-radius: var(--rem-xs);
+.brd-r-tr-d{
+    border-top-right-radius: var(--rem-xs);
 }
 
-.border-radius-top-right-dull{
-    border-top-right-radius: var(--rem-xs);
+.brd-r-tl-d{
+    border-top-left-radius: var(--rem-xs);
 }

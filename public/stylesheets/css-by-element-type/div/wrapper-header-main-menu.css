@@ -1,0 +1,6 @@
+.wrapper-header-main-menu{
+    padding:var(--padding-sm);
+    display:flex;
+    align-items: center;
+    justify-content: center;
+}

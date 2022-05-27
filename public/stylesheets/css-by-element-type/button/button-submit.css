@@ -1,0 +1,11 @@
+.button-submit{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: var(--border-radius-sharp);
+    border:var(--border-main-color);
+    padding: var(--padding-left-and-right-sm);
+    font-size: var(--font-size-lg);
+    font-family: var(--font-family-primary);
+    font-weight: var(--font-weight-bold);
+}

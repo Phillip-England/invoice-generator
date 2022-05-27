@@ -16,17 +16,13 @@
 :root {
 
     /* colors */
-    --first-color:steelblue;
-    --main-color:steelblue;
-    --red-color:#CC585E;
+    --main-color:#1265FF;
     --gray-color:rgb(230, 230, 230);
-    --dark-color:black;
-    --light-color:white;
-    --second-color:rgb(255, 255, 255);
-    --third-color:rgb(0, 0, 0);
-    --fourth-color:rgb(230, 230, 230);
-    --fifth-color:rgb(0, 174, 255);
-    --sixth-color:rgb(255, 71, 72);
+    --purple-color:#A832EC;
+    --green-color:#009B88;
+    --red-color:#FF0030;
+    --light-color: white;
+    --dark-color: black;
 
     /* rem */
     --rem-xxs:0.25rem;
@@ -38,13 +34,62 @@
     --rem-xxl:1.75rem;
 
     /* fonts */
-    --primary-font: 'Roboto', sans-serif;
-    --secondary-font: 'EB Garamond', serif;
- 
-    
+    --font-family-primary: 'Roboto', sans-serif;
+    --font-family-secondary: 'EB Garamond', serif;
+
+    /* font sizes */
+    --font-size-xxs: var(--rem-xxs);
+    --font-size-xs: var(--rem-xs);
+    --font-size-s: var(--rem-s);
+    --font-size-md: var(--rem-md);
+    --font-size-lg: var(--rem-lg);
+    --font-size-xxl: var(--rem-xl);
+    --font-size-xl: var(--rem-xxl);
+
+    /* font weights */
+    --font-weight-bold: 700;
+
     /* breakpoints */
     --phone-size:425px; 
     --laptop-size:900px;
+
+    /* border-radius */
+    --border-radius-sharp: var(--rem-xxs);
+    --border-radius-dull: var(--rem-xs);
+
+    /* borders */
+    --border-main-color: solid var(--main-color) 1px;
+    --border-top-main-color: solid var(--main-color) 3px;
+    --border-focus-input-general:solid var(--main-color) 2px;
+    --border-bottom-gray:solid var(--gray-color) 1px;
+
+    /* box-shadow */
+    --box-shadow-default: 1px 1px 10px gray;
+    --box-shadow-bottom: 0px 5px 5px rgb(243, 243, 243);
+    --box-shadow-main-color: 1px 1px 10px var(--main-color);
+
+
+    /* padding */
+    --padding-left-and-right-sm: 0 var(--rem-sm) 0 var(--rem-sm);
+    --padding-left-sm:0 0 0 var(--rem-sm);
+    --padding-left-xs:0 0 0 var(--rem-xs);
+    --padding-xs:var(--rem-xs) var(--rem-xs) var(--rem-xs) var(--rem-xs);
+    --padding-sm:var(--rem-sm) var(--rem-sm) var(--rem-sm) var(--rem-sm);
+    --padding-md:var(--rem-md) var(--rem-md) var(--rem-md) var(--rem-md);
+    --padding-xxs:var(--rem-xxs) var(--rem-xxs) var(--rem-xxs) var(--rem-xxs);
+
+    /* margin */
+    --margin-bottom-md:0 0 var(--rem-md) 0;
+    --margin-bottom-xs:0 0 var(--rem-xs) 0;
+    --margin-sides-md:0 var(--rem-md) 0 var(--rem-md);
+    --margin-sides-and-bottom-md:0 var(--rem-md) var(--rem-md) var(--rem-md);
+
+    /* box-shadow */
+    /* box-shadow */
+    /* box-shadow */
+    /* box-shadow */
+    /* box-shadow */
+
 
 }
 

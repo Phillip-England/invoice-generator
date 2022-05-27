@@ -33,9 +33,10 @@ const addExpense = async (req, res, next) => {
         if (!expense) {
             throw new Error('Failed to create expense')
         }
-        //ending the request and reloading the current page
-        res.status(200)
-        res.redirect(('/invoice/' + req.params.invoice))
+        //returning the new expense to the client
+        res.status(200).json({
+            expense: expense
+        })
     } catch (error) {
         console.log(error.message)
         next(error)
@@ -53,7 +54,6 @@ const updateExpense = async (req, res, next) => {
             expense_cost,
             expense_invoice
         } = req.body
-
 
         //checking if all the form fields were filled out
         if (!expense_category || !expense_date || !expense_vendor || !expense_description || !expense_cost || !expense_invoice){
@@ -98,14 +98,14 @@ const updateExpense = async (req, res, next) => {
             }
             //updating the cost of the invoice the expense is associated with
             const newUpdatedInvoice = await Invoice.findByIdAndUpdate(newInvoice._id, {
-                cost: '$' + String(Math.round(100*cost)/100)
+                cost: Math.round(100*cost)/100
             })
         }
-
-        res.status(200).redirect('/invoice/' + req.params.invoice)
-        
-
+        res.status(200).json({
+            cost: "$" + String(Math.round(100*cost)/100)
+        })
     } catch (error) {
+        console.log(error)
         next(error)
     }
 }

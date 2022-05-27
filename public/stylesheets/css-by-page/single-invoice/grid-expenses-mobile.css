@@ -1,13 +1,3 @@
-#wrapper-expenses-mobile-single-invoice{
-    grid-area: wrapper-expenses-mobile-single-invoice;
-}
-
-@media only screen and (min-width: 950px) {
-    #wrapper-expenses-mobile-single-invoice{
-        display:none;
-    }
-}
-
 .grid-expense-mobile-information{
     display:grid;
     grid-template-columns: 3fr 1fr;
@@ -63,7 +53,7 @@
     ;
 }
 
-.expense-mobile-title{
+/* .expense-mobile-title{
     grid-area: expense-mobile-title;
 }
 
@@ -121,5 +111,5 @@
 
 .expense-mobile-close{
     grid-area:expense-mobile-close;
-}
+} */
 

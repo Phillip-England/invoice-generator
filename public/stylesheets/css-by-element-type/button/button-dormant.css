@@ -1,0 +1,4 @@
+.button-dormant{
+    background-color: var(--light-color);
+    color: var(--main-color);
+}

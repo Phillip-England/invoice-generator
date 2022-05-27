@@ -1,0 +1,18 @@
+#main-menu-single-invoice{
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-areas: 
+        "header-title header-date header-cost header-print header-button"
+    ;
+    background-color: var(--gray-color);
+    box-shadow: var(--box-shadow-bottom);
+    color: var(--main-color);
+}
+
+@media screen and (max-width: 950px) {
+    #main-menu-single-invoice{
+        grid-template-columns: 1fr 1fr 1fr 1fr;
+        grid-template-areas: 
+            'header-title header-date header-cost header-print header-button';
+    }
+}
